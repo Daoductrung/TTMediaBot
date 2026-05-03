@@ -1,8 +1,8 @@
 # TTMediaBot
 
-**Olá! Eu sou João Almeida.** Bem-vindo ao meu fork do **TTMediaBot**, um bot de streaming de mídia completo para TeamTalk 5. Este repositório é focado em trazer melhorias constantes, estabilidade e novas funcionalidades, como o suporte exclusivo para YouTube Music.
+**Hello! I am João Almeida.** Welcome to my **TTMediaBot** fork, a comprehensive media streaming bot for TeamTalk 5. This repository is focused on delivering constant improvements, stability, and new features, such as exclusive support for YouTube Music.
 
-> 🔗 **Meu Repositório:** [https://github.com/JoaoDEVWHADS/TTMediaBot](https://github.com/JoaoDEVWHADS/TTMediaBot)
+> 🔗 **My Repository:** [https://github.com/JoaoDEVWHADS/TTMediaBot](https://github.com/JoaoDEVWHADS/TTMediaBot)
 
 ---
 
@@ -370,12 +370,12 @@ TTMediaBot supports multiple languages. Change language using the `cl` admin com
 
 **Available languages:**
 - `en` - English
-- `es` - Spanish (Español)
-- `hu` - Hungarian (Magyar)
-- `id` - Indonesian (Bahasa Indonesia)
-- `pt_BR` - Brazilian Portuguese (Português Brasileiro)
-- `ru` - Russian (Русский)
-- `tr` - Turkish (Türkçe)
+- `es` - Spanish
+- `hu` - Hungarian
+- `id` - Indonesian
+- `pt_BR` - Brazilian Portuguese
+- `ru` - Russian
+- `tr` - Turkish
 
 **Example:** Send `cl pt_BR` to switch to Brazilian Portuguese.
 
