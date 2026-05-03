@@ -1,5 +1,6 @@
 from __future__ import annotations
 import copy
+import logging
 import os
 from threading import Lock
 from typing import Any, Dict, Optional, TYPE_CHECKING
@@ -46,7 +47,11 @@ class Track:
             return
         self._original_track = copy.deepcopy(self)
         service: Service = get_service_by_name(self.service)
-        track = service.get(self._url, extra_info=self.extra_info, process=True)[0]
+        try:
+            track = service.get(self._url, extra_info=self.extra_info, process=True)[0]
+        except Exception as e:
+            logging.error(f"Failed to fetch stream data for '{self._name or self._url}': {e}")
+            raise
         self.url = track.url
         self.name = track.name
         self._original_track.name = track.name

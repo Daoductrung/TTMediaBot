@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 from yt_dlp import YoutubeDL
 from yt_dlp.downloader import get_suitable_downloader
+from yt_dlp.utils import DownloadError
 from py_yt.search import VideosSearch
 
 
@@ -37,25 +38,39 @@ class YtService(_Service):
         self.warning_message = ""
         self.help = ""
         self.hidden = False
+        self._cookie_lock = threading.Lock()
+        self._max_retries = 2
 
     def initialize(self):
+        # Validate cookie file at startup
+        if self.config.cookiefile_path:
+            if os.path.isfile(self.config.cookiefile_path):
+                logging.info(f"YT Service: Cookie file found at {self.config.cookiefile_path}")
+            else:
+                logging.warning(
+                    f"YT Service: Cookie file NOT FOUND at '{self.config.cookiefile_path}'. "
+                    "YouTube may block requests. Please provide a valid cookies.txt file."
+                )
+        else:
+            logging.warning(
+                "YT Service: No cookie file configured (cookiefile_path is empty). "
+                "YouTube may block requests requiring authentication."
+            )
+
         self._ydl_config = {
             "skip_download": True,
             "format": "bestaudio/best",
-            # Performance optimizations:
-            "format_sort": ["res:144", "codec:mp3", "codec:m4a", "codec:opus"], # Prioritize mp3/m4a for simplicity
-            "youtube_include_dash_manifest": False, # Skip DASH manifest download
-            "youtube_include_hls_manifest": False,  # Skip HLS manifest download
-            "socket_timeout": 5,
+            "format_sort": ["res:144", "codec:mp3", "codec:m4a", "codec:opus"],
+            "youtube_include_dash_manifest": False,
+            "youtube_include_hls_manifest": False,
+            "socket_timeout": 10,
             "logger": logging.getLogger("root"),
-            "js_runtimes": {"node": {}},
-            "extract_flat": True,
             "quiet": True,
             "no_warnings": True,
             "nocheckcertificate": True,
             "geo_bypass": True,
-            "check_formats": False, # Skip extra network request for format validation
-            "noplaylist": True,    # Ensure we don't accidentally load playlists
+            "check_formats": False,
+            "noplaylist": True,
         }
 
         # Persistent event loop for faster async operations
@@ -80,17 +95,26 @@ class YtService(_Service):
             yield None
             return
 
-        # Unique name per thread/process to avoid collisions
         temp_cookie_path = os.path.join(
             tempfile.gettempdir(), 
             f"yt_cookies_{os.getpid()}_{threading.get_ident()}.txt"
         )
         
         try:
-            shutil.copy2(self.config.cookiefile_path, temp_cookie_path)
+            with self._cookie_lock:
+                shutil.copy2(self.config.cookiefile_path, temp_cookie_path)
             yield temp_cookie_path
         finally:
+            # Writeback: yt-dlp may have updated/rotated cookie tokens during extraction.
+            # Copy the modified temp cookies back to the source file so future requests
+            # use the refreshed tokens instead of stale ones that YouTube will reject.
             if os.path.isfile(temp_cookie_path):
+                try:
+                    with self._cookie_lock:
+                        shutil.copy2(temp_cookie_path, self.config.cookiefile_path)
+                    logging.debug("YT: Cookie file updated with refreshed tokens")
+                except Exception as e:
+                    logging.debug(f"YT: Failed to writeback cookies: {e}")
                 try:
                     os.remove(temp_cookie_path)
                 except Exception as e:
@@ -133,28 +157,77 @@ class YtService(_Service):
         if not (url or extra_info):
             raise errors.InvalidArgumentError()
         
-        # Instantiate per request for thread safety
+        last_error = None
+        for attempt in range(self._max_retries + 1):
+            if attempt > 0:
+                wait_time = 2 ** attempt
+                logging.warning(f"YT Get: Retry {attempt}/{self._max_retries} for '{url}' after {wait_time}s delay")
+                time.sleep(wait_time)
+
+            try:
+                return self._get_inner(url, extra_info, process, start_time)
+            except errors.ServiceError as e:
+                last_error = e
+                error_msg = str(e)
+                is_auth_error = "Sign in to confirm" in error_msg or "cookies" in error_msg.lower()
+                if not is_auth_error or attempt >= self._max_retries:
+                    raise
+                logging.warning(f"YT Get: Auth-related error, will retry: {error_msg[:100]}")
+        
+        raise last_error or errors.ServiceError("Max retries exceeded")
+
+    def _get_inner(
+        self,
+        url: str,
+        extra_info: Optional[Dict[str, Any]],
+        process: bool,
+        start_time: float,
+    ) -> List[Track]:
         config = self._ydl_config.copy()
         with self._temp_cookie_file() as cookie_file:
             if cookie_file:
                 config["cookiefile"] = cookie_file
+            elif self.config.cookiefile_path:
+                logging.warning(
+                    f"YT Get: Cookie file '{self.config.cookiefile_path}' not found. "
+                    "Proceeding without cookies — YouTube may block this request."
+                )
             
             with YoutubeDL(config) as ydl:
                 if not extra_info:
-                    info = ydl.extract_info(url, process=False)
+                    try:
+                        info = ydl.extract_info(url, process=False)
+                    except DownloadError as e:
+                        error_msg = str(e)
+                        if "Sign in to confirm" in error_msg or "cookies" in error_msg.lower():
+                            logging.error(
+                                f"YT Get: YouTube requires authentication for '{url}'. "
+                                "Please provide a valid cookies.txt file. "
+                                "See: https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp"
+                            )
+                        else:
+                            logging.error(f"YT Get: yt-dlp DownloadError for '{url}': {error_msg}")
+                        raise errors.ServiceError(str(e))
                 else:
                     info = extra_info
                 
+                if info is None:
+                    raise errors.ServiceError("Failed to extract video info")
+
                 info_type = None
                 if "_type" in info:
                     info_type = info["_type"]
-                if info_type == "url" and not info["ie_key"]:
+                if info_type == "url" and not info.get("ie_key"):
                     return self.get(info["url"], process=False)
                 elif info_type == "playlist":
                     tracks: List[Track] = []
                     for entry in info["entries"]:
-                        data = self.get("", extra_info=entry, process=False)
-                        tracks += data
+                        try:
+                            data = self.get("", extra_info=entry, process=False)
+                            tracks += data
+                        except errors.ServiceError:
+                            logging.warning(f"YT Get: Skipping playlist entry due to error")
+                            continue
                     duration = (time.perf_counter() - start_time) * 1000
                     logging.info(f"YT Get (Playlist) finished in {duration:.2f}ms for {url}")
                     return tracks
@@ -166,13 +239,16 @@ class YtService(_Service):
                     ]
                 try:
                     stream = ydl.process_ie_result(info)
+                except DownloadError as e:
+                    logging.error(f"YT Get: Failed to process stream for '{url}': {e}")
+                    raise errors.ServiceError(str(e))
                 except Exception:
                     raise errors.ServiceError()
                 
                 if "url" in stream:
                     url = stream["url"]
                 else:
-                    raise errors.ServiceError()
+                    raise errors.ServiceError("No stream URL found in processed result")
                 title = stream["title"]
                 if "uploader" in stream:
                     title += " - {}".format(stream["uploader"])

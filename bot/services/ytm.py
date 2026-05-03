@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
 from yt_dlp import YoutubeDL
 from yt_dlp.downloader import get_suitable_downloader
+from yt_dlp.utils import DownloadError
 from ytmusicapi import YTMusic
 
 from bot.config.models import YtmModel
@@ -37,8 +38,9 @@ class YtmService(_Service):
         self.help = ""
         self.hidden = False
         self.ytmusic = None
-        # Access config directly to avoid circular dependency with service_manager
         self.yt_config = bot.config.services.yt
+        self._cookie_lock = threading.Lock()
+        self._max_retries = 2
         
     def _fetch_and_queue_autoplay(self, video_id: str, original_url: str):
         """Background task to fetch Watch Playlist and add to queue."""
@@ -87,10 +89,17 @@ class YtmService(_Service):
             logging.error(f"[YTM] Background Autoplay fetch failed: {e}")
 
     def initialize(self):
-        # Initialize YTMusic with cookies if available
+        # Validate cookie file at startup
         cookie_path = None
         if self.yt_config and self.yt_config.cookiefile_path:
-             cookie_path = self.yt_config.cookiefile_path
+            cookie_path = self.yt_config.cookiefile_path
+            if os.path.isfile(cookie_path):
+                logging.info(f"YTM Service: Cookie file found at {cookie_path}")
+            else:
+                logging.warning(
+                    f"YTM Service: Cookie file NOT FOUND at '{cookie_path}'. "
+                    "YouTube may block requests."
+                )
 
         self.cookiejar = None
         auth = None
@@ -159,16 +168,14 @@ class YtmService(_Service):
             "format_sort": ["res:144", "codec:mp3", "codec:m4a", "codec:opus"],
             "youtube_include_dash_manifest": False,
             "youtube_include_hls_manifest": False,
-            "socket_timeout": 5,
+            "socket_timeout": 10,
             "logger": logging.getLogger("root"),
-            "js_runtimes": {"node": {}},
             "quiet": True,
             "no_warnings": True,
             "nocheckcertificate": True,
             "geo_bypass": True,
-            "check_formats": False, # Skip extra network request for format validation
-            "noplaylist": True,    # Ensure we don't accidentally load playlists
-            "extract_flat": "in_playlist",
+            "check_formats": False,
+            "noplaylist": True,
         }
 
         # Pre-warming for YTM
@@ -189,17 +196,23 @@ class YtmService(_Service):
             yield None
             return
 
-        # Unique name per thread/process to avoid collisions
         temp_cookie_path = os.path.join(
             tempfile.gettempdir(), 
             f"ytm_cookies_{os.getpid()}_{threading.get_ident()}.txt"
         )
         
         try:
-            shutil.copy2(self.yt_config.cookiefile_path, temp_cookie_path)
+            with self._cookie_lock:
+                shutil.copy2(self.yt_config.cookiefile_path, temp_cookie_path)
             yield temp_cookie_path
         finally:
             if os.path.isfile(temp_cookie_path):
+                try:
+                    with self._cookie_lock:
+                        shutil.copy2(temp_cookie_path, self.yt_config.cookiefile_path)
+                    logging.debug("YTM: Cookie file updated with refreshed tokens")
+                except Exception as e:
+                    logging.debug(f"YTM: Failed to writeback cookies: {e}")
                 try:
                     os.remove(temp_cookie_path)
                 except Exception as e:
@@ -259,19 +272,32 @@ class YtmService(_Service):
                        if extra_info:
                             info = extra_info
                             if "url" not in info and "videoId" in info:
-                                 # Construct URL for yt-dlp
-                                 # Optimization: Use www.youtube.com instead of music.youtube.com for faster extraction
                                  url = f"https://www.youtube.com/watch?v={info['videoId']}"
-                                 info = ydl.extract_info(url, process=False)
+                                 try:
+                                     info = ydl.extract_info(url, process=False)
+                                 except DownloadError as e:
+                                     logging.error(f"YTM Get: yt-dlp DownloadError for '{url}': {e}")
+                                     raise errors.ServiceError(str(e))
                        else:
-                            info = ydl.extract_info(url, process=False)
+                            try:
+                                info = ydl.extract_info(url, process=False)
+                            except DownloadError as e:
+                                logging.error(f"YTM Get: yt-dlp DownloadError for '{url}': {e}")
+                                raise errors.ServiceError(str(e))
                        
+                       if info is None:
+                            raise errors.ServiceError("Failed to extract video info")
+
                        # Process stream
-                       stream = ydl.process_ie_result(info)
+                       try:
+                           stream = ydl.process_ie_result(info)
+                       except DownloadError as e:
+                           logging.error(f"YTM Get: Failed to process stream for '{url}': {e}")
+                           raise errors.ServiceError(str(e))
                        if "url" in stream:
                             url = stream["url"]
                        else:
-                            raise errors.ServiceError()
+                            raise errors.ServiceError("No stream URL found in processed result")
                        
                        title = stream.get("title", "Unknown")
                        if "uploader" in stream:
