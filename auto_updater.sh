@@ -11,12 +11,15 @@ LOCK_FILE="/tmp/ttmediabot_update.lock"
 
 # Cleanup function
 cleanup() {
-    echo "Cleaning up lock file..."
+    echo "$(date): Auto-Updater shutting down..."
     rm -f "$LOCK_FILE"
+    # Kill background sleep if running so we exit immediately
+    [ -n "$SLEEP_PID" ] && kill "$SLEEP_PID" 2>/dev/null
+    exit 0
 }
 
-# Trap signals for cleanup
-trap cleanup EXIT INT TERM
+# Trap signals for clean shutdown (fixes systemd SIGTERM timeout)
+trap cleanup INT TERM
 
 # Initial cleanup of stale lock if script is starting fresh
 # (Wait 2 seconds to ensure no other instance is starting)
@@ -75,14 +78,22 @@ while true; do
         else
             touch "$LOCK_FILE"
             echo "$(date): Running update.sh..."
-            # Pass AUTO_UPDATE=true to skip service restarts within the script that would kill this process
             export AUTO_UPDATE=true
             ./update.sh
+            UPDATE_EXIT=$?
             unset AUTO_UPDATE
             rm -f "$LOCK_FILE"
+            echo "$(date): update.sh finished with exit code $UPDATE_EXIT"
+            # CRITICAL: update.sh does 'git reset --hard' which replaces THIS script
+            # on disk. We must re-exec to pick up the new version, otherwise systemd
+            # detects 'command vanished from unit file' and kills us.
+            echo "$(date): Re-launching auto-updater from updated file..."
+            exec "$SCRIPT_DIR/auto_updater.sh"
         fi
     fi
-    sleep 20
+    # Interruptible sleep: runs in background so SIGTERM can stop us immediately
+    sleep 60 &
+    SLEEP_PID=$!
+    wait "$SLEEP_PID" 2>/dev/null
+    SLEEP_PID=""
 done
-# Final test commit - Thu Apr 23 06:18:02 UTC 2026
-# TTMediaBot Auto-Updater v1.1 - Fully Operational

@@ -107,9 +107,9 @@ perform_image_rebuild() {
              MAX_RETRIES=150
              RETRY_COUNT=0
              while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-                 TOTAL_BOTS=$(echo "$RUNNING_NAMES" | wc -w)
-                 # Check for both 'running' and 'restarting' (since a bot might be in a fast crash loop but it means it "tried" to start)
-                 STABLE_BOTS=$(docker ps -a --filter "status=running" --filter "status=restarting" --format "{{.Names}}" | grep -xF "$RUNNING_NAMES" | wc -l)
+                 TOTAL_BOTS=$(echo "$RUNNING_NAMES" | wc -l)
+                 # grep -xFf matches each name from RUNNING_NAMES individually against running containers
+                 STABLE_BOTS=$(docker ps -a --filter "status=running" --filter "status=restarting" --format "{{.Names}}" | grep -xcFf <(echo "$RUNNING_NAMES"))
                  
                  if [ "$STABLE_BOTS" -ge "$TOTAL_BOTS" ]; then
                      echo -e "[ ${GREEN}OK${NC} ] All $TOTAL_BOTS bots are confirmed active."
