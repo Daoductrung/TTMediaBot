@@ -307,7 +307,7 @@ class YtService(_Service):
                          continue
 
                     # Title handling
-                    title = video.get("title", "Unknown Title")
+                    title = video.get("title", self.bot.translator.translate("Unknown Title"))
                     
                     track = Track(
                         service=self.name, url=url, name=title, type=TrackType.Dynamic, extra_info=None

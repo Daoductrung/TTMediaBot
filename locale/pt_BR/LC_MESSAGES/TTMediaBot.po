@@ -110,7 +110,7 @@ msgstr "Este comando não está bloqueado"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:56
 msgid "GENDER Changes bot's gender. n neutral, m male, f female"
-msgstr "GENDER  muda o sexo do bot. n neutro, m macho, f fêmea"
+msgstr "GENDER  muda o sexo do bot. n neutro, m masculino, f feminino"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:70
 msgid "LANGUAGE Changes bot's language"
@@ -163,15 +163,16 @@ msgid ""
 "password, split argument \" | \", if password is undefined, don't type "
 "second argument"
 msgstr ""
+"Entrar em um canal. O primeiro argumento é o nome ou ID do canal, o segundo é a senha, separe com \" | \". Se a senha não for definida, não digite o segundo argumento."
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:146
 msgid "This channel does not exist"
-msgstr ""
+msgstr "Este canal não existe"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:160
 #, python-brace-format
 msgid "Error joining channel: {error}"
-msgstr ""
+msgstr "Erro ao entrar no canal: {error}"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:208
 msgid "Enables or disables voice transmission"
@@ -268,7 +269,7 @@ msgstr "Reinicia o bot"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:382
 msgid "Returns current channel's ID"
-msgstr ""
+msgstr "Retorna o ID do canal atual"
 
 #: /root/TTMediaBot/bot/commands/command.py:28
 msgid "help text not found"
@@ -312,7 +313,7 @@ msgstr "Nada encontrado para sua pesquisa"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:63
 msgid "The selected service is currently unavailable"
-msgstr ""
+msgstr "O serviço selecionado está indisponível no momento"
 
 # | msgid "URL Plays a stream from bot given URL"
 #: /root/TTMediaBot/bot/commands/user_commands.py:75
@@ -478,20 +479,22 @@ msgid ""
 "Error: {error}\n"
 "{service} is disabled"
 msgstr ""
+"Erro: {error}\n"
+"{service} está desativado"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:291
 #, fuzzy, python-brace-format
 msgid "{service} is disabled"
-msgstr "Transmissão de áudio desativada"
+msgstr "{service} está desativado"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:298
 msgid "This service has no additional help"
-msgstr ""
+msgstr "Este serviço não possui ajuda adicional"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:317
 #, python-brace-format
 msgid "{} (Warning: {})"
-msgstr ""
+msgstr "{} (Aviso: {})"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:324
 #, fuzzy, python-brace-format
@@ -502,7 +505,9 @@ msgid ""
 "send sv SERVICE h for additional help"
 msgstr ""
 "Serviço atual: {current_service}\n"
-"Disponível: {available_services}"
+"Disponíveis:\n"
+"{available_services}\n"
+"envie sv SERVICE h para ajuda adicional"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:336
 msgid "NUMBER Selects track by number from the list of current results"
@@ -618,11 +623,11 @@ msgstr "{stream_url} Pausado"
 
 #: /root/TTMediaBot/bot/services/yam.py:43
 msgid "Token is not provided"
-msgstr ""
+msgstr "O token não foi fornecido"
 
 #: /root/TTMediaBot/bot/services/yam.py:47
 msgid "You don't have Yandex Plus"
-msgstr ""
+msgstr "Você não possui Yandex Plus"
 
 #~ msgid "The cache file is already used by another instance of the bot."
 #~ msgstr "O arquivo de cache já é usado por outra instância do bot."
@@ -743,3 +748,30 @@ msgstr ""
 #~ msgid "You don't have Yandex Plus"
 #~ msgstr ""
 
+
+msgid "Incorrect mode"
+msgstr "Modo incorreto"
+
+msgid "{} (Error)"
+msgstr "{} (Erro)"
+
+msgid "{number}: {track_name}"
+msgstr "{number}: {track_name}"
+
+msgid "{number}: {track_url}"
+msgstr "{number}: {track_url}"
+
+msgid "<Anonymous>"
+msgstr "<Anônimo>"
+
+msgid "Unknown Title"
+msgstr "Título Desconhecido"
+
+msgid "Unknown"
+msgstr "Desconhecido"
+
+msgid "Max diskusage exceeded"
+msgstr "Uso máximo de disco excedido"
+
+msgid "Not authorized to upload files to this channel"
+msgstr "Não autorizado a enviar arquivos para este canal"

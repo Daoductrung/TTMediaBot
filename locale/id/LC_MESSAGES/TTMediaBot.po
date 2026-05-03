@@ -277,7 +277,7 @@ msgstr "Mulai ulang bot."
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:382
 msgid "Returns current channel's ID"
-msgstr ""
+msgstr "Mengembalikan ID saluran saat ini"
 
 #: /root/TTMediaBot/bot/commands/command.py:28
 msgid "help text not found"
@@ -625,3 +625,30 @@ msgstr "Token tidak disediakan."
 msgid "You don't have Yandex Plus"
 msgstr "Anda tidak memiliki Yandex Plus."
 
+
+msgid "Incorrect mode"
+msgstr "Mode salah"
+
+msgid "{} (Error)"
+msgstr "{} (Kesalahan)"
+
+msgid "{number}: {track_name}"
+msgstr "{number}: {track_name}"
+
+msgid "{number}: {track_url}"
+msgstr "{number}: {track_url}"
+
+msgid "<Anonymous>"
+msgstr "<Anonim>"
+
+msgid "Unknown Title"
+msgstr "Judul Tidak Diketahui"
+
+msgid "Unknown"
+msgstr "Tidak diketahui"
+
+msgid "Max diskusage exceeded"
+msgstr "Penggunaan disk maksimal terlampaui"
+
+msgid "Not authorized to upload files to this channel"
+msgstr "Tidak diizinkan untuk mengunggah file ke saluran ini"

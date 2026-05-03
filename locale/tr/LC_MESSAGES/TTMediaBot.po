@@ -161,15 +161,16 @@ msgid ""
 "password, split argument \" | \", if password is undefined, don't type "
 "second argument"
 msgstr ""
+"Kanala katıl. ilk argüman kanal adı veya id'si, ikinci argüman şifredir, argümanları \" | \" ile ayırın, şifre tanımlanmamışsa ikinci argümanı yazmayın"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:146
 msgid "This channel does not exist"
-msgstr ""
+msgstr "Bu kanal mevcut değil"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:160
 #, python-brace-format
 msgid "Error joining channel: {error}"
-msgstr ""
+msgstr "Kanala katılırken hata oluştu: {error}"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:208
 msgid "Enables or disables voice transmission"
@@ -268,7 +269,7 @@ msgstr "Botu yeniden başlatır"
 
 #: /root/TTMediaBot/bot/commands/admin_commands.py:382
 msgid "Returns current channel's ID"
-msgstr ""
+msgstr "Mevcut kanalın kimliğini (ID) döndürür"
 
 #: /root/TTMediaBot/bot/commands/command.py:28
 msgid "help text not found"
@@ -312,7 +313,7 @@ msgstr "Sorgunuz için hiçbir şey bulunamadı"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:63
 msgid "The selected service is currently unavailable"
-msgstr ""
+msgstr "Seçilen hizmet şu anda kullanılamıyor"
 
 # | msgid "URL Plays a stream from bot given URL"
 #: /root/TTMediaBot/bot/commands/user_commands.py:75
@@ -479,20 +480,22 @@ msgid ""
 "Error: {error}\n"
 "{service} is disabled"
 msgstr ""
+"Hata: {error}\n"
+"{service} devre dışı bırakıldı"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:291
 #, fuzzy, python-brace-format
 msgid "{service} is disabled"
-msgstr "Ses iletimi devre dışı"
+msgstr "{service} devre dışı bırakıldı"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:298
 msgid "This service has no additional help"
-msgstr ""
+msgstr "Bu hizmetin ek yardımı yok"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:317
 #, python-brace-format
 msgid "{} (Warning: {})"
-msgstr ""
+msgstr "{} (Uyarı: {})"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:324
 #, fuzzy, python-brace-format
@@ -503,7 +506,9 @@ msgid ""
 "send sv SERVICE h for additional help"
 msgstr ""
 "Şu anki hizmet: {current_service}\n"
-"Mevcut: {available_services}"
+"Mevcutlar:\n"
+"{available_services}\n"
+"ek yardım için sv HIZMET h gönderin"
 
 #: /root/TTMediaBot/bot/commands/user_commands.py:336
 msgid "NUMBER Selects track by number from the list of current results"
@@ -619,11 +624,11 @@ msgstr "Duraklatıldı: {stream_url}"
 
 #: /root/TTMediaBot/bot/services/yam.py:43
 msgid "Token is not provided"
-msgstr ""
+msgstr "Token sağlanmadı"
 
 #: /root/TTMediaBot/bot/services/yam.py:47
 msgid "You don't have Yandex Plus"
-msgstr ""
+msgstr "Yandex Plus üyeliğiniz yok"
 
 #~ msgid "The cache file is already used by another instance of the bot."
 #~ msgstr "Önbellek dosyası, botun başka bir örneği tarafından zaten kullanılıyor."
@@ -783,3 +788,30 @@ msgstr ""
 #~ msgid "You don't have Yandex Plus"
 #~ msgstr ""
 
+
+msgid "Incorrect mode"
+msgstr "Geçersiz mod"
+
+msgid "{} (Error)"
+msgstr "{} (Hata)"
+
+msgid "{number}: {track_name}"
+msgstr "{number}: {track_name}"
+
+msgid "{number}: {track_url}"
+msgstr "{number}: {track_url}"
+
+msgid "<Anonymous>"
+msgstr "<Anonim>"
+
+msgid "Unknown Title"
+msgstr "Bilinmeyen Başlık"
+
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+msgid "Max diskusage exceeded"
+msgstr "Maksimum disk kullanımı aşıldı"
+
+msgid "Not authorized to upload files to this channel"
+msgstr "Bu kanala dosya yükleme yetkiniz yok"

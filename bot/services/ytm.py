@@ -313,7 +313,7 @@ class YtmService(_Service):
                        else:
                             raise errors.ServiceError("No stream URL found in processed result")
                        
-                       title = stream.get("title", "Unknown")
+                       title = stream.get("title", self.bot.translator.translate("Unknown"))
                        if "uploader" in stream:
                             title += " - {}".format(stream["uploader"])
                        format = "mp3"

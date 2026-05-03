@@ -316,7 +316,7 @@ class AdminUsersCommand(Command):
             admins = self.config.teamtalk.users.admins.copy()
             if len(admins) > 0:
                 if "" in admins:
-                    admins[admins.index("")] = "<Anonymous>"
+                    admins[admins.index("")] = self.translator.translate("<Anonymous>")
                 return ", ".join(admins)
             else:
                 return self.translator.translate("The list is empty")
@@ -346,7 +346,7 @@ class BannedUsersCommand(Command):
             banned_users = self.config.teamtalk.users.banned_users.copy()
             if len(banned_users) > 0:
                 if "" in banned_users:
-                    banned_users[banned_users.index("")] = "<Anonymous>"
+                    banned_users[banned_users.index("")] = self.translator.translate("<Anonymous>")
                 return ", ".join(banned_users)
             else:
                 return self.translator.translate("The list is empty")

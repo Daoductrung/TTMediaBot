@@ -247,7 +247,7 @@ class ModeCommand(Command):
                     mode=self.mode_names[self.player.mode]
                 )
             except ValueError:
-                return "Incorrect mode\n" + mode_help
+                return self.translator.translate("Incorrect mode") + "\n" + mode_help
         else:
             return mode_help
 
@@ -311,7 +311,9 @@ class ServiceCommand(Command):
                         "{} (Error: {})".format(service.name, service.error_message)
                     )
                 else:
-                    services.append("{} (Error)".format(service.name))
+                    services.append(
+                        self.translator.translate("{} (Error)").format(service.name)
+                    )
             elif service.warning_message:
                 services.append(
                     self.translator.translate("{} (Warning: {})").format(
@@ -440,7 +442,7 @@ class FavoritesCommand(Command):
         try:
             for number, track in enumerate(self.cache.favorites[user.username]):
                 track_names.append(
-                    "{number}: {track_name}".format(
+                    self.translator.translate("{number}: {track_name}").format(
                         number=number + 1,
                         track_name=track.name if track.name else track.url,
                     )
@@ -504,9 +506,17 @@ class RecentsCommand(Command):
             track_names: List[str] = []
             for number, track in enumerate(reversed(self.cache.recents)):
                 if track.name:
-                    track_names.append(f"{number + 1}: {track.name}")
+                    track_names.append(
+                        self.translator.translate("{number}: {track_name}").format(
+                            number=number + 1, track_name=track.name
+                        )
+                    )
                 else:
-                    track_names.append(f"{number + 1}: {track.url}")
+                    track_names.append(
+                        self.translator.translate("{number}: {track_url}").format(
+                            number=number + 1, track_url=track.url
+                        )
+                    )
             return (
                 "\n".join(track_names)
                 if track_names

@@ -67,7 +67,7 @@ class Uploader:
                     ):
                         self.ttclient.send_message(
                             self.translator.translate("Error: {}").format(
-                                "Max diskusage exceeded"
+                                self.translator.translate("Max diskusage exceeded")
                             ),
                             user,
                         )
@@ -78,7 +78,7 @@ class Uploader:
                     ):
                         self.ttclient.send_message(
                             self.translator.translate("Error: {}").format(
-                                "Not authorized to upload files to this channel"
+                                self.translator.translate("Not authorized to upload files to this channel")
                             ),
                             user,
                         )
