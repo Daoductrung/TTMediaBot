@@ -211,6 +211,7 @@ update_and_fix_permissions() {
         # Determine if we need an update or a rebuild
         NEEDS_PULL=false
         NEEDS_REBUILD=false
+        IS_BEHIND=false
         
         # Check for uncommitted local changes
         LOCAL_CHANGES=$(git status --porcelain)
@@ -222,24 +223,25 @@ update_and_fix_permissions() {
         # Check if local is behind remote
         if [ "$REMOTE_HASH" != "$LOCAL_HASH" ]; then
             if git merge-base --is-ancestor "$LOCAL_HASH" "$REMOTE_HASH"; then
+                IS_BEHIND=true
                 NEEDS_PULL=true
                 echo -e "${YELLOW}Local version is behind remote.${NC}"
             else
                 echo -e "${YELLOW}Local version has diverged or is ahead of remote. Auto-pull skipped to protect local changes.${NC}"
-                NEEDS_PULL=false
             fi
         fi
 
         if [ "$HAS_LOCAL_CHANGES" = true ]; then
              echo -e "${RED}Warning: You have uncommitted local changes!${NC}"
-             NEEDS_PULL=false # Default to false for safety if we have local changes
+             # Don't block the pull - git reset --hard will handle local changes.
+             # The user will be prompted for confirmation in manual mode.
         fi
         
         if [ "$LOCAL_HASH" != "$RUNNING_HASH" ]; then
             NEEDS_REBUILD=true
         fi
         
-        if [ "$NEEDS_PULL" = true ] || [ "$NEEDS_REBUILD" = true ]; then
+        if [ "$NEEDS_PULL" = true ] || [ "$NEEDS_REBUILD" = true ] || [ "$IS_BEHIND" = true ]; then
             if [ "$IS_FIRST_INSTALL" = "true" ]; then
                 echo -e "${GREEN}Initial Setup / Installation Required!${NC}"
             else
@@ -252,8 +254,9 @@ update_and_fix_permissions() {
             echo "Local:   $LOCAL_HASH"
             echo "Running: $RUNNING_HASH"
             UPDATE_FOUND=true
-            # If we need a rebuild, ensure UPDATE_PERFORMED will be true later
             [ "$NEEDS_REBUILD" = true ] && REBUILD_REQUIRED=true
+            # If behind remote, always trigger rebuild after pull
+            [ "$IS_BEHIND" = true ] && REBUILD_REQUIRED=true
         else
             echo -e "${GREEN}Already up to date and running latest version ($LOCAL_HASH).${NC}"
             UPDATE_FOUND=false
@@ -319,11 +322,6 @@ update_and_fix_permissions() {
         if [ "$AUTO_UPDATE" = "true" ]; then
             echo "Auto-Update mode detected. Proceeding automatically..."
             confirm_update="y"
-            # In auto-update, if we have local changes, we should probably skip to avoid data loss
-            if [ "$HAS_LOCAL_CHANGES" = true ]; then
-                echo -e "${RED}Auto-update skipped because of local changes.${NC}"
-                confirm_update="n"
-            fi
         elif [ "$IS_FIRST_INSTALL" = "true" ]; then
             echo -e "${GREEN}First installation detected. Proceeding automatically...${NC}"
             confirm_update="y"

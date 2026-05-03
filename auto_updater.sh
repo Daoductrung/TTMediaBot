@@ -74,17 +74,22 @@ while true; do
         else
             touch "$LOCK_FILE"
             echo "$(date): Running update.sh..."
+            HASH_BEFORE=$(git rev-parse HEAD 2>/dev/null)
             export AUTO_UPDATE=true
             ./update.sh
             UPDATE_EXIT=$?
             unset AUTO_UPDATE
             rm -f "$LOCK_FILE"
+            HASH_AFTER=$(git rev-parse HEAD 2>/dev/null)
             echo "$(date): update.sh finished with exit code $UPDATE_EXIT"
             # CRITICAL: update.sh does 'git reset --hard' which replaces THIS script
             # on disk. We must re-exec to pick up the new version, otherwise systemd
             # detects 'command vanished from unit file' and kills us.
-            echo "$(date): Re-launching auto-updater from updated file..."
-            exec "$SCRIPT_DIR/auto_updater.sh"
+            # Only exec if code actually changed to avoid infinite loop.
+            if [ "$HASH_BEFORE" != "$HASH_AFTER" ]; then
+                echo "$(date): Code updated ($HASH_BEFORE -> $HASH_AFTER). Re-launching..."
+                exec "$SCRIPT_DIR/auto_updater.sh"
+            fi
         fi
     fi
     # Interruptible sleep: runs in background so SIGTERM can stop us immediately
