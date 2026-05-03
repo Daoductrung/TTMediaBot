@@ -144,11 +144,16 @@ class YtService(_Service):
 
         config["outtmpl"] = file_path.rsplit(".", 1)[0] + ".%(ext)s"
 
+        url = track.url
+        if track.extra_info and "webpage_url" in track.extra_info:
+            url = track.extra_info["webpage_url"]
+
         with self._temp_cookie_file() as cookie_file:
             if cookie_file:
                 config["cookiefile"] = cookie_file
+            
             with YoutubeDL(config) as ydl:
-                ydl.process_info(info)
+                ydl.download([url])
 
         duration = (time.perf_counter() - start_time) * 1000
         logging.info(f"YT Download finished in {duration:.2f}ms for {track.name}")
