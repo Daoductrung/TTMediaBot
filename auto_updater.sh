@@ -27,15 +27,14 @@ sleep 2
 rm -f "$LOCK_FILE"
 
 # Function to check if local is behind remote
+# Note: we only compare hashes. git ls-remote doesn't download objects,
+# so git merge-base would fail with 'Not a valid commit name'.
 is_behind_remote() {
-    local branch=$1
-    local local_h=$2
-    local remote_h=$3
+    local local_h=$1
+    local remote_h=$2
     if [ "$local_h" == "$remote_h" ]; then return 1; fi
-    if git merge-base --is-ancestor "$local_h" "$remote_h"; then
-        return 0
-    fi
-    return 1
+    # Hashes differ = remote has changed = we need to update
+    return 0
 }
 
 while true; do
@@ -48,12 +47,11 @@ while true; do
     # Get current branch name
     BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "master")
     
-    # Check remote hash using ls-remote (bypass rate limits)
-    REMOTE_HASH=$(git ls-remote origin -h "refs/heads/$BRANCH" | awk '{print $1}' | tr -d '[:space:]')
+    # Check remote hash using ls-remote (no rate limits, no object download)
+    REMOTE_HASH=$(git ls-remote origin -h "refs/heads/$BRANCH" 2>/dev/null | awk '{print $1}' | tr -d '[:space:]')
     LOCAL_HASH=$(git rev-parse HEAD 2>/dev/null | tr -d '[:space:]')
     
     # Check what version is currently running in Docker
-    # We use 'tr -d' to ensure no weird whitespace/newlines break the comparison
     RUNNING_HASH=$(docker inspect ttmediabot --format '{{ index .Config.Labels "commit_hash" }}' 2>/dev/null | tr -d '[:space:]')
     [ -z "$RUNNING_HASH" ] && RUNNING_HASH="none"
 
@@ -61,12 +59,10 @@ while true; do
     SHOULD_UPDATE=false
     
     if [ -n "$REMOTE_HASH" ]; then
-        if is_behind_remote "$BRANCH" "$LOCAL_HASH" "$REMOTE_HASH"; then
+        if is_behind_remote "$LOCAL_HASH" "$REMOTE_HASH"; then
             echo "$(date): New version detected on GitHub ($REMOTE_HASH). Triggering update..."
             SHOULD_UPDATE=true
         elif [ "$LOCAL_HASH" != "$RUNNING_HASH" ]; then
-            # We are not behind remote, but the running image doesn't match local code
-            # This happens after a manual revert or manual pull.
             echo "$(date): Local code ($LOCAL_HASH) does not match running image ($RUNNING_HASH). Syncing..."
             SHOULD_UPDATE=true
         fi
