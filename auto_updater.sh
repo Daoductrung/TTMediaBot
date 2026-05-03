@@ -93,7 +93,7 @@ while true; do
         fi
     fi
     # Interruptible sleep: runs in background so SIGTERM can stop us immediately
-    sleep 60 &
+    sleep 20 &
     SLEEP_PID=$!
     wait "$SLEEP_PID" 2>/dev/null
     SLEEP_PID=""
