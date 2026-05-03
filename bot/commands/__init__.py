@@ -84,6 +84,7 @@ class CommandProcessor:
     def _run(self, message: Message) -> None:
         try:
             command_name, arg = self.parse_command(message.text)
+            logging.info(f"Executing command '{command_name}' with args '{arg}' from user {message.user.username}")
             if self.check_access(message.user, command_name):
                 command_class = self.get_command(command_name, message.user)
                 command = command_class(self)

@@ -34,12 +34,17 @@ class Uploader:
         thread.start()
 
     def run(self, track: Track, user: User) -> None:
+        logging.info(f"Uploader started for track '{track.name}' (Type: {track.type}) requested by {user.username}")
         error_exit = False
-        if track.type == TrackType.Default:
+        if track.type == TrackType.Default or track.service in ['yt', 'ytm']:
             temp_dir = tempfile.TemporaryDirectory()
+            logging.info(f"Uploader: Downloading track to {temp_dir.name}")
             file_path = track.download(temp_dir.name)
         else:
+            logging.info(f"Uploader: Using direct URL/path: {track.url}")
             file_path = track.url
+        
+        logging.info(f"Uploader: Sending file '{file_path}' to channel {self.ttclient.channel.id}")
         command_id = self.ttclient.send_file(self.ttclient.channel.id, file_path)
         file_name = os.path.basename(file_path)
         while True:

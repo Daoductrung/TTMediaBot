@@ -238,17 +238,17 @@ class YtmService(_Service):
         config["postprocessors"] = [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
-            "preferredquality": "192",
+            "preferredquality": "320",
         }]
+
+        config["skip_download"] = False
+        config["outtmpl"] = file_path.rsplit(".", 1)[0] + ".%(ext)s"
 
         with self._temp_cookie_file() as cookie_file:
              if cookie_file:
                   config["cookiefile"] = cookie_file
              with YoutubeDL(config) as ydl:
-                  # We need to ensure skip_download is False for actual downloading
-                  ydl.params['skip_download'] = False
-                  dl = get_suitable_downloader(info)(ydl, config)
-                  dl.download(file_path, info)
+                  ydl.process_info(info)
 
         duration = (time.perf_counter() - start_time) * 1000
         logging.info(f"YTM Download finished in {duration:.2f}ms for {track.name}")
