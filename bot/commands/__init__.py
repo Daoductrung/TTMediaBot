@@ -32,6 +32,7 @@ class CommandProcessor:
         self.translator = bot.translator
         self.locked = False
         self.current_command_id = 0
+        self.pending_playlist_download = {}
         self.commands_dict = {
             "h": user_commands.HelpCommand,
             "a": user_commands.AboutCommand,
@@ -50,6 +51,7 @@ class CommandProcessor:
             "m": user_commands.ModeCommand,
             "gl": user_commands.GetLinkCommand,
             "dl": user_commands.DownloadCommand,
+            "dlp": user_commands.DownloadPlaylistCommand,
             "r": user_commands.RecentsCommand,
             "jc": user_commands.JoinChannelCommand,
         }
@@ -83,7 +85,13 @@ class CommandProcessor:
 
     def _run(self, message: Message) -> None:
         try:
-            command_name, arg = self.parse_command(message.text)
+            if message.user.id in self.pending_playlist_download:
+                command_name = "dlp"
+                arg = message.text
+                del self.pending_playlist_download[message.user.id]
+            else:
+                command_name, arg = self.parse_command(message.text)
+            
             logging.info(f"Executing command '{command_name}' with args '{arg}' from user {message.user.username}")
             if self.check_access(message.user, command_name):
                 command_class = self.get_command(command_name, message.user)

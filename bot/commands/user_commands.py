@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 from typing import List, Optional, TYPE_CHECKING
 
 from bot.commands.command import Command
@@ -599,4 +600,107 @@ class JoinChannelCommand(Command):
             
         except Exception as e:
             return self.translator.translate("Failed to join channel: {}").format(str(e))
+
+
+class DownloadPlaylistCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "Downloads all tracks from a playlist/album URL, zips them, and uploads to the channel."
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if not arg:
+            # Check if there's an active download for this user
+            status = self.module_manager.playlist_uploader.get_status(user.id)
+            if status:
+                return self.translator.translate("Current progress: {}").format(status)
+            
+            # Set state to wait for link from this user
+            self.command_processor.pending_playlist_download[user.id] = True
+            return self.translator.translate("Please send the link to the playlist or album.")
+
+        self.run_async(self._process, arg, user)
+        return self.translator.translate("Searching...")
+
+    def _process(self, arg: str, user: User):
+        try:
+            tracks = self.module_manager.streamer.get(arg, user.is_admin)
+            
+            if not tracks:
+                self.ttclient.send_message(
+                    self.translator.translate("Nothing is found for your query"),
+                    user
+                )
+                return
+
+            if len(tracks) == 1 and not (arg.startswith("http") and ("playlist" in arg or "album" in arg or "list=" in arg)):
+                # If it's just a single track and not explicitly a playlist/album link
+                self.ttclient.send_message(
+                    self.translator.translate("This command is for playlists and albums. For single tracks, use 'dl'."),
+                    user
+                )
+                return
+
+            # Try to get playlist title and artist with more aggressive detection
+            playlist_name = "Playlist"
+            artist_name = ""
+            is_official_album = arg.startswith("http") and "list=OLAK" in arg
+            found_album_metadata = False
+            
+            try:
+                # 1. Look for metadata in ALL tracks
+                for t in tracks:
+                    info = t.extra_info if t.extra_info else {}
+                    
+                    # Try to find playlist/album title
+                    if not found_album_metadata or playlist_name == "Playlist":
+                        if "album" in info and info["album"]:
+                            playlist_name = info["album"]
+                            found_album_metadata = True
+                        elif "playlist_title" in info and info["playlist_title"]:
+                            playlist_name = info["playlist_title"]
+                        elif "playlist" in info and info["playlist"]:
+                            playlist_name = info["playlist"]
+                    
+                    # Try to find artist name
+                    if not artist_name:
+                        artist_name = info.get("artist") or info.get("album_artist") or info.get("uploader") or info.get("playlist_uploader")
+                    
+                    # If we have a playlist title and it's not an official album, 
+                    # we don't need to look further for artist unless we want to be sure
+                    if found_album_metadata and artist_name and is_official_album:
+                        break
+
+                # 2. Cleanup: If playlist_name still starts with "Album - ", clean it
+                if playlist_name.startswith("Album - "):
+                    playlist_name = playlist_name.replace("Album - ", "", 1)
+                    found_album_metadata = True
+
+            except Exception as e:
+                logging.error(f"Error extracting playlist metadata: {e}")
+                pass
+
+            # Final naming logic
+            final_zip_name = playlist_name
+            
+            # RULE: Only add artist if it is an official album (OLAK) 
+            # OR if metadata explicitly identified it as an album and we have an artist
+            if (is_official_album or (found_album_metadata and "album" in arg.lower())) and artist_name:
+                if artist_name.lower() not in playlist_name.lower():
+                    final_zip_name = f"{playlist_name} - {artist_name}"
+
+            logging.info(f"PlaylistUploader determined name: {final_zip_name} (Official Album: {is_official_album})")
+            self.module_manager.playlist_uploader(tracks, user, final_zip_name)
+        except errors.ServiceError as e:
+            self.ttclient.send_message(
+                self.translator.translate("Error: {}").format(str(e)),
+                user
+            )
+        except Exception as e:
+            logging.error(f"DLP Error: {e}", exc_info=True)
+            self.ttclient.send_message(
+                self.translator.translate("Error: {}").format(str(e)),
+                user
+            )
 

@@ -20,7 +20,18 @@ This fork includes several modifications and optimizations:
 - **Docker Containerization:** The bot runs in Docker containers based on Debian 11 and Python 3.10, ensuring compatibility with legacy dependencies while maintaining stability
 - **Proven Stability:** Since I first encountered this bot in 2021, the adaptations made to work around YouTube's restrictions, combined with the optimizations from 2021/2022, have proven to be excellent and reliable
 
-## 🆕 Latest Updates (05/03/2026) - v1.5.0 "Global Expansion" Update
+## 🆕 Latest Updates (05/06/2026) - v1.6.0 "Playlist Power-Up" Update
+
+- **📦 New `dlp` Command:** Download entire YouTube/YouTube Music playlists and albums as organized ZIP archives directly to the TeamTalk channel.
+- **📂 Intelligent ZIP Structure:** Archives now wrap contents inside a subfolder named after the playlist/album, ensuring a clean extraction process.
+- **🧠 Smart Naming Engine:** Automatically distinguishes between Official Albums (`Album - Artist.zip`) and personal Playlists (`Playlist Name.zip`) based on link patterns and metadata.
+- **🕵️ PM Progress Reporting:** Live track-by-track download progress is sent via **Private Message (PV)** to keep the channel clean while keeping the user informed.
+- **📊 Active Status Check:** Typing `dlp` without arguments during an active download returns the current real-time status of the process.
+- **💾 Permanent Channel Storage:** Playlist ZIPs are stored permanently in the channel (not auto-deleted like `dl` files), building a community library.
+- **🌍 Full Localization (i18n):** All new features and status messages fully localized for Portuguese, Spanish, Turkish, and Russian.
+- **🛠️ Enhanced Metadata Scanning:** Aggressive multi-track scanning to extract correct artist and album names even from tricky direct links.
+
+## 🆕 Previous Updates (05/03/2026) - v1.5.0 "Global Expansion" Update
 
 - **🌍 Full i18n Localization:** Completed full translation and standardization for PT-BR, Turkish (TR), Spanish (ES), and Indonesian (ID). All core commands and system messages are now fully localized.
 - **🎧 Studio Quality Audio (320kbps):** Upgraded audio streaming and transcoding to 320kbps MP3 by default for superior sound quality.
@@ -57,6 +68,8 @@ This fork includes optimized support for **YouTube Music** alongside regular You
   - Both services use `yt-dlp` for audio extraction
 - **Performance Focus:** Designed to run with minimal bottlenecks, ensuring smooth playback and quick search results
 - **Unified Cookie System:** Both YouTube and YouTube Music use the same cookies configuration for authentication
+- **📦 Playlist & Album Downloads:** Full support for downloading entire collections via the `dlp` command with metadata-aware naming
+- **🕵️ Real-time PM Progress:** Stay updated on your downloads without cluttering the channel
 
 Switch between services using the `sv` command:
 - `sv yt` - Switch to YouTube
@@ -118,6 +131,7 @@ Send these commands to the bot via private message (PM) or in the channel (if en
 | **f** | `[+/-][num]` | Favorites management. `f` lists. `f +` adds current. `f -` removes. `f [num]` plays. |
 | **gl** | | Gets a direct link to the current track. |
 | **dl** | | Downloads current track and uploads to channel. |
+| **dlp** | `[url]` | Downloads all tracks from a playlist/album URL, zips them, and uploads to the channel. |
 | **r** | `[number]` | Plays from Recents. `r` lists recents. |
 | **jc** | | Makes the bot join your current channel. |
 | **a** | | Shows about info. |
@@ -583,4 +597,4 @@ docker ps -a -f "label=role=ttmediabot"
 ```bash
 docker stats $(docker ps -q -f "label=role=ttmediabot")
 ```
- - Final test commit: Sat Apr 25 19:43:31 UTC 2026
+ - Final test commit: Wed May 06 08:30:00 UTC 2026

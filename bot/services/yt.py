@@ -240,8 +240,17 @@ class YtService(_Service):
                     return self.get(info["url"], process=False)
                 elif info_type == "playlist":
                     tracks: List[Track] = []
+                    playlist_title = info.get("title") or info.get("playlist_title")
+                    playlist_uploader = info.get("uploader") or info.get("playlist_uploader")
+                    
                     for entry in info["entries"]:
                         try:
+                            # Inject playlist metadata into the entry so tracks carry it
+                            if playlist_title:
+                                entry["playlist_title"] = playlist_title
+                            if playlist_uploader:
+                                entry["playlist_uploader"] = playlist_uploader
+                            
                             data = self.get("", extra_info=entry, process=False)
                             tracks += data
                         except errors.ServiceError:
