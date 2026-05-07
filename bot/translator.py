@@ -14,7 +14,12 @@ class Translator:
         return self._locale
 
     def get_locales(self) -> List[str]:
-        return ["en"] + os.listdir(os.path.join(app_vars.directory, "locale"))
+        locales_path = os.path.join(app_vars.directory, "locale")
+        return ["en"] + [
+            d
+            for d in os.listdir(locales_path)
+            if os.path.isdir(os.path.join(locales_path, d))
+        ]
 
     def set_locale(self, locale: str) -> None:
         if locale in self.get_locales() or locale == "en":
