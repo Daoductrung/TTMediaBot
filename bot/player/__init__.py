@@ -46,7 +46,7 @@ class Player:
         self.mode = Mode.TrackList
         self.volume = self.config.default_volume
 
-                self.queue: QueueManager = QueueManager()
+        self.queue: QueueManager = QueueManager()
 
     def initialize(self) -> None:
         logging.debug("Initializing player")
@@ -109,10 +109,10 @@ class Player:
             self.cache_manager.save()
         self._player.pause = False
         self._player.play(arg)
-                threading.Timer(1.0, self._prefetch_next_track).start()
+        threading.Timer(1.0, self._prefetch_next_track).start()
 
     def _prefetch_next_track(self) -> None:
-                try:
+        try:
             # Se há faixa na fila, ela será a próxima — prefetch dela
             next_from_queue = self.queue.peek_next()
             if next_from_queue is not None:
@@ -151,7 +151,7 @@ class Player:
             logging.warning(f"Prefetch failed: {e}")
 
     def play_from_queue(self) -> bool:
-                next_track = self.queue.pop_next()
+        next_track = self.queue.pop_next()
         if next_track is None:
             return False
 
@@ -164,7 +164,7 @@ class Player:
         return True
 
     def next(self) -> None:
-                if not self.queue.is_empty:
+        if not self.queue.is_empty:
             if self.play_from_queue():
                 return
 

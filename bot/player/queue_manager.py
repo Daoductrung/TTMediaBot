@@ -15,16 +15,16 @@ class QueueManager:
         self._lock = threading.Lock()
 
     def add(self, track: Track) -> int:
-                with self._lock:
+        with self._lock:
             self._queue.append(track)
             return len(self._queue)
 
     def pop_next(self) -> Optional[Track]:
-                with self._lock:
+        with self._lock:
             return self._queue.popleft() if self._queue else None
 
     def peek_next(self) -> Optional[Track]:
-                with self._lock:
+        with self._lock:
             return self._queue[0] if self._queue else None
 
     def remove(self, index: int) -> bool:
@@ -37,11 +37,11 @@ class QueueManager:
             return False
 
     def clear(self) -> None:
-                with self._lock:
+        with self._lock:
             self._queue.clear()
 
     def list_tracks(self) -> List[Track]:
-                with self._lock:
+        with self._lock:
             return list(self._queue)
 
     @property
