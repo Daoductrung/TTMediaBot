@@ -845,4 +845,4 @@ class QueueSkipCommand(Command):
             )
         except errors.NoNextTrackError:
             return self.translator.translate("No next track")
->>>>>>> pr-queue-system
+
