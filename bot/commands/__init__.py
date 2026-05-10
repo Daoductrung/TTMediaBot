@@ -54,6 +54,12 @@ class CommandProcessor:
             "dlp": user_commands.DownloadPlaylistCommand,
             "r": user_commands.RecentsCommand,
             "jc": user_commands.JoinChannelCommand,
+            # --- Fila de reprodução ---
+            "qa": user_commands.QueueAddCommand,
+            "ql": user_commands.QueueListCommand,
+            "qr": user_commands.QueueRemoveCommand,
+            "qc": user_commands.QueueClearCommand,
+            "qs": user_commands.QueueSkipCommand,
         }
         self.admin_commands_dict = {
             "cg": admin_commands.ChangeGenderCommand,
@@ -102,7 +108,7 @@ class CommandProcessor:
                     self.ttclient.send_message(
                         result,
                         message.user,
-                    )  # here was command.ttclient later
+                    )
         except errors.InvalidArgumentError:
             self.ttclient.send_message(
                 self.help(command_name, message.user),

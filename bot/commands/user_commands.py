@@ -533,8 +533,6 @@ class DownloadCommand(Command):
         )
 
     def __call__(self, arg: str, user: User) -> Optional[str]:
-        # Permissions will be checked by the server
-
         if self.player.state != State.Stopped:
             track = self.player.track
             if track.url and (
@@ -554,36 +552,30 @@ class JoinChannelCommand(Command):
         return self.translator.translate("Makes the bot join your current channel")
 
     def __call__(self, arg: str, user: User) -> Optional[str]:
-        # Stop playback if playing
         if self.player.state != State.Stopped:
-             self.player.stop()
+            self.player.stop()
 
-        # Get user's current channel
         user_channel = user.channel
-        
-        # Move the bot to the user's channel
+
         try:
             cmd = self.ttclient.move_user(self.ttclient.user.id, user_channel.id)
-            
-            # Wait for completion
+
             import time
             from bot import app_vars
             from queue import Empty
-            
-            # Wait for event
+
             start_time = time.time()
-            while time.time() - start_time < 5: # 5 seconds timeout
+            while time.time() - start_time < 5:
                 try:
                     event = self.ttclient.event_success_queue.get_nowait()
                     if event.source == cmd:
-                        # Track this user for monitoring
                         self._bot.jc_requested_by_user_id = user.id
                         return self.translator.translate("Joining channel: {}").format(user_channel.name)
                     else:
                         self.ttclient.event_success_queue.put(event)
                 except Empty:
                     pass
-                
+
                 try:
                     error = self.ttclient.errors_queue.get_nowait()
                     if error.command_id == cmd:
@@ -593,11 +585,10 @@ class JoinChannelCommand(Command):
                 except Empty:
                     pass
                 time.sleep(app_vars.loop_timeout)
-            
-            # If timeout, assume success (maybe event was missed or handled elsewhere) or just return "Command sent"
+
             self._bot.jc_requested_by_user_id = user.id
             return self.translator.translate("Joining channel: {}").format(user_channel.name)
-            
+
         except Exception as e:
             return self.translator.translate("Failed to join channel: {}").format(str(e))
 
@@ -704,3 +695,154 @@ class DownloadPlaylistCommand(Command):
                 user
             )
 
+# ===========================================================================
+# COMANDOS DE FILA
+# ===========================================================================
+
+class QueueAddCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "QUERY Searches for a track and adds it to the queue. If nothing is playing, starts immediately"
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if not arg:
+            raise errors.InvalidArgumentError()
+
+        self.run_async(
+            self.ttclient.send_message,
+            self.translator.translate("Searching..."),
+            user,
+        )
+
+        try:
+            track_list = self.service_manager.service.search(arg)
+        except errors.NothingFoundError:
+            return self.translator.translate("Nothing is found for your query")
+        except errors.ServiceError:
+            return self.translator.translate(
+                "The selected service is currently unavailable"
+            )
+
+        track = track_list[0]
+
+        # Se nada está tocando, inicia imediatamente
+        if self.player.state == State.Stopped:
+            self.run_async(self.player.play, [track])
+            return self.translator.translate("Playing {}").format(track.name)
+
+        # Caso contrário, enfileira
+        position = self.player.queue.add(track)
+
+        if self.config.general.send_channel_messages:
+            self.run_async(
+                self.ttclient.send_message,
+                self.translator.translate(
+                    "{nickname} added to queue: {track}"
+                ).format(nickname=user.nickname, track=track.name),
+                type=2,
+            )
+
+        return self.translator.translate(
+            "Added to queue [{position}]: {track}"
+        ).format(position=position, track=track.name)
+
+
+class QueueListCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate("Lists all tracks in the queue")
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        tracks = self.player.queue.list_tracks()
+
+        if not tracks:
+            return self.translator.translate("The queue is empty")
+
+        lines: List[str] = []
+        for i, track in enumerate(tracks):
+            name = track.name if track.name else track._url
+            lines.append(f"{i + 1}: {name}")
+
+        header = self.translator.translate(
+            "Queue ({count} track(s)):"
+        ).format(count=len(tracks))
+
+        return header + "\n" + "\n".join(lines)
+
+
+class QueueRemoveCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "NUMBER Removes track number NUMBER from the queue"
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if not arg:
+            raise errors.InvalidArgumentError()
+
+        try:
+            number = int(arg)
+        except ValueError:
+            raise errors.InvalidArgumentError()
+
+        if number < 1:
+            raise errors.InvalidArgumentError()
+
+        index = number - 1
+        tracks = self.player.queue.list_tracks()
+
+        if index >= len(tracks):
+            return self.translator.translate("Out of list")
+
+        track_name = tracks[index].name if tracks[index].name else tracks[index]._url
+        self.player.queue.remove(index)
+
+        return self.translator.translate(
+            "Removed from queue: {track}"
+        ).format(track=track_name)
+
+
+class QueueClearCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate("Clears the entire queue")
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if self.player.queue.is_empty:
+            return self.translator.translate("The queue is already empty")
+
+        self.player.queue.clear()
+        return self.translator.translate("Queue cleared")
+
+
+class QueueSkipCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "Skips current track and plays the next one from the queue. Falls back to normal next if queue is empty"
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if self.player.state == State.Stopped:
+            return self.translator.translate("Nothing is playing")
+
+        # Tenta a fila primeiro
+        if not self.player.queue.is_empty:
+            next_track_name = self.player.queue.peek_next().name
+            self.run_async(self.player.play_from_queue)
+            return self.translator.translate("Playing next from queue: {}").format(
+                next_track_name
+            )
+
+        # Fila vazia — comportamento normal de 'n'
+        try:
+            self.player.next()
+            return self.translator.translate("Playing {}").format(
+                self.player.track.name
+            )
+        except errors.NoNextTrackError:
+            return self.translator.translate("No next track")
+>>>>>>> pr-queue-system
