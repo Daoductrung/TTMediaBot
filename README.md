@@ -20,7 +20,14 @@ This fork includes several modifications and optimizations:
 - **Docker Containerization:** The bot runs in Docker containers based on Debian 11 and Python 3.10, ensuring compatibility with legacy dependencies while maintaining stability
 - **Proven Stability:** Since I first encountered this bot in 2021, the adaptations made to work around YouTube's restrictions, combined with the optimizations from 2021/2022, have proven to be excellent and reliable
 
-## 🆕 Latest Updates (05/09/2026) - v1.7.0 "Queue System" Update
+## 🆕 Latest Updates (05/10/2026) - v1.8.0 "Universal Language" Update
+
+- **🌍 Arabic Support Added:** Full native support for Arabic (`ar`) language, including right-to-left (RTL) considerations for messages.
+- **💯 100% Localization:** Achieved 100% translation coverage across all supported languages (PT-BR, ES, HU, ID, RU, TR, AR). 
+- **🆕 Queue & Playlist i18n:** All new features (Queue system, Playlist downloads) are now fully localized in every language.
+- **🧹 Systematic Audit:** Complete cleanup of all translation catalogs, resolving fuzzy strings and missing translations for a seamless global experience.
+
+## 🆕 Previous Updates (05/09/2026) - v1.7.0 "Queue System" Update
 
 A huge shoutout and massive credits to **ericoamico** for his incredible dedication and a full week of hard work in developing this amazing feature! All credits for the new queue system go to him.
 
@@ -398,6 +405,7 @@ Alternatively, update cookies manually:
 TTMediaBot supports multiple languages. Change language using the `cl` admin command.
 
 **Available languages:**
+- `ar` - Arabic
 - `en` - English
 - `es` - Spanish
 - `hu` - Hungarian

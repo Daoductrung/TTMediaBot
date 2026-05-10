@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  TTMediaBot\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-10 01:05+0000\n"
+"POT-Creation-Date: 2026-05-10 11:43+0000\n"
 "PO-Revision-Date: 2024-01-18 16:31+0100\n"
 "Last-Translator: Гумеров Амир Эдуардович <gumerov.amir.e@gmail.com>\n"
 "Language: hu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: /root/joao/TTMediaBot/bot/app_vars.py:11
+#: bot/app_vars.py:11
 msgid ""
 "Hello! I am João Almeida. This is my fork of TTMediaBot for TeamTalk 5.\n"
 "This repository focuses on stability and support for YouTube Music.\n"
@@ -33,47 +33,43 @@ msgstr ""
 "Eredeti szerzők: Amir Gumerov, Vladislav Kopylov, Beqa Gozalishvili, "
 "Kirill Belousov.\n"
 
-#: /root/joao/TTMediaBot/bot/TeamTalk/__init__.py:150
+#: bot/TeamTalk/__init__.py:150
 msgid "Send \"h\" for help"
 msgstr "Küldj egy h-t a parancsok megismeréséhez"
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:121
+#: bot/commands/__init__.py:121
 msgid "Unknown command. Send \"h\" for help."
 msgstr "Ismeretlen parancs. Küldj egy h-t a parancsok megismeréséhez."
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:127
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:688
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:694
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:138
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:149
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:164
-#: /root/joao/TTMediaBot/bot/modules/uploader.py:69
-#: /root/joao/TTMediaBot/bot/modules/uploader.py:80
+#: bot/commands/__init__.py:127 bot/commands/user_commands.py:688
+#: bot/commands/user_commands.py:694 bot/modules/playlist_uploader.py:138
+#: bot/modules/playlist_uploader.py:149 bot/modules/playlist_uploader.py:164
+#: bot/modules/uploader.py:69 bot/modules/uploader.py:80
 #, python-brace-format
 msgid "Error: {}"
 msgstr "Hiba: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:139
+#: bot/commands/__init__.py:139
 msgid "You are banned"
 msgstr "Tiltva vagy"
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:143
+#: bot/commands/__init__.py:143
 msgid "You are not in bot's channel"
 msgstr "Nem tartózkodsz a bottal egy csatornában"
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:147
+#: bot/commands/__init__.py:147
 msgid "Bot is locked"
 msgstr "A bot zárolva van"
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:151
+#: bot/commands/__init__.py:151
 msgid "This command is blocked"
 msgstr "Tiltott parancs"
 
-#: /root/joao/TTMediaBot/bot/commands/__init__.py:175
+#: bot/commands/__init__.py:175
 msgid "Unknown command"
 msgstr "Ismeretlen parancs"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:20
+#: bot/commands/admin_commands.py:20
 msgid ""
 "+/-COMMAND Blocks or unblocks commands. +COMMAND adds command to the "
 "blocklist. -COMMAND removes from it. Without a command shows the "
@@ -83,54 +79,47 @@ msgstr ""
 "parancsot a tiltólistához, a -PARANCS pedig eltávolítja azt. Paraméterek "
 "nélkül a tiltólistát mutatja"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:32
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:322
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:352
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:456
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:468
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:524
+#: bot/commands/admin_commands.py:32 bot/commands/admin_commands.py:322
+#: bot/commands/admin_commands.py:352 bot/commands/user_commands.py:456
+#: bot/commands/user_commands.py:468 bot/commands/user_commands.py:524
 msgid "The list is empty"
 msgstr "A lista üres"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:37
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:304
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:336
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:419
+#: bot/commands/admin_commands.py:37 bot/commands/admin_commands.py:304
+#: bot/commands/admin_commands.py:336 bot/commands/user_commands.py:419
 msgid "Added"
 msgstr "Hozzáadva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:39
+#: bot/commands/admin_commands.py:39
 msgid "This command is already added"
 msgstr "Ez a parancs már hozzá van adva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:45
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:310
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:342
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:431
+#: bot/commands/admin_commands.py:45 bot/commands/admin_commands.py:310
+#: bot/commands/admin_commands.py:342 bot/commands/user_commands.py:431
 msgid "Deleted"
 msgstr "Törölve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:47
+#: bot/commands/admin_commands.py:47
 msgid "This command is not blocked"
 msgstr "Ez a parancs nincs letiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:55
+#: bot/commands/admin_commands.py:55
 msgid "GENDER Changes bot's gender. n neutral, m male, f female"
 msgstr "NEM Megválltoztatja a bot nemét. N semleges, m férfi, f nő"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:70
+#: bot/commands/admin_commands.py:70
 msgid "LANGUAGE Changes bot's language"
 msgstr "NYELV Megváltoztatja a bot nyelvét"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:78
+#: bot/commands/admin_commands.py:78
 msgid "The language has been changed"
 msgstr "A nyelv sikeresen megváltoztatva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:80
+#: bot/commands/admin_commands.py:80
 msgid "Incorrect language"
 msgstr "Ismeretlen nyelv"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:82
+#: bot/commands/admin_commands.py:82
 #, python-brace-format
 msgid ""
 "Current language: {current_language}. Available languages: "
@@ -139,11 +128,11 @@ msgstr ""
 "Jelenlegi nyelv: {current_language}. Elérhető nyelvek: "
 "{available_languages}"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:93
+#: bot/commands/admin_commands.py:93
 msgid "NICKNAME Changes bot's nickname"
 msgstr "BECENÉV Megváltoztatja a bot becenevét"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:103
+#: bot/commands/admin_commands.py:103
 msgid ""
 "r/f Clears bot's cache. r clears recents, f clears favorites, without an "
 "option clears the entire cache"
@@ -152,19 +141,19 @@ msgstr ""
 "nemrégiben lejátszott tartalmat, az f a kedvenceket távolítja el, konkrét"
 " paraméter hiányában az egész gyorsítótár törlődik"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:112
+#: bot/commands/admin_commands.py:112
 msgid "Cache cleared"
 msgstr "Gyorsítótár törölve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:116
+#: bot/commands/admin_commands.py:116
 msgid "Recents cleared"
 msgstr "Legutóbbiak törölve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:120
+#: bot/commands/admin_commands.py:120
 msgid "Favorites cleared"
 msgstr "Kedvencek törölve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:126
+#: bot/commands/admin_commands.py:126
 msgid ""
 "Join channel. first argument is channel name or id, second argument is "
 "password, split argument \" | \", if password is undefined, don't type "
@@ -175,77 +164,76 @@ msgstr ""
 "vonallal | válaszd el. Ha a jelszó ismeretlen, vagy nem létezik, második "
 "paramétert ne írj be"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:146
+#: bot/commands/admin_commands.py:146
 msgid "This channel does not exist"
 msgstr "Ez a csatorna nem létezik"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:160
+#: bot/commands/admin_commands.py:160
 #, python-brace-format
 msgid "Error joining channel: {error}"
 msgstr "Hiba a csatornához való csatlakozás közben: {error}"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:208
+#: bot/commands/admin_commands.py:208
 msgid "Enables or disables voice transmission"
 msgstr "Hang aktiválása vagy letiltása"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:215
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:217
+#: bot/commands/admin_commands.py:215 bot/commands/admin_commands.py:217
 msgid "Voice transmission enabled"
 msgstr "Hangaktiválás engedélyezve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:222
+#: bot/commands/admin_commands.py:222
 msgid "Voice transmission disabled"
 msgstr "Hangaktiválás letiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:228
+#: bot/commands/admin_commands.py:228
 msgid "Locks or unlocks the bot"
 msgstr "Zárolja vagy feloldja a botot"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:233
+#: bot/commands/admin_commands.py:233
 msgid "Locked"
 msgstr "Zárolva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:235
+#: bot/commands/admin_commands.py:235
 msgid "Unlocked"
 msgstr "Feloldva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:242
+#: bot/commands/admin_commands.py:242
 msgid "STATUS Changes bot's status"
 msgstr "STÁTUSZ Megváltoztatja a bot státuszát"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:252
+#: bot/commands/admin_commands.py:252
 msgid "Enables or disables event handling"
 msgstr "Az eseménykezelés engedélyezése vagy letiltása"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:259
+#: bot/commands/admin_commands.py:259
 msgid "Event handling is enabled"
 msgstr "Eseménykezelés engedélyezve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:261
+#: bot/commands/admin_commands.py:261
 msgid "Event handling is disabled"
 msgstr "Eseménykezelés letiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:268
+#: bot/commands/admin_commands.py:268
 msgid "Enables or disables sending of channel messages"
 msgstr "A csatornaüzenetek küldésének engedélyezése vagy letiltása"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:277
+#: bot/commands/admin_commands.py:277
 msgid "Channel messages enabled"
 msgstr "Csatornaüzenetek engedélyezve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:279
+#: bot/commands/admin_commands.py:279
 msgid "Channel messages disabled"
 msgstr "Csatornaüzenetek letiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:286
+#: bot/commands/admin_commands.py:286
 msgid "Saves bot's configuration"
 msgstr "A bot beállításainak mentése"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:290
+#: bot/commands/admin_commands.py:290
 msgid "Configuration saved"
 msgstr "Beállítások elmentve"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:296
+#: bot/commands/admin_commands.py:296
 msgid ""
 "+/-USERNAME Manages a list of administrators. +USERNAME adds a user. "
 "-USERNAME removes it. Without an option shows the list"
@@ -254,16 +242,15 @@ msgstr ""
 "felhasználó hozzáadása. -FELHASZNÁLÓNÉV felhasználó eltávolítása. "
 "Paraméterek nélkül a listát mutatja"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:312
+#: bot/commands/admin_commands.py:312
 msgid "This user is not in the admin list"
 msgstr "Ez a felhasználó nem szerepel az adminisztrátor listán"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:319
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:349
+#: bot/commands/admin_commands.py:319 bot/commands/admin_commands.py:349
 msgid "<Anonymous>"
-msgstr ""
+msgstr "<Anonymous>"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:328
+#: bot/commands/admin_commands.py:328
 msgid ""
 "+/-USERNAME Manages a list of banned users. +USERNAME adds a user. "
 "-USERNAME removes it. Without an option shows the list"
@@ -272,35 +259,35 @@ msgstr ""
 " felhasználó hozzáadása. -FELHASZNÁLÓNÉV felhasználó eltávolítása. "
 "Paraméterek nélkül a listát mutatja"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:344
+#: bot/commands/admin_commands.py:344
 msgid "This user is not banned"
 msgstr "Ez a felhasználó nincs tiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:358
+#: bot/commands/admin_commands.py:358
 msgid "Quits the bot"
 msgstr "Kilépteti a botot a szerverről"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:367
+#: bot/commands/admin_commands.py:367
 msgid "Restarts the bot"
 msgstr "Újraindítja a botot"
 
-#: /root/joao/TTMediaBot/bot/commands/admin_commands.py:382
+#: bot/commands/admin_commands.py:382
 msgid "Returns current channel's ID"
 msgstr "Megadja az aktuális csatorna azonosítóját"
 
-#: /root/joao/TTMediaBot/bot/commands/command.py:28
+#: bot/commands/command.py:28
 msgid "help text not found"
 msgstr "nem található segédszöveg"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:17
+#: bot/commands/user_commands.py:17
 msgid "Shows command help"
 msgstr "Megjeleníti a parancsok súgóját"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:26
+#: bot/commands/user_commands.py:26
 msgid "Shows information about the bot"
 msgstr "Megjeleníti a botra vonatkozó információkat"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:35
+#: bot/commands/user_commands.py:35
 msgid ""
 "QUERY Plays tracks found for the query. If no query is given, plays or "
 "pauses current track"
@@ -309,84 +296,73 @@ msgstr ""
 "nincs lekérdezés megadva, akkor az aktuális számot játssza le vagy "
 "szünetelteti"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:43
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:615
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:715
+#: bot/commands/user_commands.py:43 bot/commands/user_commands.py:615
+#: bot/commands/user_commands.py:715
 msgid "Searching..."
 msgstr "Keresés..."
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:51
+#: bot/commands/user_commands.py:51
 #, python-brace-format
 msgid "{nickname} requested {request}"
 msgstr "{nickname} kérte {request}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:57
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:187
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:204
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:733
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:843
+#: bot/commands/user_commands.py:57 bot/commands/user_commands.py:187
+#: bot/commands/user_commands.py:204 bot/commands/user_commands.py:733
+#: bot/commands/user_commands.py:843
 #, python-brace-format
 msgid "Playing {}"
 msgstr "Lejátszás"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:61
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:623
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:722
+#: bot/commands/user_commands.py:61 bot/commands/user_commands.py:623
+#: bot/commands/user_commands.py:722
 msgid "Nothing is found for your query"
 msgstr "Keresésed nem hozott eredményt"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:63
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:724
+#: bot/commands/user_commands.py:63 bot/commands/user_commands.py:724
 msgid "The selected service is currently unavailable"
 msgstr "A kiválasztott szolgáltatás jelenleg nem elérhető"
 
 # | msgid "URL Plays a stream from bot given URL"
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:76
+#: bot/commands/user_commands.py:76
 msgid "URL Plays a stream from a given URL"
-msgstr "URL Egy adott URL-címről való lejátszás"
+msgstr "URL Egy megadott URL-ről játszik le"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:85
+#: bot/commands/user_commands.py:85
 #, python-brace-format
 msgid "{nickname} requested playing from a URL"
-msgstr "{nickname} egy URL címről kérvényezett lejátszást"
+msgstr "{nickname} kért egy lejátszást egy URL-ről"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:92
+#: bot/commands/user_commands.py:92
 msgid "Incorrect protocol"
 msgstr "Helytelen protokoll"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:94
+#: bot/commands/user_commands.py:94
 msgid "Cannot process stream URL"
-msgstr "Nem lehet feldolgozni a stream URL-címét"
+msgstr "Nem sikerült feldolgozni a stream URL-t"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:96
+#: bot/commands/user_commands.py:96
 msgid "The path cannot be found"
-msgstr "Az elérési útvonal nem található"
+msgstr "Az útvonal nem található"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:104
+#: bot/commands/user_commands.py:104
 msgid "Stops playback"
 msgstr "Szünetelteti a lejátszást"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:111
+#: bot/commands/user_commands.py:111
 #, python-brace-format
 msgid "{nickname} stopped playback"
 msgstr "{nickname} szüneteltette a lejátszást"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:117
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:150
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:169
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:193
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:210
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:359
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:368
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:421
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:439
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:485
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:546
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:830
+#: bot/commands/user_commands.py:117 bot/commands/user_commands.py:150
+#: bot/commands/user_commands.py:169 bot/commands/user_commands.py:193
+#: bot/commands/user_commands.py:210 bot/commands/user_commands.py:359
+#: bot/commands/user_commands.py:368 bot/commands/user_commands.py:421
+#: bot/commands/user_commands.py:439 bot/commands/user_commands.py:485
+#: bot/commands/user_commands.py:546 bot/commands/user_commands.py:830
 msgid "Nothing is playing"
 msgstr "Semmi nincs lejátszás alatt"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:123
+#: bot/commands/user_commands.py:123
 #, python-brace-format
 msgid ""
 "VOLUME Sets the volume to a value between 0 and {max_volume}. If no "
@@ -395,38 +371,37 @@ msgstr ""
 "HANGERŐ A hangerőt 0 és {max_volume} közötti értékre állítja. Ha nincs "
 "megadva érték, akkor az aktuális hangerőszint jelenik meg"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:144
+#: bot/commands/user_commands.py:144
 #, python-brace-format
 msgid "STEP Seeks current track backward. the default step is {seek_step} seconds"
 msgstr ""
 "VISSZA az aktuális tartalmat visszafelé pörgeti. Az alapértelmezett idő "
 "{seek_step} másodperc"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:163
+#: bot/commands/user_commands.py:163
 #, python-brace-format
 msgid "STEP Seeks current track forward. the default step is {seek_step} seconds"
 msgstr ""
 "ELŐRE Az aktuális tartalmat előre pörgeti. Az alapértelmezett idő "
 "{seek_step} másodperc"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:182
+#: bot/commands/user_commands.py:182
 msgid "Plays next track"
 msgstr "A következő zene lejátszása"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:191
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:847
+#: bot/commands/user_commands.py:191 bot/commands/user_commands.py:847
 msgid "No next track"
 msgstr "Nincs több tartalom"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:199
+#: bot/commands/user_commands.py:199
 msgid "Plays previous track"
 msgstr "Az előző tartalom lejátszása"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:208
+#: bot/commands/user_commands.py:208
 msgid "No previous track"
 msgstr "Nincs előző tartalom"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:216
+#: bot/commands/user_commands.py:216
 msgid ""
 "MODE Sets the playback mode. If no mode is specified, the current mode "
 "and a list of modes are displayed"
@@ -434,27 +409,27 @@ msgstr ""
 "MÓD Lejátszási mód beállítása. Ha nincs megadva mód, az aktuálisan "
 "beállított mód, illetve a lehetséges opciók listája jelenik meg"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:222
+#: bot/commands/user_commands.py:222
 msgid "Single Track"
 msgstr "Egyetlen zeneszám"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:223
+#: bot/commands/user_commands.py:223
 msgid "Repeat Track"
 msgstr "Zeneszám ismétlése"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:224
+#: bot/commands/user_commands.py:224
 msgid "Track list"
 msgstr "Lejátszási lista"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:225
+#: bot/commands/user_commands.py:225
 msgid "Repeat track list"
 msgstr "Lejátszási lista ismétlése"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:226
+#: bot/commands/user_commands.py:226
 msgid "Random"
 msgstr "Véletlenszerű lejátszás"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:228
+#: bot/commands/user_commands.py:228
 #, python-brace-format
 msgid ""
 "Current mode: {current_mode}\n"
@@ -463,16 +438,16 @@ msgstr ""
 "Jelenlegi mód: {current_mode}\n"
 "{modes}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:247
+#: bot/commands/user_commands.py:247
 #, python-brace-format
 msgid "Current mode: {mode}"
 msgstr "Jelenlegi mód: {mode}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:251
+#: bot/commands/user_commands.py:251
 msgid "Incorrect mode"
-msgstr ""
+msgstr "Helytelen mód"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:259
+#: bot/commands/user_commands.py:259
 msgid ""
 "SERVICE Selects the service to play from, sv SERVICE h returns additional"
 " help. If no service is specified, the current service and a list of "
@@ -482,14 +457,14 @@ msgstr ""
 "további segítséget kaphatsz. Ha nincs megadva paraméter, az aktuális "
 "szolgáltatás és az elérhető opciók listája jelenik meg"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:268
+#: bot/commands/user_commands.py:268
 #, python-brace-format
 msgid ""
 "Unknown service.\n"
 "{}"
 msgstr "Ismeretlen szolgáltatás"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:276
+#: bot/commands/user_commands.py:276
 #, python-brace-format
 msgid ""
 "Current service: {}\n"
@@ -498,12 +473,12 @@ msgstr ""
 "Jelenlegi szolgáltatás: {}\n"
 "Figyelmeztetés: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:279
+#: bot/commands/user_commands.py:279
 #, python-brace-format
 msgid "Current service: {}"
 msgstr "Jelenlegi szolgáltatás: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:285
+#: bot/commands/user_commands.py:285
 #, python-brace-format
 msgid ""
 "Error: {error}\n"
@@ -512,25 +487,25 @@ msgstr ""
 "Hiba: {error}\n"
 "A {service} le van tiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:292
+#: bot/commands/user_commands.py:292
 #, python-brace-format
 msgid "{service} is disabled"
 msgstr "A {service} le van tiltva"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:298
+#: bot/commands/user_commands.py:298
 msgid "This service has no additional help"
 msgstr "Ez a szolgáltatás nem tartalmaz további segítséget"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:316
+#: bot/commands/user_commands.py:316
 msgid "{} (Error)"
-msgstr ""
+msgstr "{} (Hiba)"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:320
+#: bot/commands/user_commands.py:320
 #, python-brace-format
 msgid "{} (Warning: {})"
 msgstr "{} (Figyelmeztetés: {})"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:326
+#: bot/commands/user_commands.py:326
 #, python-brace-format
 msgid ""
 "Current service: {current_service}\n"
@@ -543,34 +518,31 @@ msgstr ""
 "Add ki az \"sv h\" parancsot egy adott szolgáltatással kapcsolatos "
 "további segítségért"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:338
+#: bot/commands/user_commands.py:338
 msgid "NUMBER Selects track by number from the list of current results"
 msgstr ""
 "SZÁM Tartalom kiválasztása annak száma szerint az aktuális eredmények "
 "listájából"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:351
+#: bot/commands/user_commands.py:351
 msgid "Incorrect number"
 msgstr "Helytelen szám"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:353
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:364
+#: bot/commands/user_commands.py:353 bot/commands/user_commands.py:364
 #, python-brace-format
 msgid "Playing {} {}"
 msgstr "Lejátszás {} {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:357
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:433
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:466
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:505
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:798
+#: bot/commands/user_commands.py:357 bot/commands/user_commands.py:433
+#: bot/commands/user_commands.py:466 bot/commands/user_commands.py:505
+#: bot/commands/user_commands.py:798
 msgid "Out of list"
 msgstr "Listán kívül"
 
 # | msgid "" "SPEED Sets playback speed from bot.25 to 4. If no speed is
 # given,
 # | shows " "current speed"
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:374
+#: bot/commands/user_commands.py:374
 msgid ""
 "SPEED Sets playback speed from 0.25 to 4. If no speed is given, shows "
 "current speed"
@@ -578,12 +550,12 @@ msgstr ""
 "SEBESSÉG Beállítja a lejátszási sebességet 0,25 és 4 között. Ha nincs "
 "megadva paraméter, az aktuális sebességet mutatja"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:380
+#: bot/commands/user_commands.py:380
 #, python-brace-format
 msgid "Current rate: {}"
 msgstr "Jelenlegi sebesség: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:393
+#: bot/commands/user_commands.py:393
 msgid ""
 "+/-NUMBER Manages favorite tracks. + adds the current track to favorites."
 " - removes a track requested from favorites. If a number is specified "
@@ -593,30 +565,29 @@ msgstr ""
 " a kedvencekhez, a - eltávolítja azt. Ha a +/- után egy szám van megadva,"
 " hozzáadja/eltávolítja az ezzel a számmal rendelkező zeneszámot"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:399
+#: bot/commands/user_commands.py:399
 msgid "This command is not available for guest users"
 msgstr "Ez a parancs vendégfelhasználók számára nem elérhető"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:437
+#: bot/commands/user_commands.py:437
 msgid "This track is not in favorites"
 msgstr "Ez a szám nincs a kedvencek között"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:446
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:511
+#: bot/commands/user_commands.py:446 bot/commands/user_commands.py:511
 msgid "{number}: {track_name}"
-msgstr ""
+msgstr "{number}: {track_name}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:474
+#: bot/commands/user_commands.py:474
 msgid "Gets a direct link to the current track"
 msgstr "Közvetlen linket kap az aktuális zeneszámhoz"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:483
+#: bot/commands/user_commands.py:483
 msgid "URL is not available"
 msgstr "Ez az URL nem elérhető"
 
 # | msgid "" "NUMBER Plays a track with  the given number from bot list of
 # | recent " "tracks. Without a number shows recent tracks"
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:491
+#: bot/commands/user_commands.py:491
 msgid ""
 "NUMBER Plays a track with  the given number from a list of recent tracks."
 " Without a number shows recent tracks"
@@ -624,174 +595,165 @@ msgstr ""
 "SZÁM A megadott számmal rendelkező zeneszámot játssza le a legutóbbi "
 "zeneszámok listájából. Szám megadása nélkül az előzményeket mutatja"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:517
+#: bot/commands/user_commands.py:517
 msgid "{number}: {track_url}"
-msgstr ""
+msgstr "{number}: {track_url}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:531
+#: bot/commands/user_commands.py:531
 msgid "Downloads the current track and uploads it to the channel."
-msgstr "Letölti az aktuális zeneszámot, és feltölti a csatorna fájljai közé."
+msgstr "Letölti az aktuális számot és feltölti a csatornára."
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:542
+#: bot/commands/user_commands.py:542
 msgid "Downloading..."
 msgstr "Letöltés..."
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:544
+#: bot/commands/user_commands.py:544
 msgid "Live streams cannot be downloaded"
 msgstr "Élő adásokat nem lehet letölteni"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:552
+#: bot/commands/user_commands.py:552
 msgid "Makes the bot join your current channel"
-msgstr ""
+msgstr "A bot csatlakozik az aktuális csatornádhoz"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:573
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:590
+#: bot/commands/user_commands.py:573 bot/commands/user_commands.py:590
 msgid "Joining channel: {}"
-msgstr ""
+msgstr "Csatlakozás a csatornához: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:582
+#: bot/commands/user_commands.py:582
 msgid "Failed to join channel. Error: {}"
-msgstr ""
+msgstr "Nem sikerült csatlakozni a csatornához. Hiba: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:593
+#: bot/commands/user_commands.py:593
 msgid "Failed to join channel: {}"
-msgstr ""
+msgstr "Nem sikerült csatlakozni a csatornához: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:599
+#: bot/commands/user_commands.py:599
 msgid ""
-"Downloads all tracks from a playlist/album URL, zips them, and uploads to"
-" the channel."
-msgstr ""
+msgstr "Letölti az összes számot, tömöríti és feltölti a csatornára."
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:608
+#: bot/commands/user_commands.py:608
 msgid "Current progress: {}"
-msgstr ""
+msgstr "Jelenlegi folyamat: {}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:612
+#: bot/commands/user_commands.py:612
 msgid "Please send the link to the playlist or album."
-msgstr ""
+msgstr "Kérlek küldd el a lejátszási lista vagy album linkjét."
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:631
+#: bot/commands/user_commands.py:631
 msgid "This command is for playlists and albums. For single tracks, use 'dl'."
-msgstr ""
+msgstr "Ez a parancs lejátszási listákhoz van. Egyetlen számhoz használd a 'dl'-t."
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:705
+#: bot/commands/user_commands.py:705
 msgid ""
-"QUERY Searches for a track and adds it to the queue. If nothing is "
-"playing, starts immediately"
-msgstr ""
+msgstr "QUERY Keres egy számot és hozzáadja a sorhoz. Ha semmi sem szól, azonnal elindul"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:741
+#: bot/commands/user_commands.py:741
 msgid "{nickname} added to queue: {track}"
-msgstr ""
+msgstr "{nickname} hozzáadta a sorhoz: {track}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:747
+#: bot/commands/user_commands.py:747
 msgid "Added to queue [{position}]: {track}"
-msgstr ""
+msgstr "Hozzáadva a sorhoz [{position}]: {track}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:755
+#: bot/commands/user_commands.py:755
 msgid "Lists all tracks in the queue"
-msgstr ""
+msgstr "Kilistázza a sorban lévő összes számot"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:761
+#: bot/commands/user_commands.py:761
 msgid "The queue is empty"
-msgstr ""
+msgstr "A sor üres"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:768
+#: bot/commands/user_commands.py:768
 msgid "Queue ({count} track(s)):"
-msgstr ""
+msgstr "Sor ({count} szám):"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:778
+#: bot/commands/user_commands.py:778
 msgid "NUMBER Removes track number NUMBER from the queue"
-msgstr ""
+msgstr "NUMBER Eltávolítja a NUMBER számú elemet a sorból"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:803
+#: bot/commands/user_commands.py:803
 msgid "Removed from queue: {track}"
-msgstr ""
+msgstr "Eltávolítva a sorból: {track}"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:811
+#: bot/commands/user_commands.py:811
 msgid "Clears the entire queue"
-msgstr ""
+msgstr "A teljes sor törlése"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:815
+#: bot/commands/user_commands.py:815
 msgid "The queue is already empty"
-msgstr ""
+msgstr "A sor már üres"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:818
+#: bot/commands/user_commands.py:818
 msgid "Queue cleared"
-msgstr ""
+msgstr "A sor törölve"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:824
+#: bot/commands/user_commands.py:824
 msgid ""
-"Skips current track and plays the next one from the queue. Falls back to "
-"normal next if queue is empty"
-msgstr ""
+msgstr "Kihagyja az aktuális számot és a következőt játssza a sorból. Ha a sor üres, visszatér a normál módhoz"
 
-#: /root/joao/TTMediaBot/bot/commands/user_commands.py:836
+#: bot/commands/user_commands.py:836
 msgid "Playing next from queue: {}"
-msgstr ""
+msgstr "A következő lejátszása a sorból: {}"
 
-#: /root/joao/TTMediaBot/bot/connectors/tt_player_connector.py:35
+#: bot/connectors/tt_player_connector.py:35
 #, python-brace-format
 msgid "Playing: {track_name}"
 msgstr "Lejátszás: {track_name}"
 
-#: /root/joao/TTMediaBot/bot/connectors/tt_player_connector.py:41
+#: bot/connectors/tt_player_connector.py:41
 #, python-brace-format
 msgid "Playing: {stream_url}"
 msgstr "Lejátszás: {stream_url}"
 
-#: /root/joao/TTMediaBot/bot/connectors/tt_player_connector.py:52
+#: bot/connectors/tt_player_connector.py:52
 #, python-brace-format
 msgid "Paused: {track_name}"
 msgstr "Szüneteltetve: {track_name}"
 
-#: /root/joao/TTMediaBot/bot/connectors/tt_player_connector.py:58
+#: bot/connectors/tt_player_connector.py:58
 #, python-brace-format
 msgid "Paused: {stream_url}"
 msgstr "Szüneteltetve: {stream_url}"
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:51
+#: bot/modules/playlist_uploader.py:51
 msgid "Error: This playlist is too large (max {} tracks)."
-msgstr ""
+msgstr "Hiba: Ez a lejátszási lista túl nagy (max {} szám)."
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:61
+#: bot/modules/playlist_uploader.py:61
 msgid "Downloading playlist: {}"
-msgstr ""
+msgstr "Lejátszási lista letöltése: {}"
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:68
+#: bot/modules/playlist_uploader.py:68
 msgid "Downloading track {}: {}"
-msgstr ""
+msgstr "Szám letöltése {}: {}"
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:94
+#: bot/modules/playlist_uploader.py:94
 msgid "Error: Failed to download any tracks from this playlist."
-msgstr ""
+msgstr "Hiba: Nem sikerült letölteni egyetlen számot sem ebből a lejátszási listából."
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:100
+#: bot/modules/playlist_uploader.py:100
 msgid "Zipping tracks..."
-msgstr ""
+msgstr "Számok tömörítése..."
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:115
+#: bot/modules/playlist_uploader.py:115
 msgid "Uploading ZIP: {}"
-msgstr ""
+msgstr "ZIP feltöltése: {}"
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:139
-#: /root/joao/TTMediaBot/bot/modules/uploader.py:70
+#: bot/modules/playlist_uploader.py:139 bot/modules/uploader.py:70
 msgid "Max diskusage exceeded"
-msgstr ""
+msgstr "A maximális lemezterület túllépve"
 
-#: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:150
-#: /root/joao/TTMediaBot/bot/modules/uploader.py:81
+#: bot/modules/playlist_uploader.py:150 bot/modules/uploader.py:81
 msgid "Not authorized to upload files to this channel"
-msgstr ""
+msgstr "Nincs jogosultságod fájlokat feltölteni erre a csatornára"
 
-#: /root/joao/TTMediaBot/bot/services/yt.py:319
+#: bot/services/yt.py:319
 msgid "Unknown Title"
-msgstr ""
+msgstr "Ismeretlen cím"
 
-#: /root/joao/TTMediaBot/bot/services/ytm.py:316
+#: bot/services/ytm.py:316
 msgid "Unknown"
-msgstr ""
+msgstr "Ismeretlen"
 
 #~ msgid "Cannot upload file to channel"
 #~ msgstr "Ezt a fájlt nem lehet feltölteni"
