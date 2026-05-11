@@ -1406,10 +1406,15 @@ clean_docker_unused() {
         return
     fi
     
-    echo ""
-    echo -e "${YELLOW}Cleaning...${NC}"
+    echo -e "${YELLOW}Cleaning Docker system...${NC}"
     docker system prune -af --volumes
+    
+    echo -e "${YELLOW}Cleaning Buildx cache...${NC}"
+    docker buildx prune -af
     docker builder prune -af
+    
+    echo -e "${YELLOW}Cleaning System Logs (journald)...${NC}"
+    journalctl --vacuum-time=1d
     
     echo ""
     echo -e "${GREEN}Done! Space reclaimed.${NC}"

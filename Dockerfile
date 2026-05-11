@@ -35,9 +35,9 @@ ENV LD_LIBRARY_PATH=/home/ttbot/TTMediaBot:/home/ttbot/TTMediaBot/TeamTalk_DLL:$
 COPY requirements.txt .
 
 # Install Python dependencies (Cacheable)
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt \
-    && pip install "httpx>=0.28.1"
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir "httpx>=0.28.1"
 
 # Build argument to bust cache for core code and frequently-changing tools
 ARG CACHEBUST=1
@@ -46,10 +46,10 @@ ARG CACHEBUST=1
 COPY requirements.txt .
 
 # Always ensure latest libraries and yt-dlp on every build
-RUN pip install -U pip setuptools wheel \
-    && pip install -U -r requirements.txt \
-    && pip install -U "yt-dlp[default] @ https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz" \
-    && pip install "httpx>=0.28.1"
+RUN pip install --no-cache-dir -U pip setuptools wheel \
+    && pip install --no-cache-dir -U -r requirements.txt \
+    && pip install --no-cache-dir -U "yt-dlp[default] @ https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz" \
+    && pip install --no-cache-dir "httpx>=0.28.1"
 
 # Copy project files
 COPY . .
