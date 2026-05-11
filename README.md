@@ -27,6 +27,15 @@ This fork includes several modifications and optimizations:
 - **🆕 Queue & Playlist i18n:** All new features (Queue system, Playlist downloads) are now fully localized in every language.
 - **🧹 Systematic Audit:** Complete cleanup of all translation catalogs, resolving fuzzy strings and missing translations for a seamless global experience.
 
+## 🆕 Latest Updates (05/11/2026) - v1.9.0 "Performance & Cleanup" Update
+
+- **🧹 Deep Docker Cleanup:** Added a powerful cleanup option (Option 7) to `ttbotdocker.sh` that wipes stopped containers, unused images, build cache, and even host system logs (`journalctl`) to reclaim maximum disk space.
+- **📉 200MB+ Image Reduction:** Drastically reduced Docker image size (from ~1.6GB to ~1.4GB) by implementing:
+  - **`.dockerignore`:** Prevents bloating the image with `.git`, `bots/` folders, and other host-only files.
+  - **`--no-cache-dir`:** Optimized PIP installations to not store installer caches inside the container.
+- **🚀 Faster Builds:** The new `.dockerignore` prevents uploading unnecessary files to the Docker daemon, making the build process more efficient.
+- **📊 Real-time Disk Reclaim:** Cleanup process now includes `buildx prune` and system journal vacuuming for a truly "zero-clutter" environment.
+
 ## 🆕 Previous Updates (05/09/2026) - v1.7.0 "Queue System" Update
 
 A huge shoutout and massive credits to **ericoamico** for his incredible dedication and a full week of hard work in developing this amazing feature! All credits for the new queue system go to him.
@@ -280,14 +289,24 @@ Complete cleanup of TTMediaBot installation:
 - Removes Docker image
 - **Warning:** This is irreversible!
 
-#### 5. Exit
-Closes the script
-
-#### 6. Check for Updates
+#### 5. Check for Updates
 Automatically checks the GitHub repository for updates.
 - Uses `update.sh` to compare local code with the remote repository
 - Safely backups configuration before updating
 - Includes a pause at the end so users can read the console
+
+#### 6. Enable/Disable Auto-Updates
+Dedicated menu to toggle background updates via systemd masking.
+
+#### 7. Clean Docker Cache (Unused)
+Advanced cleanup tool to reclaim disk space without affecting running bots:
+- **Docker Prune:** Removes stopped containers and unused images.
+- **Buildx Cleanup:** Wipes persistent build caches.
+- **System Logs:** Vacuums `journalctl` logs older than 1 day.
+- **Zero-Footprint:** Ensures the host system stays lean.
+
+#### 8. Exit
+Closes the script
 
 ### Automatic Features
 
@@ -620,4 +639,4 @@ docker ps -a -f "label=role=ttmediabot"
 ```bash
 docker stats $(docker ps -q -f "label=role=ttmediabot")
 ```
- - Final test commit: Wed May 06 08:30:00 UTC 2026
+  - Final test commit: Mon May 11 19:28:00 UTC 2026
