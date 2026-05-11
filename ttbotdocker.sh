@@ -1393,6 +1393,29 @@ uninstall_all() {
     exit 0
 }
 
+# Function: Clean Unused Docker Resources
+clean_docker_unused() {
+    header
+    echo -e "${YELLOW} --- Clean Unused Docker Resources --- ${NC}"
+    echo "This will remove all stopped containers, unused images, volumes and cache."
+    echo -e "${GREEN}Running containers will NOT be affected.${NC}"
+    echo ""
+    read -p "Proceed with cleanup? (y/N): " confirm
+    
+    if [[ ! "$confirm" =~ ^[yY]$ ]]; then
+        return
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}Cleaning...${NC}"
+    docker system prune -af --volumes
+    docker builder prune -af
+    
+    echo ""
+    echo -e "${GREEN}Done! Space reclaimed.${NC}"
+    read -p "Press Enter to continue..."
+}
+
 # Function: Manage Bots
 manage_bots() {
     # Show menu once
@@ -1495,7 +1518,8 @@ while true; do
     echo "4. Uninstall Everything (Total Cleanup)"
     echo "5. Check for Updates"
     echo "6. Enable/Disable Auto-Updates"
-    echo "7. Exit"
+    echo "7. Clean Docker Cache (Unused)"
+    echo "8. Exit"
     echo ""
     read -p "Choose an option: " option
     
@@ -1540,6 +1564,10 @@ while true; do
             header
             ;;
         7)
+            clean_docker_unused
+            header
+            ;;
+        8)
             echo "Exiting..."
             exit 0
             ;;
