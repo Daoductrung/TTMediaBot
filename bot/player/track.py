@@ -34,12 +34,13 @@ class Track:
         self._lock = Lock()
         self._is_fetched = False
 
-    def download(self, directory: str) -> str:
+    def download(self, directory: str, video: bool = False) -> str:
         service: Service = get_service_by_name(self.service)
-        file_name = self.name + "." + self.format
+        format = self.format if not video else "mp4"
+        file_name = self.name + "." + format
         file_name = utils.clean_file_name(file_name)
         file_path = os.path.join(directory, file_name)
-        service.download(self, file_path)
+        service.download(self, file_path, video=video)
         return file_path
 
     def _fetch_stream_data(self):

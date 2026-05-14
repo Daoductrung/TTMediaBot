@@ -20,7 +20,15 @@ This fork includes several modifications and optimizations:
 - **Docker Containerization:** The bot runs in Docker containers based on Debian 11 and Python 3.10, ensuring compatibility with legacy dependencies while maintaining stability
 - **Proven Stability:** Since I first encountered this bot in 2021, the adaptations made to work around YouTube's restrictions, combined with the optimizations from 2021/2022, have proven to be excellent and reliable
 
-## 🆕 Latest Updates (05/10/2026) - v1.8.0 "Universal Language" Update
+## 🆕 Latest Updates (05/14/2026) - v2.0.0 "The Video" Update
+
+- **🎥 New `dlv` Command:** Download current track as **Video** (.mp4) directly to the channel.
+- **🧠 Smart Uploader 2.0:** Rewritten uploader module with intelligent file discovery. If the expected format isn't found, it automatically searches for alternative extensions (.mkv, .webm, etc.) before failing.
+- **🎞️ Forced MP4 Encoding:** Optimized video downloads to force MP4 merging, ensuring maximum compatibility with all media players.
+- **🌍 Global Video Support:** Full localization for the `dlv` command across all 7 supported languages (PT-BR, ES, HU, ID, RU, TR, AR).
+- **🛠️ Robustness Fix:** Resolved naming inconsistencies between `yt-dlp` output and uploader expectations.
+
+## 🆕 Previous Updates (05/10/2026) - v1.8.0 "Universal Language" Update
 
 - **🌍 Arabic Support Added:** Full native support for Arabic (`ar`) language, including right-to-left (RTL) considerations for messages.
 - **💯 100% Localization:** Achieved 100% translation coverage across all supported languages (PT-BR, ES, HU, ID, RU, TR, AR). 
@@ -157,6 +165,7 @@ Send these commands to the bot via private message (PM) or in the channel (if en
 | **f** | `[+/-][num]` | Favorites management. `f` lists. `f +` adds current. `f -` removes. `f [num]` plays. |
 | **gl** | | Gets a direct link to the current track. |
 | **dl** | | Downloads current track and uploads to channel. |
+| **dlv** | | Downloads current track as video and uploads to channel. |
 | **dlp** | `[url]` | Downloads all tracks from a playlist/album URL, zips them, and uploads to the channel. |
 | **r** | `[number]` | Plays from Recents. `r` lists recents. |
 | **jc** | | Makes the bot join your current channel. |
@@ -639,4 +648,4 @@ docker ps -a -f "label=role=ttmediabot"
 ```bash
 docker stats $(docker ps -q -f "label=role=ttmediabot")
 ```
-  - Final test commit: Mon May 11 19:28:00 UTC 2026
+  - Final test commit: Thu May 14 12:50:00 UTC 2026

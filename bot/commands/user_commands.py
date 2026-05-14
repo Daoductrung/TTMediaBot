@@ -546,6 +546,27 @@ class DownloadCommand(Command):
             return self.translator.translate("Nothing is playing")
 
 
+class DownloadVideoCommand(Command):
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "Downloads the current track as video and uploads it to the channel."
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if self.player.state != State.Stopped:
+            track = self.player.track
+            if track.url and (
+                track.type == TrackType.Default or track.type == TrackType.Local
+            ):
+                self.module_manager.uploader(self.player.track, user, video=True)
+                return self.translator.translate("Downloading video...")
+            else:
+                return self.translator.translate("Live streams cannot be downloaded")
+        else:
+            return self.translator.translate("Nothing is playing")
+
+
 class JoinChannelCommand(Command):
     @property
     def help(self) -> str:

@@ -23,30 +23,47 @@ class Uploader:
         self.ttclient = bot.ttclient
         self.translator = bot.translator
 
-    def __call__(self, track: Track, user: User) -> None:
+    def __call__(self, track: Track, user: User, video: bool = False) -> None:
         thread = threading.Thread(
             target=self.run,
             daemon=True,
             args=(
                 track,
                 user,
+                video,
             ),
         )
         thread.start()
 
-    def run(self, track: Track, user: User) -> None:
-        logging.info(f"Uploader started for track '{track.name}' (Type: {track.type}) requested by {user.username}")
+    def run(self, track: Track, user: User, video: bool = False) -> None:
+        logging.info(f"Uploader started for track '{track.name}' (Type: {track.type}, Video: {video}) requested by {user.username}")
         error_exit = False
         temp_dir = None
         try:
             if track.type == TrackType.Default or track.service in ['yt', 'ytm']:
                 temp_dir = tempfile.TemporaryDirectory()
-                logging.info(f"Uploader: Downloading track to {temp_dir.name}")
-                file_path = track.download(temp_dir.name)
+                logging.info(f"Uploader: Downloading track to {temp_dir.name} (Video: {video})")
+                file_path = track.download(temp_dir.name, video=video)
             else:
                 logging.info(f"Uploader: Using direct URL/path: {track.url}")
                 file_path = track.url
             
+            if not os.path.exists(file_path):
+                # Check if it exists with another extension just in case
+                base_path = file_path.rsplit(".", 1)[0]
+                found = False
+                for ext in ["mp4", "mkv", "webm", "mp3", "m4a", "opus"]:
+                    if os.path.exists(f"{base_path}.{ext}"):
+                        file_path = f"{base_path}.{ext}"
+                        file_name = os.path.basename(file_path)
+                        found = True
+                        logging.warning(f"Uploader: Expected file not found, but found '{file_path}' instead. Using it.")
+                        break
+                if not found:
+                    logging.error(f"Uploader: File not found at '{file_path}' and no alternative extensions found.")
+                    self.ttclient.send_message(self.translator.translate("Error: Downloaded file not found."), user)
+                    return
+
             logging.info(f"Uploader: Sending file '{file_path}' to channel {self.ttclient.channel.id}")
             command_id = self.ttclient.send_file(self.ttclient.channel.id, file_path)
             file_name = os.path.basename(file_path)
@@ -54,6 +71,7 @@ class Uploader:
                 try:
                     file = self.ttclient.uploaded_files_queue.get_nowait()
                     if file.name == file_name:
+                        logging.info(f"Uploader: File '{file_name}' successfully uploaded")
                         break
                     else:
                         self.ttclient.uploaded_files_queue.put(file)

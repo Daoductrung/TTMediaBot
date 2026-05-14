@@ -222,24 +222,28 @@ class YtmService(_Service):
                 except Exception as e:
                     logging.debug(f"Failed to remove temp cookie file {temp_cookie_path}: {e}")
 
-    def download(self, track: Track, file_path: str) -> None:
+    def download(self, track: Track, file_path: str, video: bool = False) -> None:
         start_time = time.perf_counter()
         # Re-use YT Service logic or bare extraction
         # Since implementation plan said re-use logic:
         info = track.extra_info
         if not info:
-             super().download(track, file_path)
+             super().download(track, file_path, video=video)
              duration = (time.perf_counter() - start_time) * 1000
              logging.info(f"YTM Download finished in {duration:.2f}ms for {track.name}")
              return
         
         # Instantiate per request for thread safety
         config = self._ydl_config.copy()
-        config["postprocessors"] = [{
-            "key": "FFmpegExtractAudio",
-            "preferredcodec": "mp3",
-            "preferredquality": "320",
-        }]
+        if not video:
+            config["postprocessors"] = [{
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "320",
+            }]
+        else:
+            config["format"] = "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
+            config["merge_output_format"] = "mp4"
 
         config["skip_download"] = False
         config["outtmpl"] = file_path.rsplit(".", 1)[0] + ".%(ext)s"

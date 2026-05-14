@@ -21,7 +21,7 @@ class Service(ABC):
     warning_message: str
     help: str
 
-    def download(self, track: Track, file_path: str) -> None:
+    def download(self, track: Track, file_path: str, video: bool = False) -> None:
         downloader.download_file(track.url, file_path)
 
     @abstractmethod

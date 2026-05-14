@@ -51,6 +51,7 @@ class CommandProcessor:
             "m": user_commands.ModeCommand,
             "gl": user_commands.GetLinkCommand,
             "dl": user_commands.DownloadCommand,
+            "dlv": user_commands.DownloadVideoCommand,
             "dlp": user_commands.DownloadPlaylistCommand,
             "r": user_commands.RecentsCommand,
             "jc": user_commands.JoinChannelCommand,
