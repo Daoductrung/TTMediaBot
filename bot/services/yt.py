@@ -297,13 +297,11 @@ class YtService(_Service):
                     Track(service=self.name, url=url, name=title, format=format, type=track_type, extra_info=stream)
                 ]
 
-    def search(self, query: str) -> List[Track]:
+    def search(self, query: str, limit: int = 1) -> List[Track]:
         start_time = time.perf_counter()
         # py-yt-search usage (async method)
         try:
-            # The library is designed to be async. using .result() might be synchronous wrapper 
-            # but using .next() via asyncio.run is safer as per examples.
-            search_obj = VideosSearch(query, limit=4)
+            search_obj = VideosSearch(query, limit=limit)
             search = asyncio.run(search_obj.next())
             
             # Check structure: it seems to return {'result': [Items...]}

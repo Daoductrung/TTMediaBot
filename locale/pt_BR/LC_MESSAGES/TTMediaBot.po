@@ -79,6 +79,9 @@ msgid ""
 "blocklist. -COMMAND removes from it. Without a command shows the "
 "blocklist"
 msgstr ""
+"+/-COMANDO Bloqueia ou desbloqueia comandos. +COMANDO adiciona o comando "
+"à lista de bloqueados. -COMANDO remove da lista. Sem comando, exibe a "
+"lista de bloqueados"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:32
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:322
@@ -245,6 +248,8 @@ msgid ""
 "+/-USERNAME Manages a list of administrators. +USERNAME adds a user. "
 "-USERNAME removes it. Without an option shows the list"
 msgstr ""
+"+/-USUÁRIO Gerencia a lista de administradores. +USUÁRIO adiciona um "
+"usuário. -USUÁRIO remove da lista. Sem opção, exibe a lista"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:312
 msgid "This user is not in the admin list"
@@ -260,6 +265,8 @@ msgid ""
 "+/-USERNAME Manages a list of banned users. +USERNAME adds a user. "
 "-USERNAME removes it. Without an option shows the list"
 msgstr ""
+"+/-USUÁRIO Gerencia a lista de usuários banidos. +USUÁRIO adiciona um "
+"usuário. -USUÁRIO remove da lista. Sem opção, exibe a lista"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:344
 msgid "This user is not banned"
@@ -392,7 +399,7 @@ msgstr "STEP busca a faixa atual para trás. o passo padrão é {seek_step} segu
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:163
 #, python-brace-format
 msgid "STEP Seeks current track forward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track forward. the default step is {seek_step} seconds"
 "STEP busca a faixa atual para frente. o passo padrão é {seek_step} "
 "segundos"
 
@@ -446,6 +453,8 @@ msgid ""
 "Current mode: {current_mode}\n"
 "{modes}"
 msgstr ""
+"Modo atual: {current_mode}\n"
+"{modes}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:247
 #, python-brace-format
@@ -462,6 +471,9 @@ msgid ""
 " help. If no service is specified, the current service and a list of "
 "available services are displayed"
 msgstr ""
+"SERVICE Seleciona o serviço para reprodução. sv SERVICE h retorna ajuda "
+"adicional. Se nenhum serviço for especificado, o serviço atual e a lista "
+"de serviços disponíveis são exibidos"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:268
 #, python-brace-format
@@ -477,6 +489,8 @@ msgid ""
 "Current service: {}\n"
 "Warning: {}"
 msgstr ""
+"Serviço atual: {}\n"
+"Aviso: {}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:279
 #, python-brace-format
@@ -516,6 +530,10 @@ msgid ""
 "{available_services}\n"
 "send sv SERVICE h for additional help"
 msgstr ""
+"Serviço atual: {current_service}\n"
+"Disponíveis:\n"
+"{available_services}\n"
+"envie sv SERVICE h para ajuda adicional"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:338
 msgid "NUMBER Selects track by number from the list of current results"
@@ -544,6 +562,8 @@ msgid ""
 "SPEED Sets playback speed from 0.25 to 4. If no speed is given, shows "
 "current speed"
 msgstr ""
+"SPEED Define a velocidade de reprodução de 0.25 a 4. Se não for "
+"fornecida, mostra a velocidade atual"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:380
 #, python-brace-format
@@ -556,7 +576,7 @@ msgid ""
 " - removes a track requested from favorites. If a number is specified "
 "after +/-, adds/removes a track with that number"
 msgstr ""
-"+/-NUMBER Gerencia as faixas favoritas. + adiciona a faixa atual aos "
+"+/-NÚMERO Gerencia as faixas favoritas. + adiciona a faixa atual aos "
 "favoritos. - remove uma faixa solicitada dos favoritos. Se um número for "
 "especificado após +/-, adiciona/remove uma faixa com esse número"
 
@@ -586,6 +606,8 @@ msgid ""
 "NUMBER Plays a track with  the given number from a list of recent tracks."
 " Without a number shows recent tracks"
 msgstr ""
+"NÚMERO Reproduz uma faixa com o número dado da lista de faixas recentes. "
+"Sem número, exibe as faixas recentes"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:517
 msgid "{number}: {track_url}"
@@ -634,6 +656,8 @@ msgid ""
 "Downloads all tracks from a playlist/album URL, zips them, and uploads to"
 " the channel."
 msgstr ""
+"Baixa todas as faixas de uma URL de playlist/álbum, compacta em ZIP e "
+"envia para o canal."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:629
 msgid "Current progress: {}"
@@ -652,6 +676,8 @@ msgid ""
 "QUERY Searches for a track and adds it to the queue. If nothing is "
 "playing, starts immediately"
 msgstr ""
+"QUERY Pesquisa uma faixa e a adiciona à fila. Se nada estiver tocando, "
+"começa imediatamente"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:762
 msgid "{nickname} added to queue: {track}"
@@ -698,6 +724,8 @@ msgid ""
 "Skips current track and plays the next one from the queue. Falls back to "
 "normal next if queue is empty"
 msgstr ""
+"Pula a faixa atual e reproduz a próxima da fila. Se a fila estiver "
+"vazia, vai para a próxima normal"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:857
 msgid "Playing next from queue: {}"
@@ -759,7 +787,7 @@ msgstr "Não autorizado a enviar arquivos para este canal"
 
 #: /root/joao/TTMediaBot/bot/modules/uploader.py:64
 msgid "Error: Downloaded file not found."
-msgstr ""
+msgstr "Erro: Arquivo baixado não encontrado."
 
 #: /root/joao/TTMediaBot/bot/services/yt.py:324
 msgid "Unknown Title"
@@ -768,6 +796,55 @@ msgstr "Título Desconhecido"
 #: /root/joao/TTMediaBot/bot/services/ytm.py:320
 msgid "Unknown"
 msgstr "Desconhecido"
+
+
+# --- Search Results Mode (sr/sl/slc) ---
+msgid ""
+"QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+"QUERY Reproduz músicas encontradas para a consulta. Sem consulta, toca ou pausa a faixa atual. Com o modo de resultados (sr) ativo, exibe uma lista numerada"
+
+msgid "Search results:"
+msgstr "Resultados da busca:"
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr "Use 'sl NÚMERO' para selecionar uma faixa"
+
+msgid "Search results mode: ON"
+msgstr "Modo de resultados: ATIVADO"
+
+msgid "Search results mode: OFF"
+msgstr "Modo de resultados: DESATIVADO"
+
+msgid ""
+"Toggles search results mode. When active, 'p QUERY' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+"Alterna o modo de resultados de busca. Quando ativo, 'p CONSULTA' exibe uma lista numerada. Use 'sr on' ou 'sr off' para definir explicitamente. Salve permanentemente com 'sc'"
+
+msgid ""
+"NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+"NÚMERO Seleciona e toca o resultado NÚMERO da última lista de busca (requer o modo de resultados ativo)"
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr "Nenhum resultado disponível. Use 'p CONSULTA' para buscar primeiro"
+
+msgid "{nickname} selected: {track}"
+msgstr "{nickname} selecionou: {track}"
+
+msgid ""
+"NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+"NÚMERO Define quantos resultados são exibidos no modo de resultados. Sem número, mostra a quantidade atual. Reseta para 5 ao reiniciar"
+
+msgid "Search results count: {count}"
+msgstr "Quantidade de resultados: {count}"
+
+msgid "Search results count set to {count}"
+msgstr "Quantidade de resultados definida para {count}"
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr "Quantidade inválida. Digite um número maior que 0"
 
 #~ msgid "The cache file is already used by another instance of the bot."
 #~ msgstr "O arquivo de cache já é usado por outra instância do bot."

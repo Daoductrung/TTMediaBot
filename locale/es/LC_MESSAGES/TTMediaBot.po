@@ -395,14 +395,14 @@ msgstr ""
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:144
 #, python-brace-format
 msgid "STEP Seeks current track backward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track backward. the default step is {seek_step} seconds"
 "DURACIÓN Rebobina la pista actual. La duración por defecto es {seek_step}"
 " segundos"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:163
 #, python-brace-format
 msgid "STEP Seeks current track forward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track forward. the default step is {seek_step} seconds"
 "DURACIÓN Avanza en la pista actual. La duración por defecto es "
 "{seek_step} segundos."
 
@@ -664,6 +664,8 @@ msgid ""
 "Downloads all tracks from a playlist/album URL, zips them, and uploads to"
 " the channel."
 msgstr ""
+"Descarga todas las pistas de una URL de lista de reproducción/álbum, las "
+"comprime en ZIP y las sube al canal."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:629
 msgid "Current progress: {}"
@@ -675,7 +677,7 @@ msgstr "Por favor, envíe el enlace a la lista de reproducción o álbum."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:652
 msgid "This command is for playlists and albums. For single tracks, use 'dl'."
-msgstr ""
+msgstr "This command is for playlists and albums. For single tracks, use 'dl'."
 "Este comando es para listas de reproducción y álbumes. Para pistas "
 "sueltas, usa 'dl'."
 
@@ -684,6 +686,8 @@ msgid ""
 "QUERY Searches for a track and adds it to the queue. If nothing is "
 "playing, starts immediately"
 msgstr ""
+"TEXTOBÚSQL Busca una pista y la añade a la cola. Si no se está reproduciendo "
+"nada, comienza inmediatamente"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:762
 msgid "{nickname} added to queue: {track}"
@@ -730,6 +734,8 @@ msgid ""
 "Skips current track and plays the next one from the queue. Falls back to "
 "normal next if queue is empty"
 msgstr ""
+"Omite la pista actual y reproduce la siguiente de la cola. Si la cola está "
+"vacía, pasa a la siguiente normal"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:857
 msgid "Playing next from queue: {}"
@@ -791,7 +797,7 @@ msgstr "No autorizado para subir archivos a este canal"
 
 #: /root/joao/TTMediaBot/bot/modules/uploader.py:64
 msgid "Error: Downloaded file not found."
-msgstr ""
+msgstr "Error: Archivo descargado no encontrado."
 
 #: /root/joao/TTMediaBot/bot/services/yt.py:324
 msgid "Unknown Title"
@@ -800,6 +806,55 @@ msgstr "Título desconocido"
 #: /root/joao/TTMediaBot/bot/services/ytm.py:320
 msgid "Unknown"
 msgstr "Desconocido"
+
+
+# --- Search Results Mode (sr/sl/slc) ---
+msgid ""
+"QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+"QUERY Reproduce las pistas encontradas. Sin consulta, reproduce o pausa la pista actual. Con el modo de resultados (sr) activo, muestra una lista numerada"
+
+msgid "Search results:"
+msgstr "Resultados de búsqueda:"
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr "Usa 'sl NÚMERO' para seleccionar una pista"
+
+msgid "Search results mode: ON"
+msgstr "Modo de resultados de búsqueda: ACTIVADO"
+
+msgid "Search results mode: OFF"
+msgstr "Modo de resultados de búsqueda: DESACTIVADO"
+
+msgid ""
+"Toggles search results mode. When active, 'p QUERY' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+"Activa o desactiva el modo de resultados. Con 'p CONSULTA' muestra lista numerada. Usa 'sr on' o 'sr off'. Guarda permanentemente con 'sc'"
+
+msgid ""
+"NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+"NÚMERO Selecciona y reproduce el resultado NÚMERO de la última búsqueda (requiere modo de resultados activo)"
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr "No hay resultados disponibles. Usa 'p CONSULTA' para buscar primero"
+
+msgid "{nickname} selected: {track}"
+msgstr "{nickname} seleccionó: {track}"
+
+msgid ""
+"NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+"NÚMERO Define cuántos resultados se muestran en el modo de búsqueda. Sin número muestra el valor actual. Se restablece a 5 al reiniciar"
+
+msgid "Search results count: {count}"
+msgstr "Cantidad de resultados: {count}"
+
+msgid "Search results count set to {count}"
+msgstr "Cantidad de resultados establecida en {count}"
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr "Cantidad inválida. Ingresa un número mayor que 0"
 
 #~ msgid "Cannot upload file to channel"
 #~ msgstr "No se puede subir el archivo al canal"

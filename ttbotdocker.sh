@@ -308,8 +308,21 @@ create_bot() {
     channel=${channel:-/}
     read -sp "Channel Password (Default: empty): " channel_password
     echo ""
-    
-    
+
+    # --- Delete timer ---
+    current_del_timer=$(jq -r '.general.delete_uploaded_files_after // 300' "$CONFIG_SOURCE" 2>/dev/null)
+    echo ""
+    echo -e "${YELLOW}Delete uploaded files after how many seconds?${NC}"
+    echo "  Current default in config.json: ${current_del_timer}s"
+    echo "  (0 = never delete)"
+    read -p "Timer in seconds [Default: ${current_del_timer}]: " delete_timer
+    delete_timer=${delete_timer:-$current_del_timer}
+    if [[ ! "$delete_timer" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}Invalid value. Using default (${current_del_timer}).${NC}"
+        delete_timer=$current_del_timer
+    fi
+    echo ""
+
     
     # Batch create option - ask BEFORE creating
     echo ""
@@ -504,15 +517,17 @@ create_bot() {
        --arg chan "$channel" \
        --arg chan_pass "$channel_password" \
        --arg cookie "$CONTAINER_COOKIE_PATH" \
-       '.teamtalk.hostname = $host | 
-        .teamtalk.tcp_port = $tcp | 
-        .teamtalk.udp_port = $udp | 
-        .teamtalk.encrypted = $enc | 
-        .teamtalk.nickname = $nick | 
-        .teamtalk.username = $user | 
-        .teamtalk.password = $pass | 
-        .teamtalk.channel = $chan | 
+       --argjson del_timer "$delete_timer" \
+       '.teamtalk.hostname = $host |
+        .teamtalk.tcp_port = $tcp |
+        .teamtalk.udp_port = $udp |
+        .teamtalk.encrypted = $enc |
+        .teamtalk.nickname = $nick |
+        .teamtalk.username = $user |
+        .teamtalk.password = $pass |
+        .teamtalk.channel = $chan |
         .teamtalk.channel_password = $chan_pass |
+        .general.delete_uploaded_files_after = $del_timer |
         if $cookie != "" then .services.yt.cookiefile_path = $cookie else . end' \
        "$CURRENT_BOT_DIR/config.json" > "$tmp_config" && mv "$tmp_config" "$CURRENT_BOT_DIR/config.json"
 
@@ -802,6 +817,11 @@ bulk_update_config() {
     echo "Total bots: ${#bots[@]}"
     echo ""
     
+    # Show current delete timer from first bot
+    current_del_timer=$(jq -r '.general.delete_uploaded_files_after // "N/A"' "$first_config")
+    echo "  Delete files after: ${current_del_timer}s"
+    echo ""
+
     # Menu for field selection
     while true; do
         echo "What do you want to change?"
@@ -810,21 +830,22 @@ bulk_update_config() {
         echo "3. Encryption"
         echo "4. Credentials (username/password)"
         echo "5. Channel & Password"
-        echo "6. Everything"
+        echo "6. File Deletion Timer (delete_uploaded_files_after)"
+        echo "7. Everything"
         echo "0. Cancel"
         echo ""
         read -p "Choose an option: " choice
-        
+
         if [[ -z "$choice" ]]; then
             echo ""
             continue
         fi
-        
+
         case $choice in
             0)
                 return
                 ;;
-            1|2|3|4|5|6)
+            1|2|3|4|5|6|7)
                 break
                 ;;
             *)
@@ -844,22 +865,23 @@ bulk_update_config() {
     new_pass="UNSET"
     new_chan="UNSET"
     new_chan_pass="UNSET"
+    new_del_timer="UNSET"
     
     echo ""
     
-    if [[ "$choice" == "1" || "$choice" == "6" ]]; then
+    if [[ "$choice" == "1" || "$choice" == "7" ]]; then
         read -p "New server (Enter = keep): " input
         if [ -n "$input" ]; then new_host="$input"; fi
     fi
-    
-    if [[ "$choice" == "2" || "$choice" == "6" ]]; then
+
+    if [[ "$choice" == "2" || "$choice" == "7" ]]; then
         read -p "New TCP port (Enter = keep): " input
         if [ -n "$input" ]; then new_tcp="$input"; fi
         read -p "New UDP port (Enter = keep): " input
         if [ -n "$input" ]; then new_udp="$input"; fi
     fi
     
-    if [[ "$choice" == "3" || "$choice" == "6" ]]; then
+    if [[ "$choice" == "3" || "$choice" == "7" ]]; then
         read -p "Encryption (y/N): " enc_input
         if [[ "$enc_input" =~ ^[yY]$ ]]; then
             new_enc="true"
@@ -867,21 +889,35 @@ bulk_update_config() {
             new_enc="false"
         fi
     fi
-    
-    if [[ "$choice" == "4" || "$choice" == "6" ]]; then
+
+    if [[ "$choice" == "4" || "$choice" == "7" ]]; then
         read -p "New username (Enter = keep, '.' = clear): " input
         if [ "$input" == "." ]; then new_user=""; elif [ -n "$input" ]; then new_user="$input"; fi
-        
+
         read -p "New password (Enter = keep, '.' = clear): " input
         if [ "$input" == "." ]; then new_pass=""; elif [ -n "$input" ]; then new_pass="$input"; fi
     fi
     
-    if [[ "$choice" == "5" || "$choice" == "6" ]]; then
+    if [[ "$choice" == "5" || "$choice" == "7" ]]; then
         read -p "New Channel (Enter = keep, '.' = root '/'): " input
         if [ "$input" == "." ]; then new_chan="/"; elif [ -n "$input" ]; then new_chan="$input"; fi
-        
+
         read -p "New Channel Password (Enter = keep, '.' = clear): " input
         if [ "$input" == "." ]; then new_chan_pass=""; elif [ -n "$input" ]; then new_chan_pass="$input"; fi
+    fi
+
+    if [[ "$choice" == "6" || "$choice" == "7" ]]; then
+        echo ""
+        echo -e "${YELLOW}Delete uploaded files after how many seconds? (0 = never delete)${NC}"
+        echo "  Current (from first bot): ${current_del_timer}s"
+        read -p "New timer in seconds (Enter = keep): " input
+        if [ -n "$input" ]; then
+            if [[ "$input" =~ ^[0-9]+$ ]]; then
+                new_del_timer="$input"
+            else
+                echo -e "${RED}Invalid value, keeping current.${NC}"
+            fi
+        fi
     fi
     
     # Show summary
@@ -891,98 +927,177 @@ bulk_update_config() {
     [ "$new_tcp" != "UNSET" ] && echo "  TCP: $new_tcp"
     [ "$new_udp" != "UNSET" ] && echo "  UDP: $new_udp"
     [ "$new_enc" != "UNSET" ] && echo "  Encryption: $([ "$new_enc" = "true" ] && echo "Yes" || echo "No")"
-    
+
     if [ "$new_user" != "UNSET" ]; then
         if [ -z "$new_user" ]; then echo "  Username: (Cleared)"; else echo "  Username: $new_user"; fi
     fi
-    
+
     if [ "$new_pass" != "UNSET" ]; then
         if [ -z "$new_pass" ]; then echo "  Password: (Cleared)"; else echo "  Password: ********"; fi
     fi
-    
+
     if [ "$new_chan" != "UNSET" ]; then
         echo "  Channel: $new_chan"
     fi
-    
+
     if [ "$new_chan_pass" != "UNSET" ]; then
         if [ -z "$new_chan_pass" ]; then echo "  Channel Password: (Cleared)"; else echo "  Channel Password: ********"; fi
     fi
+
+    if [ "$new_del_timer" != "UNSET" ]; then
+        echo "  Delete files after: ${new_del_timer}s$([ "$new_del_timer" == "0" ] && echo " (never)" || true)"
+    fi
+
     echo ""
-    echo "Will be applied to ${#bots[@]} bot(s)"
+    echo "Will be applied to ${#bots[@]} bot(s) total"
     echo ""
-    
+
+    # --- Target selection ---
+    echo -e "${YELLOW}Apply changes to:${NC}"
+    echo "1. ALL bots (${#bots[@]})"
+    echo "2. A specific bot"
+    echo "3. Select specific bots"
+    echo ""
+    read -p "Choose target [Default: 1]: " target_choice
+    target_choice=${target_choice:-1}
+
+    target_bots=()
+
+    case "$target_choice" in
+        1)
+            target_bots=("${bots[@]}")
+            ;;
+        2)
+            echo ""
+            echo "Available bots:"
+            for i in "${!bots[@]}"; do
+                echo "  $((i+1)). ${bots[$i]}"
+            done
+            echo ""
+            read -p "Enter the NUMBER of the bot: " bot_num
+            if [[ ! "$bot_num" =~ ^[0-9]+$ ]] || [ "$bot_num" -lt 1 ] || [ "$bot_num" -gt "${#bots[@]}" ]; then
+                echo -e "${RED}Invalid number. Cancelled.${NC}"
+                read -p "Enter to return..."
+                return
+            fi
+            target_bots=("${bots[$((bot_num-1))]}")
+            ;;
+        3)
+            echo ""
+            echo "Available bots:"
+            for i in "${!bots[@]}"; do
+                echo "  $((i+1)). ${bots[$i]}"
+            done
+            echo ""
+            echo -e "${YELLOW}Enter numbers separated by SPACE (ex: 1 3 5):${NC}"
+            read -p "> " bot_nums
+            invalid=false
+            for num in $bot_nums; do
+                if [[ ! "$num" =~ ^[0-9]+$ ]] || [ "$num" -lt 1 ] || [ "$num" -gt "${#bots[@]}" ]; then
+                    echo -e "${RED}Invalid number: $num${NC}"
+                    invalid=true
+                    break
+                fi
+                target_bots+=("${bots[$((num-1))]}")
+            done
+            if [ "$invalid" = true ] || [ ${#target_bots[@]} -eq 0 ]; then
+                echo -e "${RED}No valid bots selected. Cancelled.${NC}"
+                read -p "Enter to return..."
+                return
+            fi
+            ;;
+        *)
+            echo -e "${RED}Invalid option. Cancelled.${NC}"
+            read -p "Enter to return..."
+            return
+            ;;
+    esac
+
+    # Final confirmation
+    echo ""
+    echo -e "${YELLOW}Will apply to ${#target_bots[@]} bot(s):${NC}"
+    for b in "${target_bots[@]}"; do echo "  - $b"; done
+    echo ""
     read -p "Confirm changes? (y/N): " confirm
-    
+
     if [[ ! "$confirm" =~ ^[yY]$ ]]; then
         echo "Cancelled."
         read -p "Enter to return..."
         return
     fi
-    
-    # Update all bot configs
+
+    # Update selected bot configs
     echo ""
     echo -e "${YELLOW}Updating configurations...${NC}"
-    
-    for bot_name in "${bots[@]}"; do
+
+    for bot_name in "${target_bots[@]}"; do
         config_file="$BOTS_ROOT/$bot_name/config.json"
-        
+
         if [ ! -f "$config_file" ]; then
             echo "  ⚠ Skipping $bot_name (config.json not found)"
             continue
         fi
-        
+
         tmp_config=$(mktemp)
-        
+
         # Build jq command dynamically
         jq_cmd="."
-        
+
         if [ "$new_host" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.hostname = \"$new_host\""
         fi
-        
+
         if [ "$new_tcp" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.tcp_port = $new_tcp"
         fi
-        
+
         if [ "$new_udp" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.udp_port = $new_udp"
         fi
-        
+
         if [ "$new_enc" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.encrypted = $new_enc"
         fi
-        
+
         if [ "$new_user" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.username = \"$new_user\""
         fi
-        
+
         if [ "$new_pass" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.password = \"$new_pass\""
         fi
-        
+
         if [ "$new_chan" != "UNSET" ]; then
             jq_cmd="$jq_cmd | .teamtalk.channel = \"$new_chan\""
         fi
-        
+
         if [ "$new_chan_pass" != "UNSET" ]; then
-           jq_cmd="$jq_cmd | .teamtalk.channel_password = \"$new_chan_pass\""
+            jq_cmd="$jq_cmd | .teamtalk.channel_password = \"$new_chan_pass\""
         fi
-        
+
+        if [ "$new_del_timer" != "UNSET" ]; then
+            jq_cmd="$jq_cmd | .general.delete_uploaded_files_after = $new_del_timer"
+        fi
+
         jq "$jq_cmd" "$config_file" > "$tmp_config" && mv "$tmp_config" "$config_file"
-        
+
         # Fix permissions for container user
         chown 1000:1000 "$config_file"
-        
+
         echo "  ✓ $bot_name updated"
     done
-    
+
+    # Restart only affected bots
     echo ""
-    echo -e "${YELLOW}Restarting all bots to apply changes...${NC}"
-    docker stop -t 1 $(docker ps -a -q -f "label=role=ttmediabot") >/dev/null 2>&1
-    docker start $(docker ps -a -q -f "label=role=ttmediabot") >/dev/null 2>&1
-    
+    echo -e "${YELLOW}Restarting affected bots...${NC}"
+    for bot_name in "${target_bots[@]}"; do
+        docker stop -t 1 "$bot_name" > /dev/null 2>&1
+        docker start "$bot_name" > /dev/null 2>&1
+        echo "  ↺ $bot_name restarted"
+    done
+
     echo ""
-    echo -e "${GREEN}Configuration updated successfully!${NC}"
+    echo -e "${GREEN}Configuration updated successfully for ${#target_bots[@]} bot(s)!${NC}"
     read -p "Press Enter to continue..."
 }
 

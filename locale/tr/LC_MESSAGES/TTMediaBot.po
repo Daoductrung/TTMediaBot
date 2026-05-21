@@ -393,14 +393,14 @@ msgstr ""
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:144
 #, python-brace-format
 msgid "STEP Seeks current track backward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track backward. the default step is {seek_step} seconds"
 "[ADIM] Geçerli parçayı geriye doğru arar. varsayılan adım {seek_step} "
 "saniye"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:163
 #, python-brace-format
 msgid "STEP Seeks current track forward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track forward. the default step is {seek_step} seconds"
 "[ADIM] Mevcut parçayı ileriye doğru arar. varsayılan adım {seek_step} "
 "saniye"
 
@@ -454,6 +454,8 @@ msgid ""
 "Current mode: {current_mode}\n"
 "{modes}"
 msgstr ""
+"Geçerli mod: {current_mode}\n"
+"{modes}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:247
 #, python-brace-format
@@ -470,6 +472,9 @@ msgid ""
 " help. If no service is specified, the current service and a list of "
 "available services are displayed"
 msgstr ""
+"HİZMET Oynatılacak hizmeti seçer. sv HİZMET h ek yardım döndürür. Hizmet "
+"belirtilmezse, mevcut hizmet ve kullanılabilir hizmetlerin listesi "
+"görüntülenir"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:268
 #, python-brace-format
@@ -485,6 +490,8 @@ msgid ""
 "Current service: {}\n"
 "Warning: {}"
 msgstr ""
+"Mevcut hizmet: {}\n"
+"Uyarı: {}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:279
 #, python-brace-format
@@ -524,6 +531,10 @@ msgid ""
 "{available_services}\n"
 "send sv SERVICE h for additional help"
 msgstr ""
+"Mevcut hizmet: {current_service}\n"
+"Kullanılabilir:\n"
+"{available_services}\n"
+"Ek yardım için sv HİZMET h gönderin"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:338
 msgid "NUMBER Selects track by number from the list of current results"
@@ -552,6 +563,8 @@ msgid ""
 "SPEED Sets playback speed from 0.25 to 4. If no speed is given, shows "
 "current speed"
 msgstr ""
+"HIZ Oynatma hızını 0.25 ile 4 arasında ayarlar. Hız belirtilmezse, mevcut "
+"hız gösterilir"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:380
 #, python-brace-format
@@ -594,6 +607,8 @@ msgid ""
 "NUMBER Plays a track with  the given number from a list of recent tracks."
 " Without a number shows recent tracks"
 msgstr ""
+"NUMARA Son parçaların listesinden verilen numaralı parçayı oynatır. "
+"Numara olmadan son parçaları gösterir"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:517
 msgid "{number}: {track_url}"
@@ -642,6 +657,8 @@ msgid ""
 "Downloads all tracks from a playlist/album URL, zips them, and uploads to"
 " the channel."
 msgstr ""
+"Bir playlist/albüm URL'sindeki tüm parçaları indirir, ZIP'ler ve kanala "
+"yükler."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:629
 msgid "Current progress: {}"
@@ -653,7 +670,7 @@ msgstr "Lütfen çalma listesi veya albüm bağlantısını gönderin."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:652
 msgid "This command is for playlists and albums. For single tracks, use 'dl'."
-msgstr ""
+msgstr "This command is for playlists and albums. For single tracks, use 'dl'."
 "Bu komut çalma listeleri ve albümler içindir. Tekli parçalar için 'dl' "
 "kullanın."
 
@@ -662,6 +679,7 @@ msgid ""
 "QUERY Searches for a track and adds it to the queue. If nothing is "
 "playing, starts immediately"
 msgstr ""
+"SORGU Bir parçayı arar ve sıraya ekler. Hiçbir şey çalmıyorsa, hemen başlar"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:762
 msgid "{nickname} added to queue: {track}"
@@ -708,6 +726,8 @@ msgid ""
 "Skips current track and plays the next one from the queue. Falls back to "
 "normal next if queue is empty"
 msgstr ""
+"Mevcut parçayı atlar ve sıradaki parçayı çalar. Sıra boşsa, normal sonraki "
+"parçaya geçer"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:857
 msgid "Playing next from queue: {}"
@@ -769,7 +789,7 @@ msgstr "Bu kanala dosya yükleme yetkiniz yok"
 
 #: /root/joao/TTMediaBot/bot/modules/uploader.py:64
 msgid "Error: Downloaded file not found."
-msgstr ""
+msgstr "Hata: İndirilen dosya bulunamadı."
 
 #: /root/joao/TTMediaBot/bot/services/yt.py:324
 msgid "Unknown Title"
@@ -778,6 +798,55 @@ msgstr "Bilinmeyen Başlık"
 #: /root/joao/TTMediaBot/bot/services/ytm.py:320
 msgid "Unknown"
 msgstr "Bilinmiyor"
+
+
+# --- Search Results Mode (sr/sl/slc) ---
+msgid ""
+"QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+"SORGU Sorgu için bulunan parçaları çalar. Sorgu yoksa mevcut parçayı oynatır veya duraklatır. Arama sonuçları modu (sr) aktifken numaralı liste gösterir"
+
+msgid "Search results:"
+msgstr "Arama sonuçları:"
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr "Parça seçmek için 'sl NUMARA' kullanın"
+
+msgid "Search results mode: ON"
+msgstr "Arama sonuçları modu: AÇIK"
+
+msgid "Search results mode: OFF"
+msgstr "Arama sonuçları modu: KAPALI"
+
+msgid ""
+"Toggles search results mode. When active, 'p SORGU' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+"Arama sonuçları modunu açar/kapatır. Aktifken 'p SORGU' numaralı liste gösterir. 'sr on' veya 'sr off' kullanın. 'sc' ile kalıcı kaydedin"
+
+msgid ""
+"NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+"NUMARA Son arama listesinden NUMARA sonucunu seçer ve oynatır (arama sonuçları modunun aktif olması gerekir)"
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr "Mevcut arama sonucu yok. Önce 'p SORGU' ile arama yapın"
+
+msgid "{nickname} selected: {track}"
+msgstr "{nickname} seçti: {track}"
+
+msgid ""
+"NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+"NUMARA Arama modunda kaç sonuç gösterileceğini ayarlar. Numara olmadan mevcut sayıyı gösterir. Yeniden başlatmada 5'e sıfırlanır"
+
+msgid "Search results count: {count}"
+msgstr "Arama sonucu sayısı: {count}"
+
+msgid "Search results count set to {count}"
+msgstr "Arama sonucu sayısı {count} olarak ayarlandı"
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr "Geçersiz sayı. Lütfen 0'dan büyük bir sayı girin"
 
 #~ msgid "The cache file is already used by another instance of the bot."
 #~ msgstr "Önbellek dosyası, botun başka bir örneği tarafından zaten kullanılıyor."

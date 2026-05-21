@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import re
 from threading import Thread
-from typing import Any, List, TYPE_CHECKING, Tuple
+from typing import Any, Dict, List, TYPE_CHECKING, Tuple
 
 from bot import app_vars, errors
 from bot.TeamTalk.structs import Message, User, UserType
@@ -33,6 +33,9 @@ class CommandProcessor:
         self.locked = False
         self.current_command_id = 0
         self.pending_playlist_download = {}
+        # Volatile search results state (reset on restart)
+        self.search_results_count: int = 5
+        self.pending_search_results: Dict[int, List] = {}
         self.commands_dict = {
             "h": user_commands.HelpCommand,
             "a": user_commands.AboutCommand,
@@ -61,6 +64,10 @@ class CommandProcessor:
             "qr": user_commands.QueueRemoveCommand,
             "qc": user_commands.QueueClearCommand,
             "qs": user_commands.QueueSkipCommand,
+            # --- Modo de resultados de busca ---
+            "sr": user_commands.SearchResultsCommand,
+            "sl": user_commands.SelectSearchResultCommand,
+            "slc": user_commands.SearchResultsCountCommand,
         }
         self.admin_commands_dict = {
             "cg": admin_commands.ChangeGenderCommand,

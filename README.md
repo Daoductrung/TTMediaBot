@@ -20,80 +20,21 @@ This fork includes several modifications and optimizations:
 - **Docker Containerization:** The bot runs in Docker containers based on Debian 11 and Python 3.10, ensuring compatibility with legacy dependencies while maintaining stability
 - **Proven Stability:** Since I first encountered this bot in 2021, the adaptations made to work around YouTube's restrictions, combined with the optimizations from 2021/2022, have proven to be excellent and reliable
 
-## 🆕 Latest Updates (05/14/2026) - v2.0.0 "The Video" Update
+## 🆕 Latest Update — v2.1.0 "Smart Search & Docker Polish" *(05/21/2026)*
 
-- **🎥 New `dlv` Command:** Download current track as **Video** (.mp4) directly to the channel.
-- **🧠 Smart Uploader 2.0:** Rewritten uploader module with intelligent file discovery. If the expected format isn't found, it automatically searches for alternative extensions (.mkv, .webm, etc.) before failing.
-- **🎞️ Forced MP4 Encoding:** Optimized video downloads to force MP4 merging, ensuring maximum compatibility with all media players.
-- **🌍 Global Video Support:** Full localization for the `dlv` command across all 7 supported languages (PT-BR, ES, HU, ID, RU, TR, AR).
-- **🛠️ Robustness Fix:** Resolved naming inconsistencies between `yt-dlp` output and uploader expectations.
+- 🔎 New `sr` command: toggle **Search Results Mode** — `p QUERY` shows a numbered list instead of playing immediately
+- 🎯 New `sl NUMBER` command: pick which result to play from the last search list
+- 🔢 New `slc NUMBER` command: set how many results are shown (default 5)
+- ⏱️ Docker Manager: new option to configure the **file deletion timer** on create & bulk update
+- 🎯 Docker Manager: Bulk Update now lets you choose **which bots** to apply changes to (all / one / subset)
 
-## 🆕 Previous Updates (05/10/2026) - v1.8.0 "Universal Language" Update
+> 📋 **[See full changelog →](CHANGELOG.md)**
 
-- **🌍 Arabic Support Added:** Full native support for Arabic (`ar`) language, including right-to-left (RTL) considerations for messages.
-- **💯 100% Localization:** Achieved 100% translation coverage across all supported languages (PT-BR, ES, HU, ID, RU, TR, AR). 
-- **🆕 Queue & Playlist i18n:** All new features (Queue system, Playlist downloads) are now fully localized in every language.
-- **🧹 Systematic Audit:** Complete cleanup of all translation catalogs, resolving fuzzy strings and missing translations for a seamless global experience.
-
-## 🆕 Latest Updates (05/11/2026) - v1.9.0 "Performance & Cleanup" Update
-
-- **🧹 Deep Docker Cleanup:** Added a powerful cleanup option (Option 7) to `ttbotdocker.sh` that wipes stopped containers, unused images, build cache, and even host system logs (`journalctl`) to reclaim maximum disk space.
-- **📉 200MB+ Image Reduction:** Drastically reduced Docker image size (from ~1.6GB to ~1.4GB) by implementing:
-  - **`.dockerignore`:** Prevents bloating the image with `.git`, `bots/` folders, and other host-only files.
-  - **`--no-cache-dir`:** Optimized PIP installations to not store installer caches inside the container.
-- **🚀 Faster Builds:** The new `.dockerignore` prevents uploading unnecessary files to the Docker daemon, making the build process more efficient.
-- **📊 Real-time Disk Reclaim:** Cleanup process now includes `buildx prune` and system journal vacuuming for a truly "zero-clutter" environment.
-
-## 🆕 Previous Updates (05/09/2026) - v1.7.0 "Queue System" Update
-
-A huge shoutout and massive credits to **ericoamico** for his incredible dedication and a full week of hard work in developing this amazing feature! All credits for the new queue system go to him.
-
-- **🗂️ Advanced Queue System:** You can now queue multiple tracks to play sequentially!
-- **➕ Add to Queue:** Use the `qa` command to search for a track and seamlessly add it to your queue.
-- **📜 View Queue:** Check what's playing next with the `ql` command to list all queued tracks.
-- **🗑️ Queue Management:** Use `qr [number]` to remove a specific song, or `qc` to clear the entire queue at once.
-- **⏭️ Smart Skip:** The new `qs` command skips the current track and instantly plays the next one from the queue.
-
-## 🆕 Previous Updates (05/06/2026) - v1.6.0 "Playlist Power-Up" Update
-
-- **📦 New `dlp` Command:** Download entire YouTube/YouTube Music playlists and albums as organized ZIP archives directly to the TeamTalk channel.
-- **📂 Intelligent ZIP Structure:** Archives now wrap contents inside a subfolder named after the playlist/album, ensuring a clean extraction process.
-- **🧠 Smart Naming Engine:** Automatically distinguishes between Official Albums (`Album - Artist.zip`) and personal Playlists (`Playlist Name.zip`) based on link patterns and metadata.
-- **🕵️ PM Progress Reporting:** Live track-by-track download progress is sent via **Private Message (PV)** to keep the channel clean while keeping the user informed.
-- **📊 Active Status Check:** Typing `dlp` without arguments during an active download returns the current real-time status of the process.
-- **💾 Permanent Channel Storage:** Playlist ZIPs are stored permanently in the channel (not auto-deleted like `dl` files), building a community library.
-- **🌍 Full Localization (i18n):** All new features and status messages fully localized for Portuguese, Spanish, Turkish, and Russian.
-- **🛠️ Enhanced Metadata Scanning:** Aggressive multi-track scanning to extract correct artist and album names even from tricky direct links.
-
-## 🆕 Previous Updates (05/03/2026) - v1.5.0 "Global Expansion" Update
-
-- **🌍 Full i18n Localization:** Completed full translation and standardization for PT-BR, Turkish (TR), Spanish (ES), and Indonesian (ID). All core commands and system messages are now fully localized.
-- **🎧 Studio Quality Audio (320kbps):** Upgraded audio streaming and transcoding to 320kbps MP3 by default for superior sound quality.
-- **🔄 Bulletproof Auto-Updater:** Major overhaul of the update system. Resolved infinite loops, fixed remote detection issues, and ensured updates work even with local file changes.
-- **⚡ Optimized Extraction:** Fixed YouTube signature errors and optimized ServiceManager for faster track loading and reduced latency.
-- **🎮 Polling Optimization:** Reduced auto-updater polling interval to 20 seconds for near-instant synchronization with the repository.
-- **🧹 Robust File Lifecycle:** Enhanced cleanup logic for temporary files and cookies, ensuring a zero-footprint operation after every request.
-
-## 🆕 Previous Updates (04/24/2026) - v1.3.1 "Zero-Footprint" Update
-
-- **🛡️ Auto-Cleanup for Cookies:** When pasting cookies, the temporary file created in `/tmp` is now automatically deleted immediately after use, ensuring zero disk footprint and maximum privacy.
-- **🎮 Auto-Update Controller (`masc.sh`):** New dedicated menu (Main Menu option 6) to enable/disable automatic updates with systemd masking for 100% persistence.
-- **🍪 Cookie Paste Option:** Paste cookies directly into the terminal; the script auto-normalizes formatting (spaces to tabs) and sets correct file permissions.
-- **🛡️ Per-Request Cookie Lifecycle:** Each download or stream request now creates a unique, volatile copy of your `cookies.txt` in `/tmp`. These files are deleted immediately after use, ensuring 100% privacy and zero disk clutter.
-- **🐳 Dockerfile Optimization:** Updated `httpx` to version `0.28.1+` and resolved dependency conflicts, ensuring a stable and compatible network stack.
-- **🧵 Thread-Safe Authentication:** The temporary cookie mechanism is now fully thread-safe, allowing multiple bots to operate without file access conflicts.
-
-## 🆕 Previous Updates (04/23/2026) - v1.1 "Reliability & Quality" Update
-
-- **🚀 Automated Background Updates:** Systemd service monitors GitHub every 20 seconds.
-- **🎵 High-Quality MP3:** Migrated to 192kbps MP3 by default.
-- **✅ Improved Permissions:** Refined upload logic for non-privileged bots.
-
-## 🆕 Previous Updates (03/19/2026)
 
 ## 🎵 YouTube Music Support
 
 This fork includes optimized support for **YouTube Music** alongside regular YouTube:
+
 
 - **YouTube Search API Integration:** Uses the YouTube Search API for fast and reliable music discovery
 - **Optimized Libraries:** 
@@ -174,6 +115,9 @@ Send these commands to the bot via private message (PM) or in the channel (if en
 | **qr** | `[number]` | Removes a specific track from the queue. |
 | **qc** | | Clears the entire queue. |
 | **qs** | | Skips current track and plays the next one from the queue. |
+| **sr** | `[on/off]` | Toggles Search Results Mode. When active, `p QUERY` shows a numbered list instead of playing immediately. Save with `sc`. |
+| **sl** | `[number]` | Selects and plays result NUMBER from the last `sr` search list. |
+| **slc** | `[number]` | Sets how many results are shown in `sr` mode (default 5). No arg shows current count. |
 | **a** | | Shows about info. |
 
 ### Admin Commands

@@ -33,7 +33,7 @@ class PlayPauseCommand(Command):
     @property
     def help(self) -> str:
         return self.translator.translate(
-            "QUERY Plays tracks found for the query. If no query is given, plays or pauses current track"
+            "QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
         )
 
     def __call__(self, arg: str, user: User) -> Optional[str]:
@@ -44,6 +44,18 @@ class PlayPauseCommand(Command):
                 user,
             )
             try:
+                # Search results mode: request more results from the service directly
+                if self.config.general.search_results_mode:
+                    count = self.command_processor.search_results_count
+                    track_list = self.service_manager.service.search(arg, limit=count)
+                    self.command_processor.pending_search_results[user.id] = track_list
+                    lines = [self.translator.translate("Search results:")]
+                    for i, track in enumerate(track_list):
+                        lines.append(f"{i + 1}: {track.name}")
+                    lines.append(self.translator.translate("Use 'sl NUMBER' to select a track"))
+                    return "\n".join(lines)
+
+                # Normal mode: request only 1 result and play immediately
                 track_list = self.service_manager.service.search(arg)
                 if self.config.general.send_channel_messages:
                     self.run_async(
@@ -867,3 +879,119 @@ class QueueSkipCommand(Command):
         except errors.NoNextTrackError:
             return self.translator.translate("No next track")
 
+
+# ===========================================================================
+# MODO DE RESULTADOS DE BUSCA
+# ===========================================================================
+
+class SearchResultsCommand(Command):
+    """sr — toggle do modo de resultados de busca (salvo no config.json via 'sc')."""
+
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "Toggles search results mode. When active, 'p QUERY' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        arg = arg.strip().lower()
+
+        if arg in ("on", "1", "yes", "true"):
+            self.config.general.search_results_mode = True
+            return self.translator.translate("Search results mode: ON")
+
+        elif arg in ("off", "0", "no", "false"):
+            self.config.general.search_results_mode = False
+            return self.translator.translate("Search results mode: OFF")
+
+        elif arg == "":
+            # Toggle
+            self.config.general.search_results_mode = not self.config.general.search_results_mode
+            if self.config.general.search_results_mode:
+                return self.translator.translate("Search results mode: ON")
+            else:
+                return self.translator.translate("Search results mode: OFF")
+
+        else:
+            raise errors.InvalidArgumentError
+
+
+class SelectSearchResultCommand(Command):
+    """sl NUMBER — seleciona e toca o resultado N da última busca (volátil por usuário)."""
+
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if not arg:
+            raise errors.InvalidArgumentError
+
+        try:
+            number = int(arg.strip())
+        except ValueError:
+            raise errors.InvalidArgumentError
+
+        if number < 1:
+            raise errors.InvalidArgumentError
+
+        results = self.command_processor.pending_search_results.get(user.id)
+
+        if not results:
+            return self.translator.translate(
+                "No search results available. Use 'p QUERY' to search first"
+            )
+
+        if number > len(results):
+            return self.translator.translate("Out of list")
+
+        track = results[number - 1]
+        # Clear pending results after selection
+        del self.command_processor.pending_search_results[user.id]
+
+        if self.config.general.send_channel_messages:
+            self.run_async(
+                self.ttclient.send_message,
+                self.translator.translate(
+                    "{nickname} selected: {track}"
+                ).format(nickname=user.nickname, track=track.name),
+                type=2,
+            )
+
+        self.run_async(self.player.play, [track])
+        return self.translator.translate("Playing {}").format(track.name)
+
+
+class SearchResultsCountCommand(Command):
+    """slc NUMBER — configura quantidade de resultados exibidos (volátil, padrão 5)."""
+
+    _MIN = 1
+
+    @property
+    def help(self) -> str:
+        return self.translator.translate(
+            "NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+        )
+
+    def __call__(self, arg: str, user: User) -> Optional[str]:
+        if not arg:
+            return self.translator.translate(
+                "Search results count: {count}"
+            ).format(count=self.command_processor.search_results_count)
+
+        try:
+            count = int(arg.strip())
+        except ValueError:
+            raise errors.InvalidArgumentError
+
+        if count < self._MIN:
+            return self.translator.translate(
+                "Invalid count. Please enter a number greater than 0"
+            )
+
+        self.command_processor.search_results_count = count
+        return self.translator.translate(
+            "Search results count set to {count}"
+        ).format(count=count)

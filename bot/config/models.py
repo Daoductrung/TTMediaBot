@@ -11,6 +11,7 @@ class GeneralModel(BaseModel):
     delete_uploaded_files_after: int = 300
     time_format: str = r"%H:%M"
     start_commands: List[str] = []
+    search_results_mode: bool = False
 
 class SoundDevicesModel(BaseModel):
     output_device: int = 0

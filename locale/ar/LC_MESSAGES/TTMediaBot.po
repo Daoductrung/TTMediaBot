@@ -27,6 +27,11 @@ msgid ""
 "Original Authors: Amir Gumerov, Vladislav Kopylov, Beqa Gozalishvili, "
 "Kirill Belousov.\n"
 msgstr ""
+"مرحباً! أنا João Almeida. هذا هو fork الخاص بي من TTMediaBot لـ TeamTalk 5.\n"
+"يركز هذا المستودع على الاستقرار ودعم YouTube Music.\n"
+"المستودع: https://github.com/JoaoDEVWHADS/TTMediaBot\n"
+"المؤلفون الأصليون: Amir Gumerov, Vladislav Kopylov, Beqa Gozalishvili, "
+"Kirill Belousov.\n"
 
 #: /root/joao/TTMediaBot/bot/TeamTalk/__init__.py:150
 msgid "Send \"h\" for help"
@@ -73,6 +78,8 @@ msgid ""
 "blocklist. -COMMAND removes from it. Without a command shows the "
 "blocklist"
 msgstr ""
+"+/- أمر يحظر أو يلغي حظر الأوامر. +أمر يضيفه لقائمة الحظر. -أمر يزيله. "
+"بدون أمر يعرض قائمة الحظر"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:32
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:322
@@ -125,7 +132,7 @@ msgstr "لغة غير صحيحة"
 msgid ""
 "Current language: {current_language}. Available languages: "
 "{available_languages}"
-msgstr ""
+msgstr "اللغة الحالية: {current_language}. اللغات المتاحة: {available_languages}"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:93
 msgid "NICKNAME Changes bot's nickname"
@@ -136,6 +143,8 @@ msgid ""
 "r/f Clears bot's cache. r clears recents, f clears favorites, without an "
 "option clears the entire cache"
 msgstr ""
+"r/f يمسح ذاكرة التخزين المؤقت للبوت. r يمسح الأخيرة، f يمسح المفضلة. "
+"بدون خيار يمسح الكل"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:112
 msgid "Cache cleared"
@@ -155,6 +164,8 @@ msgid ""
 "password, split argument \" | \", if password is undefined, don't type "
 "second argument"
 msgstr ""
+"الانضمام لقناة. الحجة الأولى هي اسم القناة أو ID، الثانية كلمة المرور، افصل بـ \" | \". "
+"إذا لم تكن هناك كلمة مرور، لا تكتب الحجة الثانية"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:146
 msgid "This channel does not exist"
@@ -230,6 +241,8 @@ msgid ""
 "+/-USERNAME Manages a list of administrators. +USERNAME adds a user. "
 "-USERNAME removes it. Without an option shows the list"
 msgstr ""
+"+/-مستخدم يدير قائمة المسؤولين. +مستخدم يضيف مستخدماً. "
+"-مستخدم يزيله. بدون خيار يعرض القائمة"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:312
 msgid "This user is not in the admin list"
@@ -245,6 +258,8 @@ msgid ""
 "+/-USERNAME Manages a list of banned users. +USERNAME adds a user. "
 "-USERNAME removes it. Without an option shows the list"
 msgstr ""
+"+/-مستخدم يدير قائمة المستخدمين المحظورين. +مستخدم يضيف مستخدماً. "
+"-مستخدم يزيله. بدون خيار يعرض القائمة"
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:344
 msgid "This user is not banned"
@@ -279,6 +294,7 @@ msgid ""
 "QUERY Plays tracks found for the query. If no query is given, plays or "
 "pauses current track"
 msgstr ""
+"QUERY يشغل المسارات الموجودة للاستعلام. بدون استعلام يشغل أو يوقف المسار الحالي"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:43
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:636
@@ -358,6 +374,8 @@ msgid ""
 "VOLUME Sets the volume to a value between 0 and {max_volume}. If no "
 "volume is specified, the current volume level is displayed"
 msgstr ""
+"VOLUME يضبط الصوت لقيمة بين 0 و {max_volume}. "
+"إذا لم يُحدد، يعرض مستوى الصوت الحالي"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:144
 msgid "STEP Seeks current track backward. the default step is {seek_step} seconds"
@@ -389,6 +407,7 @@ msgid ""
 "MODE Sets the playback mode. If no mode is specified, the current mode "
 "and a list of modes are displayed"
 msgstr ""
+"MODE يضبط وضع التشغيل. إذا لم يُحدد، يعرض الوضع الحالي وقائمة الأوضاع"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:222
 msgid "Single Track"
@@ -415,6 +434,8 @@ msgid ""
 "Current mode: {current_mode}\n"
 "{modes}"
 msgstr ""
+"الوضع الحالي: {current_mode}\n"
+"{modes}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:247
 msgid "Current mode: {mode}"
@@ -430,18 +451,24 @@ msgid ""
 " help. If no service is specified, the current service and a list of "
 "available services are displayed"
 msgstr ""
+"SERVICE يختار الخدمة للتشغيل. sv SERVICE h يعيد مساعدة إضافية. "
+"بدون خدمة يعرض الخدمة الحالية والخدمات المتاحة"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:268
 msgid ""
 "Unknown service.\n"
 "{}"
 msgstr ""
+"خدمة غير معروفة.\n"
+"{}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:276
 msgid ""
 "Current service: {}\n"
 "Warning: {}"
 msgstr ""
+"الخدمة الحالية: {}\n"
+"تحذير: {}"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:279
 msgid "Current service: {}"
@@ -476,6 +503,10 @@ msgid ""
 "{available_services}\n"
 "send sv SERVICE h for additional help"
 msgstr ""
+"الخدمة الحالية: {current_service}\n"
+"متاح:\n"
+"{available_services}\n"
+"أرسل sv SERVICE h للمساعدة الإضافية"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:338
 msgid "NUMBER Selects track by number from the list of current results"
@@ -503,6 +534,7 @@ msgid ""
 "SPEED Sets playback speed from 0.25 to 4. If no speed is given, shows "
 "current speed"
 msgstr ""
+"SPEED يضبط سرعة التشغيل من 0.25 إلى 4. بدون قيمة يعرض السرعة الحالية"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:380
 msgid "Current rate: {}"
@@ -514,6 +546,8 @@ msgid ""
 " - removes a track requested from favorites. If a number is specified "
 "after +/-, adds/removes a track with that number"
 msgstr ""
+"+/-رقم يدير المسارات المفضلة. + يضيف المسار الحالي للمفضلة. - يزيل المسار المطلوب. "
+"إذا حُدد رقم بعد +/-، يضيف/يزيل المسار بهذا الرقم"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:399
 msgid "This command is not available for guest users"
@@ -541,6 +575,7 @@ msgid ""
 "NUMBER Plays a track with  the given number from a list of recent tracks."
 " Without a number shows recent tracks"
 msgstr ""
+"رقم يشغل مساراً بالرقم المحدد من قائمة المسارات الأخيرة. بدون رقم يعرض المسارات الأخيرة"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:517
 msgid "{number}: {track_url}"
@@ -589,6 +624,7 @@ msgid ""
 "Downloads all tracks from a playlist/album URL, zips them, and uploads to"
 " the channel."
 msgstr ""
+"ينزل جميع المسارات من URL قائمة تشغيل/ألبوم، يضغطها ويرفعها للقناة."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:629
 msgid "Current progress: {}"
@@ -607,6 +643,7 @@ msgid ""
 "QUERY Searches for a track and adds it to the queue. If nothing is "
 "playing, starts immediately"
 msgstr ""
+"QUERY يبحث عن مسار ويضيفه لقائمة الانتظار. إذا لم يكن هناك شيء قيد التشغيل، يبدأ فوراً"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:762
 msgid "{nickname} added to queue: {track}"
@@ -653,6 +690,8 @@ msgid ""
 "Skips current track and plays the next one from the queue. Falls back to "
 "normal next if queue is empty"
 msgstr ""
+"يتخطى المسار الحالي ويشغل التالي من قائمة الانتظار. "
+"إذا كانت القائمة فارغة، يذهب للتالي العادي"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:857
 msgid "Playing next from queue: {}"
@@ -710,7 +749,7 @@ msgstr "غير مصرح لك برفع الملفات إلى هذه القناة"
 
 #: /root/joao/TTMediaBot/bot/modules/uploader.py:64
 msgid "Error: Downloaded file not found."
-msgstr ""
+msgstr "خطأ: الملف المنزل غير موجود."
 
 #: /root/joao/TTMediaBot/bot/services/yt.py:324
 msgid "Unknown Title"
@@ -719,4 +758,53 @@ msgstr "عنوان غير معروف"
 #: /root/joao/TTMediaBot/bot/services/ytm.py:320
 msgid "Unknown"
 msgstr "غير معروف"
+
+
+# --- Search Results Mode (sr/sl/slc) ---
+msgid ""
+"QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+"QUERY يشغل المقاطع الموجودة للاستعلام. بدون استعلام يشغل أو يوقف المقطع الحالي. في وضع نتائج البحث (sr) يعرض قائمة مرقمة"
+
+msgid "Search results:"
+msgstr "نتائج البحث:"
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr "استخدم 'sl رقم' لاختيار مقطع"
+
+msgid "Search results mode: ON"
+msgstr "وضع نتائج البحث: مفعّل"
+
+msgid "Search results mode: OFF"
+msgstr "وضع نتائج البحث: معطّل"
+
+msgid ""
+"Toggles search results mode. When active, 'p QUERY' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+"يبدّل وضع نتائج البحث. عند التفعيل، 'p استعلام' يعرض قائمة مرقمة. استخدم 'sr on' أو 'sr off'. احفظ بشكل دائم باستخدام 'sc'"
+
+msgid ""
+"NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+"رقم يختار ويشغل النتيجة رقم من قائمة البحث الأخيرة (يتطلب تفعيل وضع نتائج البحث)"
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr "لا توجد نتائج بحث. استخدم 'p استعلام' للبحث أولاً"
+
+msgid "{nickname} selected: {track}"
+msgstr "{nickname} اختار: {track}"
+
+msgid ""
+"NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+"رقم يحدد عدد النتائج في وضع البحث. بدون رقم يعرض العدد الحالي. يُعاد ضبطه على 5 عند إعادة التشغيل"
+
+msgid "Search results count: {count}"
+msgstr "عدد نتائج البحث: {count}"
+
+msgid "Search results count set to {count}"
+msgstr "تم تعيين عدد نتائج البحث إلى {count}"
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr "عدد غير صالح. أدخل رقماً أكبر من 0"
 

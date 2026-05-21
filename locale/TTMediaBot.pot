@@ -718,3 +718,43 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
+# --- Search Results Mode (sr/sl/slc) ---
+msgid "QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+
+msgid "Search results:"
+msgstr ""
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr ""
+
+msgid "Search results mode: ON"
+msgstr ""
+
+msgid "Search results mode: OFF"
+msgstr ""
+
+msgid "Toggles search results mode. When active, 'p QUERY' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+
+msgid "NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr ""
+
+msgid "{nickname} selected: {track}"
+msgstr ""
+
+msgid "NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+
+msgid "Search results count: {count}"
+msgstr ""
+
+msgid "Search results count set to {count}"
+msgstr ""
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr ""
+

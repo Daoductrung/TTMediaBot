@@ -117,7 +117,7 @@ msgstr "Perintah ini tidak diblokir."
 
 #: /root/joao/TTMediaBot/bot/commands/admin_commands.py:55
 msgid "GENDER Changes bot's gender. n neutral, m male, f female"
-msgstr ""
+msgstr "GENDER Mengubah gender bot. n netral, m laki-laki, f perempuan"
 "JENIS KELAMIN Mengubah jenis kelamin bot. n netral, m laki-laki, f "
 "perempuan."
 
@@ -664,6 +664,8 @@ msgid ""
 "Downloads all tracks from a playlist/album URL, zips them, and uploads to"
 " the channel."
 msgstr ""
+"Mengunduh semua lagu dari URL playlist/album, mengompresnya dalam ZIP, "
+"dan mengunggahnya ke saluran."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:629
 msgid "Current progress: {}"
@@ -675,15 +677,15 @@ msgstr "Silakan kirim tautan ke daftar putar atau album."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:652
 msgid "This command is for playlists and albums. For single tracks, use 'dl'."
-msgstr ""
-"Perintah ini untuk daftar putar dan album. Untuk lagu tunggal, gunakan "
-"'dl'."
+msgstr "Perintah ini untuk daftar putar dan album. Untuk lagu tunggal, gunakan 'dl'."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:726
 msgid ""
 "QUERY Searches for a track and adds it to the queue. If nothing is "
 "playing, starts immediately"
 msgstr ""
+"KUERI Mencari lagu dan menambahkannya ke antrean. Jika tidak ada yang "
+"diputar, langsung dimulai"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:762
 msgid "{nickname} added to queue: {track}"
@@ -730,6 +732,8 @@ msgid ""
 "Skips current track and plays the next one from the queue. Falls back to "
 "normal next if queue is empty"
 msgstr ""
+"Melewati lagu saat ini dan memutar lagu berikutnya dari antrean. Jika "
+"antrean kosong, beralih ke lagu berikutnya secara normal"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:857
 msgid "Playing next from queue: {}"
@@ -791,7 +795,7 @@ msgstr "Tidak berwenang untuk mengunggah file ke saluran ini"
 
 #: /root/joao/TTMediaBot/bot/modules/uploader.py:64
 msgid "Error: Downloaded file not found."
-msgstr ""
+msgstr "Kesalahan: File yang diunduh tidak ditemukan."
 
 #: /root/joao/TTMediaBot/bot/services/yt.py:324
 msgid "Unknown Title"
@@ -800,6 +804,55 @@ msgstr "Judul Tidak Diketahui"
 #: /root/joao/TTMediaBot/bot/services/ytm.py:320
 msgid "Unknown"
 msgstr "Tidak Diketahui"
+
+
+# --- Search Results Mode (sr/sl/slc) ---
+msgid ""
+"QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+"QUERY Memutar trek yang ditemukan. Tanpa query, memutar atau menjeda trek saat ini. Dengan mode hasil pencarian (sr) aktif, menampilkan daftar bernomor"
+
+msgid "Search results:"
+msgstr "Hasil pencarian:"
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr "Gunakan 'sl NOMOR' untuk memilih trek"
+
+msgid "Search results mode: ON"
+msgstr "Mode hasil pencarian: AKTIF"
+
+msgid "Search results mode: OFF"
+msgstr "Mode hasil pencarian: NONAKTIF"
+
+msgid ""
+"Toggles search results mode. When active, 'p QUERY' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+"Mengalihkan mode hasil pencarian. Saat aktif, 'p QUERY' menampilkan daftar bernomor. Gunakan 'sr on' atau 'sr off'. Simpan permanen dengan 'sc'"
+
+msgid ""
+"NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+"NOMOR Memilih dan memutar hasil NOMOR dari daftar pencarian terakhir (memerlukan mode hasil pencarian aktif)"
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr "Tidak ada hasil pencarian. Gunakan 'p QUERY' untuk mencari terlebih dahulu"
+
+msgid "{nickname} selected: {track}"
+msgstr "{nickname} memilih: {track}"
+
+msgid ""
+"NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+"NOMOR Mengatur berapa hasil yang ditampilkan dalam mode pencarian. Tanpa nomor menampilkan jumlah saat ini. Diatur ulang ke 5 saat restart"
+
+msgid "Search results count: {count}"
+msgstr "Jumlah hasil pencarian: {count}"
+
+msgid "Search results count set to {count}"
+msgstr "Jumlah hasil pencarian diatur ke {count}"
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr "Jumlah tidak valid. Masukkan angka lebih dari 0"
 
 #~ msgid "Cannot upload file to channel"
 #~ msgstr "Tidak dapat mengunggah file ke saluran."

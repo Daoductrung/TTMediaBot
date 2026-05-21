@@ -399,14 +399,14 @@ msgstr ""
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:144
 #, python-brace-format
 msgid "STEP Seeks current track backward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track backward. the default step is {seek_step} seconds"
 "VISSZA az aktuális tartalmat visszafelé pörgeti. Az alapértelmezett idő "
 "{seek_step} másodperc"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:163
 #, python-brace-format
 msgid "STEP Seeks current track forward. the default step is {seek_step} seconds"
-msgstr ""
+msgstr "STEP Seeks current track forward. the default step is {seek_step} seconds"
 "ELŐRE Az aktuális tartalmat előre pörgeti. Az alapértelmezett idő "
 "{seek_step} másodperc"
 
@@ -546,7 +546,7 @@ msgstr ""
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:338
 msgid "NUMBER Selects track by number from the list of current results"
-msgstr ""
+msgstr "NUMBER Selects track by number from the list of current results"
 "SZÁM Tartalom kiválasztása annak száma szerint az aktuális eredmények "
 "listájából"
 
@@ -672,6 +672,8 @@ msgid ""
 "Downloads all tracks from a playlist/album URL, zips them, and uploads to"
 " the channel."
 msgstr ""
+"Letölti a lejátszási lista/album URL összes számát, ZIP-be csomagolja és "
+"feltölti a csatornára."
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:629
 msgid "Current progress: {}"
@@ -690,6 +692,8 @@ msgid ""
 "QUERY Searches for a track and adds it to the queue. If nothing is "
 "playing, starts immediately"
 msgstr ""
+"LEKÉRDEZÉS Zeneszámot keres és hozzáadja a sorhoz. Ha semmi sem szól, "
+"azonnal elkezdi"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:762
 msgid "{nickname} added to queue: {track}"
@@ -736,6 +740,8 @@ msgid ""
 "Skips current track and plays the next one from the queue. Falls back to "
 "normal next if queue is empty"
 msgstr ""
+"Átugrorja az aktuális számot és a következőt játssza a sorból. Ha a sor "
+"üres, a normál következőre lép"
 
 #: /root/joao/TTMediaBot/bot/commands/user_commands.py:857
 msgid "Playing next from queue: {}"
@@ -775,7 +781,7 @@ msgstr "Szám letöltése {}: {}"
 
 #: /root/joao/TTMediaBot/bot/modules/playlist_uploader.py:94
 msgid "Error: Failed to download any tracks from this playlist."
-msgstr ""
+msgstr "Error: Failed to download any tracks from this playlist."
 "Hiba: Nem sikerült letölteni egyetlen számot sem ebből a lejátszási "
 "listából."
 
@@ -799,7 +805,7 @@ msgstr "Nincs jogosultságod fájlokat feltölteni erre a csatornára"
 
 #: /root/joao/TTMediaBot/bot/modules/uploader.py:64
 msgid "Error: Downloaded file not found."
-msgstr ""
+msgstr "Hiba: A letöltött fájl nem található."
 
 #: /root/joao/TTMediaBot/bot/services/yt.py:324
 msgid "Unknown Title"
@@ -808,6 +814,55 @@ msgstr "Ismeretlen cím"
 #: /root/joao/TTMediaBot/bot/services/ytm.py:320
 msgid "Unknown"
 msgstr "Ismeretlen"
+
+
+# --- Search Results Mode (sr/sl/slc) ---
+msgid ""
+"QUERY Plays tracks found for the query. If no query is given, plays or pauses current track. When search results mode (sr) is active, shows a numbered list instead"
+msgstr ""
+"KERESÉS Lejátssza a lekérdezéshez talált számokat. Keresés nélkül lejátssza vagy szünetelteti az aktuális számot. Keresési eredmény módban (sr) számozott listát jelenít meg"
+
+msgid "Search results:"
+msgstr "Keresési eredmények:"
+
+msgid "Use 'sl NUMBER' to select a track"
+msgstr "Használd az 'sl SZÁM' parancsot egy szám kiválasztásához"
+
+msgid "Search results mode: ON"
+msgstr "Keresési eredmény mód: BE"
+
+msgid "Search results mode: OFF"
+msgstr "Keresési eredmény mód: KI"
+
+msgid ""
+"Toggles search results mode. When active, 'p KERESÉS' shows a numbered list. Use 'sr on' or 'sr off' to set explicitly. Save permanently with 'sc'"
+msgstr ""
+"Be- vagy kikapcsolja a keresési eredmény módot. Aktívan 'p KERESÉS' listát jelenít meg. Használd 'sr on' vagy 'sr off'. Mentés: 'sc'"
+
+msgid ""
+"NUMBER Selects and plays result NUMBER from the last search list (requires search results mode to be active)"
+msgstr ""
+"SZÁM Kiválasztja és lejátssza a SZÁM sorszámú eredményt az utolsó keresési listából (keresési eredmény mód szükséges)"
+
+msgid "No search results available. Use 'p QUERY' to search first"
+msgstr "Nincs elérhető keresési eredmény. Először keressen 'p KERESÉS' paranccsal"
+
+msgid "{nickname} selected: {track}"
+msgstr "{nickname} kiválasztotta: {track}"
+
+msgid ""
+"NUMBER Sets how many results are shown when search results mode is active. Without a number shows current count. Resets to 5 on restart"
+msgstr ""
+"SZÁM Meghatározza a megjelenített eredmények számát keresési módban. Szám nélkül az aktuális értéket mutatja. Újraindításkor 5-re áll vissza"
+
+msgid "Search results count: {count}"
+msgstr "Eredmények száma: {count}"
+
+msgid "Search results count set to {count}"
+msgstr "Eredmények száma beállítva: {count}"
+
+msgid "Invalid count. Please enter a number greater than 0"
+msgstr "Érvénytelen szám. Adj meg 0-nál nagyobb számot"
 
 #~ msgid "Cannot upload file to channel"
 #~ msgstr "Ezt a fájlt nem lehet feltölteni"
