@@ -1446,67 +1446,102 @@ uninstall_all() {
     echo "1. STOP and REMOVE all 'ttmediabot' containers."
     echo "2. REMOVE the Docker image 'ttmediabot'."
     echo "3. DELETE the '${BOTS_ROOT}' folder with all bots and configs."
+    echo "4. DISABLE and REMOVE the auto-updater systemd service."
+    echo "5. REMOVE Docker Engine and all residual files."
+    echo "6. REMOVE Docker APT repository and GPG key."
     echo ""
-    
+
     read -p "Type 'yes' to confirm total destruction: " confirm
     if [ "$confirm" != "yes" ]; then
         echo "Cancelled."
         read -p "Enter to return..."
         return
     fi
+
+    # Ask about project folder
+    echo ""
+    read -p "Also DELETE the project folder '${SCRIPT_DIR}'? (y/N): " del_project
     
     echo ""
-    echo -e "${YELLOW}1. Stopping containers (forced)...${NC}"
-    # Stop and remove all related containers
+    echo -e "${YELLOW}1. Stopping and removing containers...${NC}"
     docker stop -t 1 $(docker ps -a -q -f "label=role=ttmediabot") 2>/dev/null
     docker rm $(docker ps -a -q -f "label=role=ttmediabot") 2>/dev/null
-    
+
     echo -e "${YELLOW}2. Total Nuke on Docker (Images, Networks, Volumes)...${NC}"
     docker system prune -a -f --volumes 2>/dev/null
-    
+
     echo -e "${YELLOW}3. Stopping Docker service...${NC}"
     systemctl stop docker 2>/dev/null
     systemctl stop docker.socket 2>/dev/null
-    
+
     echo -e "${YELLOW}4. Removing bot files...${NC}"
     if [ -d "$BOTS_ROOT" ]; then
         rm -rf "$BOTS_ROOT"
     fi
-    
+
+    echo -e "${YELLOW}5. Disabling and removing auto-updater service...${NC}"
+    systemctl stop ttmediabot-updater.service 2>/dev/null
+    systemctl disable ttmediabot-updater.service 2>/dev/null
+    rm -f /etc/systemd/system/ttmediabot-updater.service
+    systemctl daemon-reload 2>/dev/null
+
+    echo -e "${YELLOW}6. Cleaning temp and lock files...${NC}"
+    rm -f /tmp/ttmediabot_update.lock
+    rm -f /tmp/ttmediabot_last_running.txt
+    rm -f /tmp/cookies_pasted.txt
+
     echo ""
-    echo -e "${YELLOW}4. Uninstalling Docker and dependencies (Total Cleanup)...${NC}"
+    echo -e "${YELLOW}7. Uninstalling Docker and dependencies (Total Cleanup)...${NC}"
     apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
-    
+
     echo "Removing residual configuration folders and files..."
-    sudo rm -rf /var/lib/docker
-    sudo rm -rf /var/lib/containerd
-    sudo rm -rf /etc/docker
-    sudo rm -rf /etc/apparmor.d/docker
-    sudo rm -rf /var/run/docker.sock
-    sudo rm -rf /var/run/docker
-    sudo rm -rf /run/docker
-    sudo rm -rf /root/.docker
-    sudo rm -rf /home/*/.docker
-    sudo rm -rf /var/log/docker
-    sudo rm -rf /var/log/containerd
-    
+    rm -rf /var/lib/docker
+    rm -rf /var/lib/containerd
+    rm -rf /etc/docker
+    rm -rf /etc/apparmor.d/docker
+    rm -rf /var/run/docker.sock
+    rm -rf /var/run/docker
+    rm -rf /run/docker
+    rm -rf /root/.docker
+    rm -rf /home/*/.docker
+    rm -rf /var/log/docker
+    rm -rf /var/log/containerd
+
+    echo -e "${YELLOW}8. Removing Docker APT repository and GPG key...${NC}"
+    rm -f /etc/apt/sources.list.d/docker.list
+    rm -f /etc/apt/keyrings/docker.gpg
+    apt-get update -q 2>/dev/null
+
     # Remove manual binary installs if any
     rm -f /usr/local/bin/docker-compose
-    
+
     echo "Removing 'docker' group..."
     groupdel docker 2>/dev/null || true
-    
+
     echo "Cleaning unused packages..."
     apt-get autoremove -y >/dev/null
     apt-get autoclean -y >/dev/null
-    
+
+    # Optional: remove project folder
+    if [[ "$del_project" =~ ^[yY]$ ]]; then
+        echo ""
+        echo -e "${YELLOW}9. Removing project folder '${SCRIPT_DIR}'...${NC}"
+        # We can't rm the folder we're running from directly, so schedule it
+        rm -rf "$SCRIPT_DIR" 2>/dev/null || true
+    fi
+
     echo ""
     echo -e "${GREEN}CLEANUP COMPLETED.${NC}"
     echo "All containers, images, configurations, and Docker itself were removed from the system."
-    echo -e "${YELLOW}The project folder ('$(pwd)') WAS KEPT, as requested.${NC}"
+    if [[ "$del_project" =~ ^[yY]$ ]]; then
+        echo -e "${RED}Project folder '${SCRIPT_DIR}' was also removed.${NC}"
+    else
+        echo -e "${YELLOW}The project folder ('${SCRIPT_DIR}') WAS KEPT.${NC}"
+    fi
     echo -e "${RED}Recommended to restart the server to clear network interfaces (docker0).${NC}"
     exit 0
 }
+
 
 # Function: Clean Unused Docker Resources
 clean_docker_unused() {
