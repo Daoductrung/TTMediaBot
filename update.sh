@@ -325,8 +325,13 @@ update_and_fix_permissions() {
         elif [ "$IS_FIRST_INSTALL" = "true" ]; then
             echo -e "${GREEN}First installation detected. Proceeding automatically...${NC}"
             confirm_update="y"
-        elif [ -z "$IMAGE_EXISTS" ] && [ "$NEEDS_PULL" = "false" ] && [ "$HAS_LOCAL_CHANGES" = "false" ]; then
-            echo -e "${YELLOW}Docker image missing but code is up to date. Rebuilding automatically...${NC}"
+        elif [ -z "$IMAGE_EXISTS" ]; then
+            # No Docker image exists at all — rebuild automatically regardless of local changes
+            if [ "$HAS_LOCAL_CHANGES" = true ]; then
+                echo -e "${YELLOW}No Docker image found. Local changes detected but proceeding automatically to build image...${NC}"
+            else
+                echo -e "${YELLOW}Docker image missing. Rebuilding automatically...${NC}"
+            fi
             confirm_update="y"
         else
             echo -e "${YELLOW}Local changes detected: ${HAS_LOCAL_CHANGES}${NC}"
