@@ -1488,7 +1488,7 @@ uninstall_all() {
     apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose 2>/dev/null
 
     echo -e "${YELLOW}   Removing extra packages installed by this script...${NC}"
-    apt-get purge -y jq curl gnupg lsb-release 2>/dev/null
+    apt-get purge -y jq curl gnupg lsb-release git 2>/dev/null
 
     echo "   Removing residual Docker files..."
     rm -rf /var/lib/docker
