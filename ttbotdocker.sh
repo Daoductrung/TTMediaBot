@@ -1519,18 +1519,12 @@ uninstall_all() {
     apt-get autoclean -y >/dev/null
 
     echo -e "${YELLOW}9. Removing project folder '${SCRIPT_DIR}'...${NC}"
-    # Write a self-destruct helper to /tmp (outside of SCRIPT_DIR) and run it detached.
-    # This guarantees deletion even if the main process exits first.
+    # setsid creates a completely new session (new PGID + no controlling TTY).
+    # This is stronger than nohup+disown: survives even if the terminal closes.
     _DESTROY_SCRIPT=$(mktemp /tmp/ttbot_destroy_XXXXXX.sh)
-    cat > "$_DESTROY_SCRIPT" <<DESTROY_EOF
-#!/bin/bash
-sleep 1
-rm -rf '$SCRIPT_DIR'
-rm -f '$_DESTROY_SCRIPT'
-DESTROY_EOF
+    printf '#!/bin/bash\nsleep 1\nrm -rf "%s"\nrm -f "%s"\n' "$SCRIPT_DIR" "$_DESTROY_SCRIPT" > "$_DESTROY_SCRIPT"
     chmod +x "$_DESTROY_SCRIPT"
-    nohup bash "$_DESTROY_SCRIPT" >/dev/null 2>&1 &
-    disown
+    setsid bash "$_DESTROY_SCRIPT" >/dev/null 2>&1 &
 
     echo ""
     echo -e "${GREEN}CLEANUP COMPLETED.${NC}"
