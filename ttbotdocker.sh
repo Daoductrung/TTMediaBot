@@ -1519,15 +1519,23 @@ uninstall_all() {
     apt-get autoclean -y >/dev/null
 
     echo -e "${YELLOW}9. Removing project folder '${SCRIPT_DIR}'...${NC}"
-    # Use nohup + disown to fully detach the rm process from this shell.
-    # A simple & subshell gets killed by SIGHUP when the parent exits.
-    nohup bash -c "sleep 2 && rm -rf '$SCRIPT_DIR'" >/dev/null 2>&1 &
+    # Write a self-destruct helper to /tmp (outside of SCRIPT_DIR) and run it detached.
+    # This guarantees deletion even if the main process exits first.
+    _DESTROY_SCRIPT=$(mktemp /tmp/ttbot_destroy_XXXXXX.sh)
+    cat > "$_DESTROY_SCRIPT" <<DESTROY_EOF
+#!/bin/bash
+sleep 1
+rm -rf '$SCRIPT_DIR'
+rm -f '$_DESTROY_SCRIPT'
+DESTROY_EOF
+    chmod +x "$_DESTROY_SCRIPT"
+    nohup bash "$_DESTROY_SCRIPT" >/dev/null 2>&1 &
     disown
 
     echo ""
     echo -e "${GREEN}CLEANUP COMPLETED.${NC}"
     echo "All containers, images, configurations, and Docker itself were removed from the system."
-    echo -e "${RED}Project folder '${SCRIPT_DIR}' will be deleted in 2 seconds.${NC}"
+    echo -e "${RED}Project folder '${SCRIPT_DIR}' will be deleted in 1 second.${NC}"
     echo -e "${RED}Recommended to restart the server to clear network interfaces (docker0).${NC}"
     exit 0
 }
