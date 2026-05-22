@@ -1458,10 +1458,6 @@ uninstall_all() {
         return
     fi
 
-    # Ask about project folder
-    echo ""
-    read -p "Also DELETE the project folder '${SCRIPT_DIR}'? (y/N): " del_project
-    
     echo ""
     echo -e "${YELLOW}1. Stopping and removing containers...${NC}"
     docker stop -t 1 $(docker ps -a -q -f "label=role=ttmediabot") 2>/dev/null
@@ -1522,22 +1518,14 @@ uninstall_all() {
     apt-get autoremove -y >/dev/null
     apt-get autoclean -y >/dev/null
 
-    # Optional: remove project folder
-    if [[ "$del_project" =~ ^[yY]$ ]]; then
-        echo ""
-        echo -e "${YELLOW}9. Removing project folder '${SCRIPT_DIR}'...${NC}"
-        # We can't rm the folder we're running from directly, so schedule it
-        rm -rf "$SCRIPT_DIR" 2>/dev/null || true
-    fi
+    echo -e "${YELLOW}9. Removing project folder '${SCRIPT_DIR}'...${NC}"
+    # Schedule deletion via subshell after script exits to avoid removing ourselves mid-execution
+    (sleep 1 && rm -rf "$SCRIPT_DIR") &
 
     echo ""
     echo -e "${GREEN}CLEANUP COMPLETED.${NC}"
     echo "All containers, images, configurations, and Docker itself were removed from the system."
-    if [[ "$del_project" =~ ^[yY]$ ]]; then
-        echo -e "${RED}Project folder '${SCRIPT_DIR}' was also removed.${NC}"
-    else
-        echo -e "${YELLOW}The project folder ('${SCRIPT_DIR}') WAS KEPT.${NC}"
-    fi
+    echo -e "${RED}Project folder '${SCRIPT_DIR}' will be removed now.${NC}"
     echo -e "${RED}Recommended to restart the server to clear network interfaces (docker0).${NC}"
     exit 0
 }
