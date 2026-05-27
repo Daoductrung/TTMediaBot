@@ -99,9 +99,10 @@ class YtService(_Service):
             yield None
             return
 
+        import uuid
         temp_cookie_path = os.path.join(
             tempfile.gettempdir(), 
-            f"yt_cookies_{os.getpid()}_{threading.get_ident()}.txt"
+            f"yt_cookies_{os.getpid()}_{uuid.uuid4().hex}.txt"
         )
         
         try:
@@ -109,16 +110,7 @@ class YtService(_Service):
                 shutil.copy2(self.config.cookiefile_path, temp_cookie_path)
             yield temp_cookie_path
         finally:
-            # Writeback: yt-dlp may have updated/rotated cookie tokens during extraction.
-            # Copy the modified temp cookies back to the source file so future requests
-            # use the refreshed tokens instead of stale ones that YouTube will reject.
             if os.path.isfile(temp_cookie_path):
-                try:
-                    with self._cookie_lock:
-                        shutil.copy2(temp_cookie_path, self.config.cookiefile_path)
-                    logging.debug("YT: Cookie file updated with refreshed tokens")
-                except Exception as e:
-                    logging.debug(f"YT: Failed to writeback cookies: {e}")
                 try:
                     os.remove(temp_cookie_path)
                 except Exception as e:

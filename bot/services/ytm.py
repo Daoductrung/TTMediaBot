@@ -200,9 +200,10 @@ class YtmService(_Service):
             yield None
             return
 
+        import uuid
         temp_cookie_path = os.path.join(
             tempfile.gettempdir(), 
-            f"ytm_cookies_{os.getpid()}_{threading.get_ident()}.txt"
+            f"ytm_cookies_{os.getpid()}_{uuid.uuid4().hex}.txt"
         )
         
         try:
@@ -211,12 +212,6 @@ class YtmService(_Service):
             yield temp_cookie_path
         finally:
             if os.path.isfile(temp_cookie_path):
-                try:
-                    with self._cookie_lock:
-                        shutil.copy2(temp_cookie_path, self.yt_config.cookiefile_path)
-                    logging.debug("YTM: Cookie file updated with refreshed tokens")
-                except Exception as e:
-                    logging.debug(f"YTM: Failed to writeback cookies: {e}")
                 try:
                     os.remove(temp_cookie_path)
                 except Exception as e:
