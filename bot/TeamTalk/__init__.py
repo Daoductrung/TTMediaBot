@@ -112,6 +112,29 @@ class TeamTalk:
 
     def connect(self) -> None:
         self.state = State.CONNECTING
+        if self.config.encrypted:
+            ctx = TeamTalkPy.EncryptionContext()
+            ctx.bVerifyPeer = False
+            ca_path = os.path.join(app_vars.directory, "data", "ttservercert.pem")
+            if os.path.exists(ca_path):
+                ctx.szCAFile = _str(ca_path)
+                ctx.bVerifyPeer = True
+            else:
+                # Dynamically fetch the server certificate to trust it
+                import ssl
+                import tempfile
+                logging.info(f"Attempting to fetch SSL certificate from {self.config.hostname}:{self.config.tcp_port}")
+                try:
+                    cert_pem = ssl.get_server_certificate((self.config.hostname, self.config.tcp_port))
+                    temp_cert_file = os.path.join(tempfile.gettempdir(), f"tt_{self.config.hostname}_{self.config.tcp_port}.pem")
+                    with open(temp_cert_file, "w") as f:
+                        f.write(cert_pem)
+                    ctx.szCAFile = _str(temp_cert_file)
+                    ctx.bVerifyPeer = True
+                    logging.info(f"Dynamically trusted certificate at {temp_cert_file}")
+                except Exception as e:
+                    logging.warning(f"Failed to dynamically fetch server certificate: {e}")
+            self.tt.setEncryptionContext(ctx)
         self.tt.connect(
             _str(self.config.hostname),
             self.config.tcp_port,

@@ -1459,6 +1459,9 @@ class TeamTalk(object):
     def connect(self, szHostAddress, nTcpPort, nUdpPort, nLocalTcpPort=0, nLocalUdpPort=0, bEncrypted=False):
         return _Connect(self._tt, szHostAddress, nTcpPort, nUdpPort, nLocalTcpPort, nLocalUdpPort, bEncrypted)
 
+    def setEncryptionContext(self, context):
+        return _SetEncryptionContext(self._tt, byref(context))
+
     def disconnect(self):
         return _Disconnect(self._tt)
 
