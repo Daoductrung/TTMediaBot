@@ -4,6 +4,21 @@ All notable updates to this fork are documented here, in reverse chronological o
 
 ---
 
+## 🆕 v2.3.0 — "Dynamic SSL Trust" Update *(05/30/2026)*
+
+### 🔒 Dynamic SSL Trust & Peer Verification Bypass
+
+- **🛡️ Auto-fetching SSL Certificates:**
+  When connecting to an encrypted TeamTalk server (`encrypted: true`), the bot now automatically attempts to fetch the server's certificate dynamically over the network if a local CA certificate (`ttservercert.pem`) is not configured.
+
+- **✅ Local and Third-Party Server Support:**
+  The dynamically fetched certificate is temporarily trusted via OpenSSL/ACE SSL verification, allowing seamless encrypted connections to self-signed or third-party servers without manual certificate management (mirroring the Windows client behavior).
+
+- **🔧 Exposed `setEncryptionContext` in Wrapper:**
+  Exposed the C-level `TT_SetEncryptionContext` function inside `TeamTalkPy` wrapper as `setEncryptionContext`, enabling programmatic control over SSL contexts directly from Python.
+
+---
+
 ## 🆕 v2.2.0 — "Link-Based Downloading" Update *(05/23/2026)*
 
 ### 🔗 Link-Based Downloading Commands

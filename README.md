@@ -451,7 +451,8 @@ TTMediaBot supports multiple languages. Change language using the `cl` admin com
    - Ensure bot account exists on TeamTalk server
 
 3. **Check encryption setting:**
-   - If server uses encryption, set `"encrypted": true` in config
+   - If server uses encryption, set `"encrypted": true` in config.
+   - **Note:** The bot automatically fetches and trusts the server's SSL certificate dynamically (similar to the Windows client) if no local CA certificate (`ttservercert.pem`) is provided.
 
 4. **View logs:**
    - **Docker:** `docker logs [bot_name]`
