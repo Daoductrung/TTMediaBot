@@ -5,6 +5,9 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Fix git safe directory issue when running as root on a repository owned by another user (common in VPS)
+git config --global --add safe.directory "$SCRIPT_DIR" 2>/dev/null
+
 echo "TTMediaBot Auto-Updater started. Checking every 20 seconds..."
 
 LOCK_FILE="/tmp/ttmediabot_update.lock"

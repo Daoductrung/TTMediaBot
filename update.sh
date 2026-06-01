@@ -3,6 +3,9 @@
 # Auto-detect script location and set paths dynamically
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BOTS_ROOT="${SCRIPT_DIR}/bots"
+
+# Fix git safe directory issue when running as root on a repository owned by another user (common in VPS)
+git config --global --add safe.directory "$SCRIPT_DIR" 2>/dev/null
 BOT_IMAGE="ttmediabot"
 
 # Check if running as root
