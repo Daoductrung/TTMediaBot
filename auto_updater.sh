@@ -8,8 +8,12 @@ cd "$SCRIPT_DIR"
 # Fix git safe directory issue when running as root on a repository owned by another user (common in VPS)
 git config --global --add safe.directory "$SCRIPT_DIR" 2>/dev/null
 
-# Export SSH key for root access to GitHub (since service runs as root)
-export GIT_SSH_COMMAND="ssh -i /home/admin/.ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
+# Discover real user and set SSH key command dynamically for root (so we can authenticate with user's key)
+REAL_USER=$(stat -c '%U' "$SCRIPT_DIR" 2>/dev/null || echo "admin")
+REAL_USER_HOME=$(getent passwd "$REAL_USER" 2>/dev/null | cut -d: -f6 || echo "/home/admin")
+if [ -f "$REAL_USER_HOME/.ssh/id_ed25519" ]; then
+    export GIT_SSH_COMMAND="ssh -i $REAL_USER_HOME/.ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
+fi
 
 echo "TTMediaBot Auto-Updater started. Checking every 20 seconds..."
 
