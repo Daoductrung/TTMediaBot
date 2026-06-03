@@ -2,6 +2,7 @@
 
 # Auto-detect script location and set paths dynamically
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR" || exit 1
 BOTS_ROOT="${SCRIPT_DIR}/bots"
 
 # Fix git safe directory issue when running as root on a repository owned by another user (common in VPS)
