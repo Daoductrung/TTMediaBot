@@ -10,7 +10,7 @@ git config --global --add safe.directory "$SCRIPT_DIR" 2>/dev/null
 
 # Discover real user and set SSH key command dynamically for root (so we can authenticate with user's key)
 REAL_USER=$(stat -c '%U' "$SCRIPT_DIR" 2>/dev/null || echo "admin")
-REAL_USER_HOME=$(getent passwd "$REAL_USER" 2>/dev/null | cut -d: -f6 || echo "/home/admin")
+REAL_USER_HOME=$(getent passwd "$REAL_USER" 2>/dev/null | cut -d: -f6 || echo "/home/$REAL_USER")
 if [ -f "$REAL_USER_HOME/.ssh/id_ed25519" ]; then
     export GIT_SSH_COMMAND="ssh -i $REAL_USER_HOME/.ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
 fi

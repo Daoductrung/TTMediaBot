@@ -5,12 +5,19 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Define SUDO dynamically: use sudo if not root
+if [ "$EUID" -ne 0 ]; then
+    SUDO="sudo"
+else
+    SUDO=""
+fi
+
 # Fix git safe directory issue when running as root on a repository owned by another user (common in VPS)
 git config --global --add safe.directory "$SCRIPT_DIR" 2>/dev/null
 
 # Discover real user and set SSH key command dynamically for root (so we can authenticate with user's key)
 REAL_USER=$(stat -c '%U' "$SCRIPT_DIR" 2>/dev/null || echo "admin")
-REAL_USER_HOME=$(getent passwd "$REAL_USER" 2>/dev/null | cut -d: -f6 || echo "/home/admin")
+REAL_USER_HOME=$(getent passwd "$REAL_USER" 2>/dev/null | cut -d: -f6 || echo "/home/$REAL_USER")
 if [ -f "$REAL_USER_HOME/.ssh/id_ed25519" ]; then
     export GIT_SSH_COMMAND="ssh -i $REAL_USER_HOME/.ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
 fi
@@ -22,7 +29,7 @@ LOCK_FILE="/tmp/ttmediabot_update.lock"
 # Cleanup function
 cleanup() {
     echo "$(date): Auto-Updater shutting down..."
-    rm -f "$LOCK_FILE"
+    $SUDO rm -f "$LOCK_FILE"
     # Kill background sleep if running so we exit immediately
     [ -n "$SLEEP_PID" ] && kill "$SLEEP_PID" 2>/dev/null
     exit 0
@@ -34,7 +41,7 @@ trap cleanup INT TERM
 # Initial cleanup of stale lock if script is starting fresh
 # (Wait 2 seconds to ensure no other instance is starting)
 sleep 2
-rm -f "$LOCK_FILE"
+$SUDO rm -f "$LOCK_FILE"
 
 # Function to check if local is behind remote
 # Note: we only compare hashes. git ls-remote doesn't download objects,
@@ -62,7 +69,7 @@ while true; do
     LOCAL_HASH=$(git rev-parse HEAD 2>/dev/null | tr -d '[:space:]')
     
     # Check what version is currently running in Docker
-    RUNNING_HASH=$(docker inspect ttmediabot --format '{{ index .Config.Labels "commit_hash" }}' 2>/dev/null | tr -d '[:space:]')
+    RUNNING_HASH=$($SUDO docker inspect ttmediabot --format '{{ index .Config.Labels "commit_hash" }}' 2>/dev/null | tr -d '[:space:]')
     [ -z "$RUNNING_HASH" ] && RUNNING_HASH="none"
 
     # 1. Update Detection Logic
@@ -82,14 +89,14 @@ while true; do
         if [ -f "$LOCK_FILE" ]; then
             echo "$(date): Update already in progress. Skipping cycle..."
         else
-            touch "$LOCK_FILE"
+            $SUDO touch "$LOCK_FILE"
             echo "$(date): Running update.sh..."
             HASH_BEFORE=$(git rev-parse HEAD 2>/dev/null)
             export AUTO_UPDATE=true
-            ./update.sh
+            $SUDO "$SCRIPT_DIR"/update.sh
             UPDATE_EXIT=$?
             unset AUTO_UPDATE
-            rm -f "$LOCK_FILE"
+            $SUDO rm -f "$LOCK_FILE"
             HASH_AFTER=$(git rev-parse HEAD 2>/dev/null)
             echo "$(date): update.sh finished with exit code $UPDATE_EXIT"
             # CRITICAL: update.sh does 'git reset --hard' which replaces THIS script
