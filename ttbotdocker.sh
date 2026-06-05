@@ -73,55 +73,49 @@ install_dependencies() {
     echo -e "${YELLOW}Checking dependencies...${NC}"
 
     if ! command -v docker &> /dev/null; then
-        echo "Docker not found. Installing via official repository..."
-        
-        # 1. Update apt and install prerequisites
-        export DEBIAN_FRONTEND=noninteractive
-        apt-get update
-        apt-get install -y ca-certificates curl gnupg lsb-release
-
-        # 2. Detect OS and Codename
-        . /etc/os-release
-        OS_ID=$ID
-        CODENAME=$VERSION_CODENAME
-        
-        # Fallback if VERSION_CODENAME is empty (some older/different distros)
-        if [ -z "$CODENAME" ]; then
-            CODENAME=$(lsb_release -cs 2>/dev/null)
-        fi
-
-        case "$OS_ID" in
-            ubuntu|debian)
-                echo -e "Detected OS: ${GREEN}$OS_ID ($CODENAME)${NC}"
-                ;;
-            *)
-                echo -e "${RED}Unsupported OS: $OS_ID. Trying 'debian' as fallback...${NC}"
-                OS_ID="debian"
+        echo "Docker not found. Installing automatically..."
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            if [[ "$ID" == "almalinux" || "$ID" == "centos" || "$ID" == "rhel" || "$ID" == "rocky" ]]; then
+                echo "RedHat-based OS detected ($ID). Using dnf/yum..."
+                if command -v dnf &> /dev/null; then
+                    dnf install -y dnf-plugins-core
+                    dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+                    dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                else
+                    yum install -y yum-utils
+                    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+                    yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                fi
+            else
+                # Debian/Ubuntu fallback
+                export DEBIAN_FRONTEND=noninteractive
+                apt-get update
+                apt-get install -y ca-certificates curl gnupg lsb-release
+                
+                OS_ID=$ID
+                CODENAME=$VERSION_CODENAME
+                [ -z "$CODENAME" ] && CODENAME=$(lsb_release -cs 2>/dev/null)
                 [ -z "$CODENAME" ] && CODENAME="stable"
-                ;;
-        esac
-
-        # 3. Add Docker's official GPG key
-        mkdir -p /etc/apt/keyrings
-        rm -f /etc/apt/keyrings/docker.gpg
-        curl -fsSL "https://download.docker.com/linux/$OS_ID/gpg" | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        chmod a+r /etc/apt/keyrings/docker.gpg
-
-        # 4. Set up the repository
-        echo \
-          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$OS_ID \
-          $CODENAME stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-        # 5. Install Docker Engine
-        apt-get update
-        apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-        # 6. Enable service
+                
+                mkdir -p /etc/apt/keyrings
+                rm -f /etc/apt/keyrings/docker.gpg
+                curl -fsSL "https://download.docker.com/linux/$OS_ID/gpg" | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+                chmod a+r /etc/apt/keyrings/docker.gpg
+                
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$OS_ID $CODENAME stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+                apt-get update
+                apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            fi
+        else
+            curl -fsSL https://get.docker.com | sh
+        fi
+        
         systemctl enable --now docker
         
         REAL_USER=${SUDO_USER:-$USER}
         if [ "$REAL_USER" != "root" ]; then
-            usermod -aG docker "$REAL_USER"
+            usermod -aG docker "$REAL_USER" || true
             echo "User '$REAL_USER' added to the docker group."
         fi
     else
@@ -167,8 +161,8 @@ recreate_bot_containers() {
                 --network host \
                 --label "role=ttmediabot" \
                 --restart always \
-                -v "${d}:/home/ttbot/TTMediaBot/data" \
-                -v "${d}/cookies.txt:/home/ttbot/TTMediaBot/data/cookies.txt" \
+                -v "${d}:/home/ttbot/TTMediaBot/data:z" \
+                -v "${d}/cookies.txt:/home/ttbot/TTMediaBot/data/cookies.txt:z" \
                 "${BOT_IMAGE}" > /dev/null 2>&1
                 
             if [ $? -eq 0 ]; then
@@ -495,13 +489,13 @@ create_bot() {
         echo "Copying cookies file..."
         cp "$cookies_path" "$CURRENT_BOT_DIR/cookies.txt"
         chown 1000:1000 "$CURRENT_BOT_DIR/cookies.txt"
-        COOKIES_MOUNT="-v ${CURRENT_BOT_DIR}/cookies.txt:/home/ttbot/TTMediaBot/data/cookies.txt"
+        COOKIES_MOUNT="-v ${CURRENT_BOT_DIR}/cookies.txt:/home/ttbot/TTMediaBot/data/cookies.txt:z"
         CONTAINER_COOKIE_PATH="data/cookies.txt"
     else
         echo -e "${RED}Cookies file not found! The bot will be created without specific cookies.${NC}"
         # Create empty cookies file to avoid mount errors if referenced
         touch "$CURRENT_BOT_DIR/cookies.txt"
-        COOKIES_MOUNT="-v ${CURRENT_BOT_DIR}/cookies.txt:/home/ttbot/TTMediaBot/data/cookies.txt"
+        COOKIES_MOUNT="-v ${CURRENT_BOT_DIR}/cookies.txt:/home/ttbot/TTMediaBot/data/cookies.txt:z"
         CONTAINER_COOKIE_PATH="data/cookies.txt"
     fi
     
@@ -542,7 +536,7 @@ create_bot() {
         --network host \
         --label "role=ttmediabot" \
         --restart always \
-        -v "${CURRENT_BOT_DIR}:/home/ttbot/TTMediaBot/data" \
+        -v "${CURRENT_BOT_DIR}:/home/ttbot/TTMediaBot/data:z" \
         $COOKIES_MOUNT \
         "${BOT_IMAGE}" > /dev/null 2>&1
 

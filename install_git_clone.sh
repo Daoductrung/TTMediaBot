@@ -10,12 +10,31 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-REPO_URL="https://github.com/JoaoDEVWHADS/TTMediaBot.git"
+REPO_URL="https://github.com/daoductrung/TTMediaBot.git"
+REPO_OWNER_NAME="daoductrung/TTMediaBot"
+
+echo "--- Detecting Package Manager ---"
+if command -v dnf &> /dev/null; then
+    PKG_MANAGER="dnf"
+    PKG_INSTALL="dnf install -y"
+    PKG_UPDATE="dnf check-update"
+elif command -v yum &> /dev/null; then
+    PKG_MANAGER="yum"
+    PKG_INSTALL="yum install -y"
+    PKG_UPDATE="yum check-update"
+elif command -v apt-get &> /dev/null; then
+    PKG_MANAGER="apt-get"
+    PKG_INSTALL="apt-get install -y"
+    PKG_UPDATE="apt-get update"
+else
+    echo "Unsupported package manager. Please install git and unzip manually."
+    exit 1
+fi
 
 echo "--- Checking for Git ---"
 if ! command -v git &> /dev/null; then
     echo "Git not found. Installing..."
-    apt-get update && apt-get install -y git
+    $PKG_UPDATE && $PKG_INSTALL git
 else
     echo "Git is already installed."
 fi
@@ -23,7 +42,7 @@ fi
 echo "--- Checking for unzip (ZIP extractor) ---"
 if ! command -v unzip &> /dev/null; then
     echo "unzip not found. Installing..."
-    apt-get install -y unzip
+    $PKG_INSTALL unzip
 else
     echo "unzip is already installed."
 fi
@@ -45,7 +64,13 @@ if [ "$CURRENT_IS_REPO" = false ]; then
         git pull
     else
         echo "--- Cloning Repository ---"
-        git clone "$REPO_URL"
+        if command -v gh &> /dev/null; then
+            echo "gh CLI detected. Cloning using gh..."
+            gh repo clone "$REPO_OWNER_NAME"
+        else
+            git clone "$REPO_URL"
+        fi
+        
         if [ $? -ne 0 ]; then
             echo "Error cloning repository. Check your internet connection."
             exit 1
@@ -71,7 +96,7 @@ echo "========================================="
 echo "--- Checking TeamTalk_DLL ---"
 echo "========================================="
 
-DLL_URL="https://github.com/JoaoDEVWHADS/TTMediaBot/releases/download/downloadttdll/TeamTalk_DLL.zip"
+DLL_URL="https://github.com/daoductrung/TTMediaBot/releases/download/downloadttdll/TeamTalk_DLL.zip"
 DLL_FILE="TeamTalk_DLL.zip"
 
 if [ -d "TeamTalk_DLL" ] && [ -f "TeamTalk_DLL/libTeamTalk5.so" ]; then
@@ -130,7 +155,25 @@ echo "✅ TeamTalk_DLL folder is ready!"
 
         if ! command -v docker &> /dev/null; then
             echo "Docker not found. Installing automatically..."
-            curl -fsSL https://get.docker.com | sh
+            if [ -f /etc/os-release ]; then
+                . /etc/os-release
+                if [[ "$ID" == "almalinux" || "$ID" == "centos" || "$ID" == "rhel" || "$ID" == "rocky" ]]; then
+                    echo "RedHat-based OS detected ($ID). Using dnf/yum..."
+                    if command -v dnf &> /dev/null; then
+                        dnf install -y dnf-plugins-core
+                        dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+                        dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                    else
+                        yum install -y yum-utils
+                        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+                        yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                    fi
+                else
+                    curl -fsSL https://get.docker.com | sh
+                fi
+            else
+                curl -fsSL https://get.docker.com | sh
+            fi
         else
             echo "Docker is already installed."
         fi
@@ -143,7 +186,7 @@ echo "✅ TeamTalk_DLL folder is ready!"
 
         if command -v docker &> /dev/null && ! docker info &> /dev/null; then
             echo "--- Adding user to docker group ---"
-            usermod -aG docker "$REAL_USER"
+            usermod -aG docker "$REAL_USER" || true
             echo "Please log out and log back in for docker group changes to take effect."
         fi
 

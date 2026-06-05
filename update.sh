@@ -193,7 +193,7 @@ update_and_fix_permissions() {
     echo ""
 
     # 2. Check for Updates (GitHub API vs Local Date)
-    REPO_OWNER="JoaoDEVWHADS"
+    REPO_OWNER="daoductrung"
     REPO_NAME="TTMediaBot"
     BRANCH="master"
     
@@ -284,7 +284,11 @@ update_and_fix_permissions() {
         fi
 
         # Fallback to date-based check if not a git repo yet (first install)
-        LATEST_COMMIT_DATE=$(curl -s "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/commits/$BRANCH" | jq -r '.commit.committer.date')
+        if command -v gh &> /dev/null; then
+            LATEST_COMMIT_DATE=$(gh api "repos/$REPO_OWNER/$REPO_NAME/commits/$BRANCH" --jq '.commit.committer.date' 2>/dev/null)
+        else
+            LATEST_COMMIT_DATE=$(curl -s "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/commits/$BRANCH" | jq -r '.commit.committer.date')
+        fi
         
         if [ -n "$LATEST_COMMIT_DATE" ] && [ "$LATEST_COMMIT_DATE" != "null" ]; then
             REMOTE_TS=$(date -d "$LATEST_COMMIT_DATE" +%s)
@@ -394,7 +398,11 @@ update_and_fix_permissions() {
                     # 2. Clone Repository
                     echo "Cloning repository..."
                     CLONE_DIR="$TMP_DIR/clone"
-                    git clone "https://github.com/$REPO_OWNER/$REPO_NAME.git" "$CLONE_DIR"
+                    if command -v gh &> /dev/null; then
+                        gh repo clone "$REPO_OWNER/$REPO_NAME" "$CLONE_DIR"
+                    else
+                        git clone "https://github.com/$REPO_OWNER/$REPO_NAME.git" "$CLONE_DIR"
+                    fi
                     
                     if [ $? -eq 0 ]; then
                         echo "Installing..."

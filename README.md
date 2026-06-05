@@ -2,7 +2,7 @@
 
 **Hello! I am João Almeida.** Welcome to my **TTMediaBot** fork, a comprehensive media streaming bot for TeamTalk 5. This repository is focused on delivering constant improvements, stability, and new features, such as exclusive support for YouTube Music.
 
-> 🔗 **My Repository:** [https://github.com/JoaoDEVWHADS/TTMediaBot](https://github.com/JoaoDEVWHADS/TTMediaBot)
+> 🔗 **My Repository:** [https://github.com/daoductrung/TTMediaBot](https://github.com/daoductrung/TTMediaBot)
 
 ---
 
@@ -75,7 +75,7 @@ This script will automatically install Git (if needed), clone the repository, an
 
 1.  **Download and run the installer:**
     ```bash
-    wget https://raw.githubusercontent.com/JoaoDEVWHADS/TTMediaBot/master/install_git_clone.sh
+    wget https://raw.githubusercontent.com/daoductrung/TTMediaBot/master/install_git_clone.sh
     sudo chmod +x install_git_clone.sh
     sudo ./install_git_clone.sh
     ```
@@ -305,7 +305,7 @@ If you already have bots installed and just want to update the code without usin
 **How to use:**
 1. Download the script to your `TTMediaBot` folder:
    ```bash
-   wget https://raw.githubusercontent.com/JoaoDEVWHADS/TTMediaBot/master/update.sh
+   wget https://raw.githubusercontent.com/daoductrung/TTMediaBot/master/update.sh
    chmod +x update.sh
    ```
 2. Run it:

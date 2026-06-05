@@ -12,7 +12,7 @@ about_text: Callable[[Translator], str] = lambda translator: translator.translat
     """\
 Hello! I am João Almeida. This is my fork of TTMediaBot for TeamTalk 5.
 This repository focuses on stability and support for YouTube Music.
-Repository: https://github.com/JoaoDEVWHADS/TTMediaBot
+Repository: https://github.com/daoductrung/TTMediaBot
 Original Authors: Amir Gumerov, Vladislav Kopylov, Beqa Gozalishvili, Kirill Belousov.
 """
 )
