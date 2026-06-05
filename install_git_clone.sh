@@ -96,7 +96,7 @@ echo "========================================="
 echo "--- Checking TeamTalk_DLL ---"
 echo "========================================="
 
-DLL_URL="https://github.com/daoductrung/TTMediaBot/releases/download/downloadttdll/TeamTalk_DLL.zip"
+DLL_URL="https://github.com/JoaoDEVWHADS/TTMediaBot/releases/download/downloadttdll/TeamTalk_DLL.zip"
 DLL_FILE="TeamTalk_DLL.zip"
 
 if [ -d "TeamTalk_DLL" ] && [ -f "TeamTalk_DLL/libTeamTalk5.so" ]; then
